@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/rationalView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_medium"
+        android:paddingLeft="@dimen/spacing_medium"
+        android:paddingRight="@dimen/spacing_medium"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/location" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/lato"
+            android:padding="@dimen/spacing_list"
+            android:text="@string/permission_location_rationale"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_medium" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btnRequestPerms"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:fontFamily="@font/lato_bold"
+            android:text="@string/permissions_grant_action"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</FrameLayout>

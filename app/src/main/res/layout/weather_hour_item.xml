@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/spacing_list"
+    android:paddingRight="@dimen/spacing_list"
+    tools:background="#fafa">
+
+    <TextView
+        android:id="@+id/hourTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_body"
+        android:layout_marginBottom="-8dp"
+        tools:text="@tools:sample/date/hhmm" />
+
+    <ImageView
+        android:id="@+id/hourIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:tint="@android:color/white"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/blank"
+        tools:src="@drawable/cloud_drizzle" />
+
+
+    <TextView
+        android:id="@+id/hourTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/lato_bold"
+        android:layout_marginTop="-8dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_large"
+        tools:text="@string/degrees" />
+</LinearLayout>

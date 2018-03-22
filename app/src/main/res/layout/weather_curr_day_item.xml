@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_list"
+    android:layout_marginLeft="@dimen/spacing_medium"
+    android:layout_marginRight="@dimen/spacing_medium"
+    app:cardCornerRadius="@dimen/spacing_normal"
+    app:cardElevation="6dp">
+
+    <FrameLayout
+        android:id="@+id/dayBackground"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        tools:background="#fafa">
+
+        <TextView
+            android:id="@+id/currentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/spacing_medium"
+            android:fontFamily="@font/lato_bold"
+            android:gravity="center"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="@dimen/text_size_medium"
+            tools:text="@tools:sample/date/hhmm" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/currentTemperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/lato_bold"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="50sp"
+                tools:text="30&#176;" />
+
+            <TextView
+                android:id="@+id/currentSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:fontFamily="@font/lato"
+                android:gravity="center"
+                android:textColor="?android:textColorSecondary"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="Cloudy" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:clipToPadding="false"
+            android:padding="@dimen/spacing_normal"
+            android:paddingBottom="@dimen/spacing_normal"
+            tools:layout_height="100dp" />
+
+
+    </FrameLayout>
+
+</android.support.v7.widget.CardView>

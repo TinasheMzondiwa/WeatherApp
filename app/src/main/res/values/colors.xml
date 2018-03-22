@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="theme">#3B4254</color>
+
+    <color name="windowBackground">#f5f5f5</color>
+    <color name="windowBackgroundDark">#E0E0E0</color>
+    <color name="text">@color/theme</color>
+    <color name="secondary">#703B4254</color>
+
+    <color name="sunny">#FFC107</color>
+    <color name="clear">#90CAF9</color>
+    <color name="cloudy">#607D8B</color>
+    <color name="windy">#9FA8DA</color>
+
+</resources>

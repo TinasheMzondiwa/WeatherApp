@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Weather</string>
+    <string name="blank"/>
+    <string name="dark_sky_powered_by">Powered by Dark Sky</string>
+    <string name="degrees">%d&#176;</string>
+    <string name="now">Now</string>
+    <string name="permission_location_rationale">Location permission is needed to get accurate weather for your location.</string>
+    <string name="permissions_not_granted">Permissions were not granted.</string>
+    <string name="permissions_grant_action">Grant Permission</string>
+    <string name="today">Today</string>
+</resources>

@@ -1,0 +1,23 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/windowBackground</item>
+        <item name="colorPrimaryDark">@color/windowBackgroundDark</item>
+        <item name="colorAccent">@color/theme</item>
+        <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/secondary</item>
+    </style>
+
+    <style name="AppTheme.Home" />
+
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@color/theme</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="colorAccent">@color/windowBackground</item>
+    </style>
+
+</resources>
