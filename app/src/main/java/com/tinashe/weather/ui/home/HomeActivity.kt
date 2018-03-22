@@ -3,11 +3,11 @@ package com.tinashe.weather.ui.home
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.RecyclerView
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
+import com.tinashe.weather.ui.base.BaseThemedActivity
 import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.getViewModel
 import com.tinashe.weather.utils.hide
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.include_weather_today.*
 import javax.inject.Inject
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseThemedActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory

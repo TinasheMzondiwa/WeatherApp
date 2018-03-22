@@ -13,8 +13,15 @@
     <FrameLayout
         android:id="@+id/dayBackground"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        tools:background="#fafa">
+        android:layout_height="300dp">
+
+        <ImageView
+            android:id="@+id/dayBackgroundImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/blank"
+            android:scaleType="fitXY"
+            tools:src="@drawable/bg_preview" />
 
         <TextView
             android:id="@+id/currentTime"
@@ -24,7 +31,7 @@
             android:layout_margin="@dimen/spacing_medium"
             android:fontFamily="@font/lato_bold"
             android:gravity="center"
-            android:textColor="?android:textColorPrimary"
+            android:textColor="@color/theme"
             android:textSize="@dimen/text_size_medium"
             tools:text="@tools:sample/date/hhmm" />
 
@@ -41,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/lato_bold"
-                android:textColor="?android:textColorPrimary"
+                android:textColor="@color/theme"
                 android:textSize="50sp"
                 tools:text="30&#176;" />
 
@@ -53,7 +60,7 @@
                 android:layout_marginTop="@dimen/spacing_micro"
                 android:fontFamily="@font/lato"
                 android:gravity="center"
-                android:textColor="?android:textColorSecondary"
+                android:textColor="#703B4254"
                 android:textSize="@dimen/text_size_medium"
                 tools:text="Cloudy" />
         </LinearLayout>

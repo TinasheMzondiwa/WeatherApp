@@ -55,6 +55,7 @@
             android:adjustViewBounds="true"
             android:contentDescription="@string/blank"
             android:gravity="top|end"
+            android:tint="@color/icon_tint"
             tools:src="@drawable/cloud" />
 
         <TextView

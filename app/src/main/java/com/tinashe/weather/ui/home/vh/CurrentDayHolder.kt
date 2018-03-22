@@ -9,7 +9,7 @@ import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.WeatherData
 import com.tinashe.weather.utils.DateUtil
-import com.tinashe.weather.utils.WeatherUtil
+import com.tinashe.weather.utils.glide.GlideApp
 import com.tinashe.weather.utils.inflateView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_curr_day_item.*
@@ -30,9 +30,15 @@ class CurrentDayHolder constructor(override val containerView: View) :
     }
 
     fun bind(current: Entry, hourly: WeatherData) {
-        dayBackground.setBackgroundResource(WeatherUtil.getWeatherTheme(current.icon))
-
+        //dayBackground.setBackgroundResource(WeatherUtil.getWeatherTheme(current.icon))
         val context = itemView.context
+
+        //TODO: Add more backgrounds
+        GlideApp.with(context)
+                .load(R.drawable.bg_preview)
+                .into(dayBackgroundImg)
+
+
         val date = Date(TimeUnit.MILLISECONDS.convert(current.time, TimeUnit.SECONDS))
         currentTime.text = DateUtil.getFormattedDate(date, DateFormat.TIME)
         currentTemperature.text = context.getString(R.string.degrees, current.temperature.toInt())
