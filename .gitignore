@@ -10,6 +10,5 @@ app/keystore.jks
 app/keystore.properties
 app/libs/
 app/release/
-gradle.properties
 keys.properties
 local.properties

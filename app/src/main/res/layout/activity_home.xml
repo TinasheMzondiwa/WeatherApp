@@ -41,7 +41,8 @@
                 android:paddingBottom="@dimen/spacing_medium"
                 android:paddingTop="@dimen/spacing_medium"
                 android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                android:layoutAnimation="@anim/layout_animation_fall_down"/>
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <ProgressBar

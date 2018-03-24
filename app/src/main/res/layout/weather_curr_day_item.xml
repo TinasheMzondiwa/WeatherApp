@@ -71,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:clipToPadding="false"
+            android:layoutAnimation="@anim/layout_animation_slide_right"
             android:padding="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
             tools:layout_height="100dp" />

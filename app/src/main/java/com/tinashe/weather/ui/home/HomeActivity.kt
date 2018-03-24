@@ -78,7 +78,11 @@ class HomeActivity : BaseThemedActivity() {
                     currentIcon.setImageDrawable(it)
                 }
 
+                val animate = dataAdapter.itemCount == 0
                 dataAdapter.forecast = it
+                if (animate) {
+                    listView.scheduleLayoutAnimation()
+                }
             }
         })
 

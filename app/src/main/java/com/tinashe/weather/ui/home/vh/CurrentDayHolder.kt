@@ -48,6 +48,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
         adapter = HoursAdapter()
         listView.adapter = adapter
         adapter.entries = hourly.data.toMutableList()
+        listView.scheduleLayoutAnimation()
     }
 
     class HoursAdapter : RecyclerView.Adapter<HourHolder>() {
