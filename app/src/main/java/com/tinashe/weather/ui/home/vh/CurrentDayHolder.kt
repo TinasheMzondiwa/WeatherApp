@@ -1,6 +1,5 @@
 package com.tinashe.weather.ui.home.vh
 
-import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.WeatherData
 import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.glide.GlideApp
+import com.tinashe.weather.utils.horizontal
 import com.tinashe.weather.utils.inflateView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_curr_day_item.*
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 class CurrentDayHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    private lateinit var adapter: HoursAdapter
+    private val hoursAdapter: HoursAdapter = HoursAdapter()
 
     companion object {
         fun inflate(parent: ViewGroup):
@@ -44,11 +44,15 @@ class CurrentDayHolder constructor(override val containerView: View) :
         currentTemperature.text = context.getString(R.string.degrees, current.temperature.toInt())
         currentSummary.text = current.summary
 
-        listView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        adapter = HoursAdapter()
-        listView.adapter = adapter
-        adapter.entries = hourly.data.toMutableList()
-        listView.scheduleLayoutAnimation()
+        val animate = hoursAdapter.itemCount == 0
+        listView.apply {
+            horizontal()
+            adapter = hoursAdapter
+            hoursAdapter.entries = hourly.data.toMutableList()
+            if (animate) {
+                scheduleLayoutAnimation()
+            }
+        }
     }
 
     class HoursAdapter : RecyclerView.Adapter<HourHolder>() {

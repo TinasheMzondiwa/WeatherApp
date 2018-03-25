@@ -17,11 +17,11 @@ object WeatherUtil {
 
     fun getIcon(context: Context, name: String): Drawable? {
         val resources = context.resources
-        val default = ContextCompat.getDrawable(context, R.drawable.cloud)
+
         return try {
             val resourceId = resources.getIdentifier(name, "drawable", context.packageName)
-            ResourcesCompat.getDrawable(resources, resourceId, null) ?: default
-        } catch (ex: Exception) {
+            ResourcesCompat.getDrawable(resources, resourceId, null) ?: throw Exception("")
+        } catch (ex: Throwable) {
             val res = when {
                 name.contains("sun", true) -> R.drawable.sun
                 name.contains("partly-cloudy", true) -> R.drawable.cloud_sun
@@ -48,10 +48,10 @@ object WeatherUtil {
             val subLocality = addresses[0].subLocality
             val locality = addresses[0].locality
 
-            if (subLocality != locality) {
-                "$subLocality, $locality"
-            } else {
+            if (subLocality.isNullOrEmpty() || subLocality == locality) {
                 locality
+            } else {
+                "$subLocality, $locality"
             }
 
         } else {

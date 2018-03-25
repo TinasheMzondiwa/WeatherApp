@@ -1,13 +1,21 @@
 package com.tinashe.weather.ui.home
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.RecyclerView
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.BaseThemedActivity
+import com.tinashe.weather.ui.splash.SplashActivity
 import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.getViewModel
 import com.tinashe.weather.utils.hide
@@ -19,12 +27,16 @@ import javax.inject.Inject
 
 class HomeActivity : BaseThemedActivity() {
 
+    companion object {
+        private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
+    }
+
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var viewModel: HomeViewModel
 
-    private lateinit var dataAdapter: WeatherDataAdapter
+    private val dataAdapter: WeatherDataAdapter = WeatherDataAdapter()
 
     private val appBarElevation = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -96,15 +108,33 @@ class HomeActivity : BaseThemedActivity() {
         refreshLayout.setColorSchemeResources(R.color.theme)
         refreshLayout.setOnRefreshListener { viewModel.refreshForecast() }
 
-        listView.vertical()
-        dataAdapter = WeatherDataAdapter()
-        listView.adapter = dataAdapter
-        listView.addOnScrollListener(appBarElevation)
+        listView.apply {
+            vertical()
+            adapter = dataAdapter
+            addOnScrollListener(appBarElevation)
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        viewModel.subscribe()
+        if (ActivityCompat.checkSelfPermission(this, LOC_PERM) == PackageManager.PERMISSION_GRANTED) {
+            fetchLocation()
+        } else {
+            startActivity(Intent(this, SplashActivity::class.java))
+            finish()
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun fetchLocation() {
+
+        val fusedLocationClient: FusedLocationProviderClient =
+                LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient.lastLocation.addOnSuccessListener {
+
+            viewModel.subscribe(it, WeatherUtil.getLocationName(this, it))
+        }
+
     }
 
     override fun onStop() {

@@ -1,6 +1,7 @@
 package com.tinashe.weather.ui.home
 
 import android.arch.lifecycle.MutableLiveData
+import android.location.Location
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.model.CurrentLocation
@@ -45,6 +46,10 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
         refreshForecast()
     }
 
+    fun subscribe(location: Location, area: String){
+        currentLocation.value = CurrentLocation(area, "${location.latitude},${location.longitude}")
+        refreshForecast()
+    }
 
     fun refreshForecast() {
         currentLocation.value?.let {

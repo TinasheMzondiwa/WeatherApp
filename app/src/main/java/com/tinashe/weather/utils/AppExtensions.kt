@@ -38,7 +38,11 @@ fun View.show() {
 fun View.isVisible(): Boolean = visibility == View.VISIBLE
 
 fun RecyclerView.vertical(){
-    this.layoutManager = LinearLayoutManager(context) as RecyclerView.LayoutManager?
+    this.layoutManager = LinearLayoutManager(context)
+}
+
+fun RecyclerView.horizontal(){
+    this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 }
 
 fun inflateView(@LayoutRes layoutResId: Int, parent: ViewGroup, attachToRoot: Boolean): View =
