@@ -40,6 +40,10 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -85,4 +89,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    testImplementation "org.mockito:mockito-core:${versions.mockito}"
+    testImplementation "org.mockito:mockito-inline:${versions.mockito}"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 }

@@ -2,7 +2,6 @@ package com.tinashe.weather.utils
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
-import android.content.SharedPreferences
 import android.support.annotation.LayoutRes
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -21,12 +20,6 @@ inline fun <reified T : ViewModel> getViewModel(activity: FragmentActivity, fact
     return ViewModelProviders.of(activity, factory)[T::class.java]
 }
 
-inline fun SharedPreferences.edit(func: SharedPreferences.Editor.() -> Unit) {
-    val editor = edit()
-    editor.func()
-    editor.apply()
-}
-
 fun View.hide() {
     visibility = View.GONE
 }
@@ -37,11 +30,11 @@ fun View.show() {
 
 fun View.isVisible(): Boolean = visibility == View.VISIBLE
 
-fun RecyclerView.vertical(){
+fun RecyclerView.vertical() {
     this.layoutManager = LinearLayoutManager(context)
 }
 
-fun RecyclerView.horizontal(){
+fun RecyclerView.horizontal() {
     this.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 }
 

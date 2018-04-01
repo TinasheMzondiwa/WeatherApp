@@ -16,7 +16,8 @@ buildscript {
             'okhttp3'        : '3.8.1',
             'timber'         : '4.6.1',
             'play_services'  : '12.0.1',
-            'lottie'         : '2.5.1'
+            'lottie'         : '2.5.1',
+            'mockito'        : '2.13.0'
     ]
     repositories {
         google()
