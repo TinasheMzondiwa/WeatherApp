@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
@@ -16,10 +17,7 @@ import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.BaseThemedActivity
 import com.tinashe.weather.ui.splash.SplashActivity
-import com.tinashe.weather.utils.WeatherUtil
-import com.tinashe.weather.utils.getViewModel
-import com.tinashe.weather.utils.hide
-import com.tinashe.weather.utils.vertical
+import com.tinashe.weather.utils.*
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.include_weather_today.*
@@ -64,12 +62,21 @@ class HomeActivity : BaseThemedActivity() {
                         progressBar.hide()
 
                         it.errorMessage?.let {
-                            Snackbar.make(toolbar, it, Snackbar.LENGTH_INDEFINITE)
-                                    .setAction(android.R.string.ok, { })
-                                    .show()
+                            errorMessage.text = it
+
+                            if (dataAdapter.itemCount == 0) {
+                                errorMessage.show()
+                            } else {
+                                Snackbar.make(errorMessage, it, Snackbar.LENGTH_INDEFINITE)
+                                        .setAction(android.R.string.ok, { })
+                                        .setActionTextColor(Color.YELLOW)
+                                        .show()
+                            }
                         }
                     }
                     ViewState.SUCCESS -> {
+                        errorMessage.text = ""
+                        errorMessage.hide()
                         refreshLayout.isRefreshing = false
                         progressBar.hide()
 

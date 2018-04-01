@@ -67,7 +67,6 @@ class SplashActivity : AppCompatActivity() {
         })
 
         btnRequestPerms.setOnClickListener {
-            viewModel.requestingPermissions()
             ActivityCompat.requestPermissions(this, arrayOf(LOC_PERM), RQ_LOCATION)
         }
     }

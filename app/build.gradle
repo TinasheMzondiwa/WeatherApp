@@ -76,7 +76,7 @@ dependencies {
     implementation "com.github.bumptech.glide:recyclerview-integration:${versions.glide}"
     kapt "com.github.bumptech.glide:compiler:${versions.glide}"
 
-    implementation "com.google.android.gms:play-services-location:${versions.firebase}"
+    implementation "com.google.android.gms:play-services-location:${versions.play_services}"
 
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 

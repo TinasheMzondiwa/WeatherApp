@@ -4,6 +4,8 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.tinashe.weather.WeatherApp
 import com.tinashe.weather.db.WeatherAppDb
+import com.tinashe.weather.repository.ForecastRepository
+import com.tinashe.weather.repository.ForecastRepositoryImpl
 import com.tinashe.weather.retrofit.RestClient
 import com.tinashe.weather.retrofit.WeatherApi
 import com.tinashe.weather.utils.RxSchedulers
@@ -33,4 +35,8 @@ internal class WeatherAppModule {
 
     @Provides
     fun providePersonDao(database: WeatherAppDb) = database.locationDao()
+
+    @Provides
+    fun provideForecastRepository(context: Context, weatherApi: WeatherApi): ForecastRepository =
+            ForecastRepositoryImpl(context, weatherApi)
 }

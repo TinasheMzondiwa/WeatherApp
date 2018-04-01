@@ -38,11 +38,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
+                android:layoutAnimation="@anim/layout_animation_fall_down"
                 android:paddingBottom="@dimen/spacing_medium"
                 android:paddingTop="@dimen/spacing_medium"
                 android:scrollbarStyle="outsideOverlay"
-                android:scrollbars="vertical"
-                android:layoutAnimation="@anim/layout_animation_fall_down"/>
+                android:scrollbars="vertical" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
         <ProgressBar
@@ -50,6 +50,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/errorMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_medium"
+            android:layout_marginStart="@dimen/spacing_medium"
+            android:fontFamily="@font/lato"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="?android:textColorSecondary"
+            tools:text="@string/connection_error" />
 
     </FrameLayout>
 

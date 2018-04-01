@@ -47,10 +47,6 @@ class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
         viewState.value = ViewStateData(ViewState.ERROR)
     }
 
-    fun requestingPermissions() {
-        viewState.value = ViewStateData(ViewState.LOADING)
-    }
-
     fun locationReceived(location: Location, area: String) {
         val latLong = "${location.latitude},${location.longitude}"
 

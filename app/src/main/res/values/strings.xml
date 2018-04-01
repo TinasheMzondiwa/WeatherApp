@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Weather</string>
     <string name="blank"/>
+    <string name="connection_error">No network connection.\nCheck your connection and try again.</string>
     <string name="dark_sky_powered_by">Powered by Dark Sky</string>
+    <string name="default_error">Error fetching forecast, please try again.</string>
     <string name="degrees">%d&#176;</string>
     <string name="now">Now</string>
     <string name="permission_location_rationale">Location permission is needed to get accurate weather for your location.</string>

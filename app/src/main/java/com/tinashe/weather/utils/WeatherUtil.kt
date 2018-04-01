@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
+import android.net.ConnectivityManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import com.tinashe.weather.R
@@ -67,5 +68,13 @@ object WeatherUtil {
             summary.contains("wind", true) -> R.color.windy
             else -> R.color.clear
         }
+    }
+
+    fun hasConnection(context: Context) : Boolean {
+        val cm = context
+                .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = cm.activeNetworkInfo
+
+        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
     }
 }

@@ -2,13 +2,12 @@ package com.tinashe.weather.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.location.Location
-import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.model.CurrentLocation
 import com.tinashe.weather.model.Forecast
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.model.ViewStateData
-import com.tinashe.weather.retrofit.WeatherApi
+import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
 import com.tinashe.weather.utils.RxSchedulers
@@ -19,7 +18,7 @@ import javax.inject.Inject
  * Created by tinashe on 2018/03/20.
  */
 class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
-                                        private val weatherApi: WeatherApi,
+                                        private val forecastRepository: ForecastRepository,
                                         private val locationDao: LocationDao) : RxAwareViewModel() {
 
     var viewState: SingleLiveEvent<ViewStateData> = SingleLiveEvent()
@@ -46,35 +45,29 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
         refreshForecast()
     }
 
-    fun subscribe(location: Location, area: String){
+    fun subscribe(location: Location, area: String) {
         currentLocation.value = CurrentLocation(area, "${location.latitude},${location.longitude}")
         refreshForecast()
     }
 
     fun refreshForecast() {
         currentLocation.value?.let {
-            val disposable = weatherApi.getForecast(BuildConfig.API_SECRET, it.latLong)
+            val disposable = forecastRepository.getForecast(it.latLong)
                     .subscribeOn(rxSchedulers.network)
                     .observeOn(rxSchedulers.main)
                     .doOnSubscribe { viewState.value = ViewStateData(ViewState.LOADING) }
                     .subscribe({
-                        if (it.isSuccessful) {
-                            viewState.value = ViewStateData(ViewState.SUCCESS)
-                            val forecast = it.body()
+                        viewState.value = ViewStateData(ViewState.SUCCESS)
+                        it.currently.location = currentLocation.value?.name ?: ""
 
-                            forecast?.let {
-                                it.currently.location = currentLocation.value?.name ?: ""
+                        latestForecast.value = it
 
-                                latestForecast.value = it
-                            }
-
-                        } else {
-                            Timber.d("Not successful")
-                            viewState.value = ViewStateData(ViewState.ERROR, "Error fetching latestForecast")
-                        }
                     }, {
                         Timber.e(it, it.message)
-                        viewState.value = ViewStateData(ViewState.ERROR, "Error fetching latestForecast")
+
+                        it.message?.let {
+                            viewState.value = ViewStateData(ViewState.ERROR, it)
+                        }
                     })
             disposables.add(disposable)
         } ?: readLocation()
