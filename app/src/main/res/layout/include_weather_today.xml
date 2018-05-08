@@ -50,13 +50,13 @@
             android:layout_gravity="end"
             android:layout_marginBottom="@dimen/spacing_micro"
             android:layout_marginStart="@dimen/spacing_micro"
-            android:layout_marginTop="-16dp"
+            android:layout_marginTop="-20dp"
             android:layout_marginEnd="-12dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/blank"
             android:gravity="top|end"
             android:tint="@color/icon_tint"
-            tools:src="@drawable/cloud" />
+            tools:src="@drawable/cloud_drizzle" />
 
         <TextView
             android:id="@+id/currentTemperature"
@@ -73,6 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:layout_marginTop="22dp"
             android:ellipsize="end"
             android:fontFamily="@font/lato"
             android:gravity="end"
