@@ -3,7 +3,7 @@
 buildscript {
     // Define Versions in a single place
     ext.versions = [
-            'support_library': '27.1.1',
+            'support_library': '28.0.0-alpha1',
             'const_layout'   : '1.0.2',
             'arch_comp'      : '1.0.0',
             'arch_lifecycle' : '1.1.1',

@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/lato"
+            android:fontFamily="@font/sans_regular"
             android:padding="@dimen/spacing_list"
             android:text="@string/permission_location_rationale"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -50,7 +50,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_marginTop="@dimen/spacing_xlarge"
-            android:fontFamily="@font/lato_bold"
+            android:fontFamily="@font/sans_bold"
             android:text="@string/permissions_grant_action"
             android:textColor="@android:color/white" />
 

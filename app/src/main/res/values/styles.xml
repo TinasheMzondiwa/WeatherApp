@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/windowBackground</item>
         <item name="colorPrimaryDark">@color/windowBackgroundDark</item>
@@ -9,6 +9,12 @@
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/secondary</item>
+
+        <item name="colorPrimaryLight">?attr/colorPrimary</item>
+        <item name="colorSecondary">?attr/colorPrimary</item>
+        <item name="colorSecondaryLight">?attr/colorPrimaryLight</item>
+        <item name="colorSecondaryDark">?attr/colorPrimaryDark</item>
+        <item name="scrimBackground">@color/mtrl_scrim_color</item>
     </style>
 
     <style name="AppTheme.Home" />

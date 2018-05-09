@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:fontFamily="@font/lato_light_italic"
+    android:fontFamily="@font/sans_italic"
     android:gravity="center"
     android:padding="@dimen/spacing_medium"
     android:text="@string/dark_sky_powered_by"

@@ -4,6 +4,7 @@ import android.arch.persistence.room.Room
 import android.content.Context
 import com.tinashe.weather.WeatherApp
 import com.tinashe.weather.db.WeatherAppDb
+import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.repository.ForecastRepositoryImpl
 import com.tinashe.weather.retrofit.RestClient
@@ -34,7 +35,7 @@ internal class WeatherAppModule {
             .build()
 
     @Provides
-    fun providePersonDao(database: WeatherAppDb) = database.locationDao()
+    fun provideLocationDao(database: WeatherAppDb): LocationDao = database.locationDao()
 
     @Provides
     fun provideForecastRepository(context: Context, weatherApi: WeatherApi): ForecastRepository =
