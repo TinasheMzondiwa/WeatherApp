@@ -4,7 +4,7 @@ Android weather app sample
 Original design by [Satheesh Kumar](https://www.uplabs.com/posts/weather-app-845554cf-c0e9-4819-b338-055020ad2acb)
 
 ## Screenshots 
-<img src="art/screener_1521708935236.png" width="25%" /><img src="art/screener_1521708943605.png" width="25%" /><img src="art/screener_1521745430366.png" width="25%" />
+<img src="art/screener_1521708935236.png" width="25%" /><img src="art/screener_1521708943605.png" width="25%" /><img src="art/screener_1521745430366.png" width="25%" /><img src="art/screener_1526976690508.png" width="25%" />
 
 
 
