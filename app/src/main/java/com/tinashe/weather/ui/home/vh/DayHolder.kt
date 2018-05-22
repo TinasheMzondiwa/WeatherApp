@@ -25,7 +25,7 @@ class DayHolder constructor(override val containerView: View) :
                 DayHolder = DayHolder(inflateView(R.layout.weather_data_day_item, parent, false))
     }
 
-    fun bind(entry: Entry) {
+    fun bind(entry: Entry, onClick: ((Entry) -> Unit)? = null) {
         val context = itemView.context
 
         val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
@@ -34,5 +34,7 @@ class DayHolder constructor(override val containerView: View) :
 
         tempMin.text = context.getString(R.string.degrees, entry.temperatureMin.toInt())
         tempMax.text = context.getString(R.string.degrees, entry.temperatureHigh.toInt())
+
+        itemView.setOnClickListener { onClick?.invoke(entry) }
     }
 }

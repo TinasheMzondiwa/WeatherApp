@@ -16,6 +16,7 @@ import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.BaseThemedActivity
+import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.ui.splash.SplashActivity
 import com.tinashe.weather.utils.*
 import dagger.android.AndroidInjection
@@ -34,7 +35,7 @@ class HomeActivity : BaseThemedActivity() {
 
     private lateinit var viewModel: HomeViewModel
 
-    private val dataAdapter: WeatherDataAdapter = WeatherDataAdapter()
+    private lateinit var dataAdapter: WeatherDataAdapter
 
     private val appBarElevation = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -114,6 +115,11 @@ class HomeActivity : BaseThemedActivity() {
 
         refreshLayout.setColorSchemeResources(R.color.theme)
         refreshLayout.setOnRefreshListener { viewModel.refreshForecast() }
+
+        dataAdapter = WeatherDataAdapter {
+            val fragment = DetailFragment.view(it)
+            fragment.show(supportFragmentManager, fragment.tag)
+        }
 
         listView.apply {
             vertical()

@@ -13,4 +13,7 @@ interface WeatherApi {
 
     @GET(value = "forecast/{key}/{latLong}?exclude=alerts,flags,minutely&units=si")
     fun getForecast(@Path("key") key: String, @Path("latLong") latLong: String): Observable<Response<Forecast>>
+
+    @GET(value = "forecast/{key}/{latLongTime}?exclude=alerts,flags,minutely&units=si")
+    fun getTimeForecast(@Path("key") key: String, @Path("latLongTime") latLongTime: String): Observable<Response<Forecast>>
 }

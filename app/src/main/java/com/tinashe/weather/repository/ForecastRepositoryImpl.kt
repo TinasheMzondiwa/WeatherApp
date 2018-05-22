@@ -25,4 +25,19 @@ class ForecastRepositoryImpl constructor(private val context: Context,
             Observable.error(Exception(context.getString(R.string.connection_error)))
         }
     }
+
+    override fun getDayForecast(latLongTime: String): Observable<Forecast> {
+        return if(WeatherUtil.hasConnection(context)){
+            weatherApi.getTimeForecast(BuildConfig.API_SECRET, latLongTime)
+                    .flatMap { response ->
+                        if (response.isSuccessful) {
+                            Observable.just(response.body())
+                        } else {
+                            Observable.error(Exception(context.getString(R.string.default_error)))
+                        }
+                    }
+        } else {
+            Observable.error(Exception(context.getString(R.string.connection_error)))
+        }
+    }
 }

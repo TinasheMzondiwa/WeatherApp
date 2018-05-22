@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/spacing_list"
+    android:paddingBottom="@dimen/spacing_list"
+    android:paddingLeft="@dimen/spacing_normal"
+    android:paddingRight="@dimen/spacing_normal">
+
+    <TextView
+        android:id="@+id/hourTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-8dp"
+        android:fontFamily="@font/sans_regular"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="@dimen/text_size_body"
+        tools:text="@tools:sample/date/hhmm" />
+
+    <ImageView
+        android:id="@+id/hourIcon"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/blank"
+        tools:src="@drawable/cloud_drizzle" />
+
+
+    <TextView
+        android:id="@+id/hourTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-8dp"
+        android:fontFamily="@font/sans_bold"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/text_size_large"
+        tools:text="@string/degrees" />
+</LinearLayout>

@@ -16,6 +16,23 @@ import java.util.*
  */
 object WeatherUtil {
 
+    fun getIconRes(name: String): Int {
+        return when {
+            name.contains("partly-cloudy", true) -> R.drawable.cloud_sun
+            name.containsEither("clear", "sun") -> R.drawable.sun
+            name.contains("rain", true) -> R.drawable.cloud_rain
+            name.contains("snow", true) -> R.drawable.cloud_snow
+            name.contains("fog", true) -> R.drawable.cloud_fog
+            name.contains("wind", true) -> R.drawable.wind
+            name.contains("hail", true) -> R.drawable.cloud_hail
+            name.contains("drizzle", true) -> R.drawable.cloud_drizzle
+            name.contains("lightning", true) -> R.drawable.cloud_lightning
+            name.contains("tornado", true) -> R.drawable.tornado
+            else -> R.drawable.cloud
+        }
+
+    }
+
     fun getIcon(context: Context, name: String): Drawable? {
         val resources = context.resources
 
@@ -23,22 +40,8 @@ object WeatherUtil {
             val resourceId = resources.getIdentifier(name, "drawable", context.packageName)
             ResourcesCompat.getDrawable(resources, resourceId, null) ?: throw Exception("")
         } catch (ex: Throwable) {
-            val res = when {
-                name.contains("sun", true) -> R.drawable.sun
-                name.contains("partly-cloudy", true) -> R.drawable.cloud_sun
-                name.contains("clear", true) -> R.drawable.sun
-                name.contains("rain", true) -> R.drawable.cloud_rain
-                name.contains("snow", true) -> R.drawable.cloud_snow
-                name.contains("fog", true) -> R.drawable.cloud_fog
-                name.contains("wind", true) -> R.drawable.wind
-                name.contains("hail", true) -> R.drawable.cloud_hail
-                name.contains("drizzle", true) -> R.drawable.cloud_drizzle
-                name.contains("lightning", true) -> R.drawable.cloud_lightning
-                name.contains("tornado", true) -> R.drawable.tornado
-                else -> R.drawable.cloud
-            }
 
-            ContextCompat.getDrawable(context, res)
+            ContextCompat.getDrawable(context, getIconRes(name))
         }
     }
 
@@ -70,11 +73,11 @@ object WeatherUtil {
         }
     }
 
-    fun hasConnection(context: Context) : Boolean {
+    fun hasConnection(context: Context): Boolean {
         val cm = context
                 .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork = cm.activeNetworkInfo
 
-        return activeNetwork != null && activeNetwork.isConnectedOrConnecting
+        return activeNetwork != null && activeNetwork.isConnected
     }
 }

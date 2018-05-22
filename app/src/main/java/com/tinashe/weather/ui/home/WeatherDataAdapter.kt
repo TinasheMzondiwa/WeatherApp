@@ -11,7 +11,7 @@ import com.tinashe.weather.ui.home.vh.DayHolder
 /**
  * Created by tinashe on 2018/03/21.
  */
-class WeatherDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class WeatherDataAdapter constructor(private val onDayClick: (Entry) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val TYPE_CURRENT = 1
@@ -57,7 +57,17 @@ class WeatherDataAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             is CurrentDayHolder -> forecast?.let {
                 holder.bind(it.currently, it.hourly)
             }
-            is DayHolder -> holder.bind(daily[position - 1])
+            is DayHolder -> {
+                val dayPos = position - 1
+
+                if (dayPos == 0) {
+                    holder.bind(daily[dayPos])
+                } else {
+                    holder.bind(daily[dayPos], onClick = {
+                        onDayClick.invoke(it)
+                    })
+                }
+            }
             is AttributionHolder -> holder.bind()
         }
     }
