@@ -47,7 +47,7 @@ class WeatherUtilsTest {
     fun testHasConnection() {
 
         val mockInfo = mock<NetworkInfo>()
-        whenever(mockInfo.isConnectedOrConnecting)
+        whenever(mockInfo.isConnected)
                 .thenReturn(true)
         val mockManager = mock<ConnectivityManager>()
         whenever(mockManager.activeNetworkInfo)
