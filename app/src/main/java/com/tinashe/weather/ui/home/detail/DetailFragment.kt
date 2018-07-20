@@ -1,7 +1,10 @@
 package com.tinashe.weather.ui.home.detail
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
@@ -9,7 +12,7 @@ import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.ui.base.BaseBottomSheetDialogFragment
+import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
 import com.tinashe.weather.utils.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.view.*
@@ -17,7 +20,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class DetailFragment : BaseBottomSheetDialogFragment() {
+class DetailFragment : RoundedBottomSheetDialogFragment() {
 
     private lateinit var entry: Entry
 
@@ -28,10 +31,13 @@ class DetailFragment : BaseBottomSheetDialogFragment() {
 
     private val hoursAdapter: HoursAdapter = HoursAdapter()
 
-    override fun layoutRes(): Int = R.layout.fragment_detail
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_detail, container, false)
+    }
 
     @SuppressLint("MissingPermission")
-    override fun initialize(contentView: View) {
+    override fun onViewCreated(contentView: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(contentView, savedInstanceState)
         AndroidSupportInjection.inject(this)
 
         val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
@@ -53,7 +59,7 @@ class DetailFragment : BaseBottomSheetDialogFragment() {
         })
         viewModel.viewState.observe(this, android.arch.lifecycle.Observer {
             it?.let {
-                when(it.state){
+                when (it.state) {
                     ViewState.SUCCESS -> contentView.errorView.hide()
                     ViewState.LOADING -> {
                         contentView.errorView.hide()
@@ -66,7 +72,8 @@ class DetailFragment : BaseBottomSheetDialogFragment() {
                             contentView.errorView.show()
                         }
                     }
-                    else -> {}
+                    else -> {
+                    }
                 }
             }
         })

@@ -110,7 +110,7 @@ dependencies {
 
     testImplementation "org.mockito:mockito-core:${versions.mockito}"
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
-    testImplementation 'android.arch.core:core-testing:1.1.1'
+    testImplementation "android.arch.core:core-testing:${versions.arch_comp}"
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 }
 

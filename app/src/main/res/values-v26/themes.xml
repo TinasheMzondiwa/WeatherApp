@@ -7,4 +7,10 @@
         <item name="android:navigationBarColor">@color/nav_background</item>
         <item name="android:navigationBarDividerColor">@color/nav_divider</item>
     </style>
+
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:windowLightNavigationBar">@bool/is_light_nav</item>
+    </style>
 </resources>
