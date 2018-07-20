@@ -2,6 +2,23 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply from: "$rootDir/gradle/helpers/common-methods.gradle"
+
+Properties semver = new Properties()
+semver.load(new FileInputStream(file("semver.properties")))
+
+def buildTimeMillis = System.currentTimeMillis()
+def buildVersionCode = computeVersionCode(semver['major'], semver['minor'], semver['patch'], semver['build'])
+def buildVersionName = computeVersionName(semver['major'], semver['minor'], semver['patch'])
+def buildTime = computeBuildTimeFormatted(buildTimeMillis)
+def buildRevision = computeRevision()
+
+ant.propertyfile(file: "version.properties") {
+    entry(key: "version", value: buildVersionName)
+    entry(key: "versionCode", value: buildVersionCode)
+    entry(key: "rev", value: buildRevision)
+    entry(key: "buildTime", value: buildTime)
+}
 
 android {
     compileSdkVersion 'android-P'
@@ -9,8 +26,8 @@ android {
         applicationId "com.tinashe.weather"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode buildVersionCode
+        versionName buildVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "URL_BASE", '"https://api.darksky.net"'
@@ -95,4 +112,15 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:${versions.mockito}"
     testImplementation 'android.arch.core:core-testing:1.1.1'
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion versions.support_library
+            }
+        }
+    }
 }

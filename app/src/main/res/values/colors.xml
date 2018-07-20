@@ -14,4 +14,6 @@
     <color name="cloudy">#607D8B</color>
     <color name="windy">#9FA8DA</color>
 
+    <color name="nav_background">#000000</color>
+
 </resources>

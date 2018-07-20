@@ -7,4 +7,7 @@
     <color name="secondary">#70FFFFFF</color>
 
     <color name="icon_tint">#fff</color>
+
+    <color name="nav_background">#000000</color>
+    <color name="nav_divider">@color/windowBackground</color>
 </resources>

@@ -69,7 +69,7 @@ class HomeActivity : BaseThemedActivity() {
                                 errorMessage.show()
                             } else {
                                 Snackbar.make(errorMessage, it, Snackbar.LENGTH_INDEFINITE)
-                                        .setAction(android.R.string.ok, { })
+                                        .setAction(android.R.string.ok) { }
                                         .setActionTextColor(Color.YELLOW)
                                         .show()
                             }

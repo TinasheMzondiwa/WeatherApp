@@ -2,6 +2,6 @@
 <resources>
 
     <style name="AppTheme.Home">
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">@bool/is_light_status</item>
     </style>
 </resources>

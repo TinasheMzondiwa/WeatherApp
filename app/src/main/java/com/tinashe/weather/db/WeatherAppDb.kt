@@ -8,7 +8,7 @@ import com.tinashe.weather.model.CurrentLocation
 /**
  * Created by tinashe on 2018/03/21.
  */
-@Database(entities = [(CurrentLocation::class)], version = 1)
+@Database(entities = [(CurrentLocation::class)], version = 1, exportSchema = false)
 abstract class WeatherAppDb : RoomDatabase() {
 
     abstract fun locationDao(): LocationDao
