@@ -8,6 +8,7 @@ import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.WeatherData
 import com.tinashe.weather.utils.DateUtil
+import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.glide.GlideApp
 import com.tinashe.weather.utils.horizontal
 import com.tinashe.weather.utils.inflateView
@@ -30,12 +31,10 @@ class CurrentDayHolder constructor(override val containerView: View) :
     }
 
     fun bind(current: Entry, hourly: WeatherData) {
-        //dayBackground.setBackgroundResource(WeatherUtil.getWeatherTheme(current.icon))
         val context = itemView.context
 
-        //TODO: Add more backgrounds
         GlideApp.with(context)
-                .load(R.drawable.bg_preview)
+                .load(WeatherUtil.getBackgroundRes(context, current.icon))
                 .into(dayBackgroundImg)
 
 
