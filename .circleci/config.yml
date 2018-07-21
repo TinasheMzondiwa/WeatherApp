@@ -14,6 +14,12 @@ jobs:
       - run:
           name: Download keystore signing
           command: bash ./misc/download_keystore.sh
+      - run:
+          name: export KEYSTORE_PROP path
+          command: echo 'export KEYSTORE_PROP=$(pwd)/keystore.properties' >> $BASH_ENV
+      - run:
+          name: Download keystore properties
+          command: bash ./misc/download_keystore_properties.sh
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
