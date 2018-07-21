@@ -29,7 +29,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
         val context = itemView.context
 
         GlideApp.with(context)
-                .load(WeatherUtil.getBackgroundRes(context, current.icon))
+                .load(WeatherUtil.getBackground(context, current.icon))
                 .into(dayBackgroundImg)
 
 

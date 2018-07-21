@@ -6,10 +6,10 @@ import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.net.ConnectivityManager
-import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import com.tinashe.weather.R
+import com.tinashe.weather.model.Background
 import timber.log.Timber
 import java.util.*
 
@@ -71,45 +71,30 @@ object WeatherUtil {
         }
     }
 
-    /**
-     * Returns background image resource for the current weather
-     * Add your own background images :-)
-     *
-     * bg_1 : day clear
-     * bg_2 : day cloudy
-     * bg_3 : day drizzle
-     * bg_4 : day lightning
-     * bg_5 : day snow
-     * bg_6 : night clear
-     * bg_7 : night cloudy
-     * bg_8 : night drizzle
-     * bg_9 : night lightning
-     * bg_10: night snow
-     */
-    @DrawableRes
-    fun getBackgroundRes(context: Context, summary: String): Int {
+    @Background
+    fun getBackground(context: Context, summary: String): String {
 
         val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         val isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
         return when {
             summary.containsEither("sun", "clear") -> {
-                if (isNightMode) R.drawable.bg_6 else R.drawable.bg_1
+                if (isNightMode) Background.CLEAR_NIGHT else Background.CLEAR_DAY
             }
             summary.containsEither("cloud") -> {
-                if (isNightMode) R.drawable.bg_7 else R.drawable.bg_2
+                if (isNightMode) Background.CLOUD_NIGHT else Background.CLOUD_DAY
             }
             summary.containsEither("drizzle", "rain") -> {
-                if (isNightMode) R.drawable.bg_8 else R.drawable.bg_3
+                if (isNightMode) Background.RAIN_NIGHT else Background.RAIN_DAY
             }
             summary.containsEither("lightning") -> {
-                if (isNightMode) R.drawable.bg_9 else R.drawable.bg_4
+                if (isNightMode) Background.LIGHTNING_NIGHT else Background.LIGHTNING_DAY
             }
             summary.containsEither("snow") -> {
-                if (isNightMode) R.drawable.bg_10 else R.drawable.bg_5
+                if (isNightMode) Background.SNOW_NIGHT else Background.SNOW_DAY
             }
             else -> {
-                if (isNightMode) R.drawable.bg_6 else R.drawable.bg_1
+                if (isNightMode) Background.CLEAR_NIGHT else Background.CLEAR_DAY
             }
         }
     }
