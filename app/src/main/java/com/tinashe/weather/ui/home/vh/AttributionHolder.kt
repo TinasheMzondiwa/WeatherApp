@@ -15,20 +15,20 @@ import kotlinx.android.extensions.LayoutContainer
 class AttributionHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    companion object {
-        fun inflate(parent: ViewGroup):
-                AttributionHolder = AttributionHolder(inflateView(R.layout.item_attribution, parent, false))
-    }
-
     fun bind() {
         itemView.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://darksky.net")
+            intent.data = Uri.parse("https://darksky.net/poweredby/")
             val context = itemView.context
 
             intent.resolveActivity(context.packageManager)?.let {
                 context.startActivity(intent)
             }
         }
+    }
+
+    companion object {
+        fun inflate(parent: ViewGroup):
+                AttributionHolder = AttributionHolder(inflateView(R.layout.item_attribution, parent, false))
     }
 }

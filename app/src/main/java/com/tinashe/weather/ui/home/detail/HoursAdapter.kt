@@ -36,11 +36,6 @@ class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
     class HourHolder constructor(override val containerView: View) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        companion object {
-            fun inflate(parent: ViewGroup):
-                    HourHolder = HourHolder(inflateView(R.layout.weather_hour_item_detail, parent, false))
-        }
-
         fun bind(entry: Entry) {
             val context = itemView.context
 
@@ -59,6 +54,11 @@ class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
             }
             hourIcon.setImageDrawable(icon)
             hourTemperature.text = context.getString(R.string.degrees, entry.temperature.toInt())
+        }
+
+        companion object {
+            fun inflate(parent: ViewGroup):
+                    HourHolder = HourHolder(inflateView(R.layout.weather_hour_item_detail, parent, false))
         }
     }
 }

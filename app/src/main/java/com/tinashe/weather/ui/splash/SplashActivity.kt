@@ -28,11 +28,6 @@ import javax.inject.Inject
  */
 class SplashActivity : AppCompatActivity() {
 
-    companion object {
-        private const val RQ_LOCATION: Int = 23
-        private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
-    }
-
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
@@ -112,5 +107,10 @@ class SplashActivity : AppCompatActivity() {
                         .show()
             }
         }
+    }
+
+    companion object {
+        private const val RQ_LOCATION: Int = 23
+        private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
     }
 }

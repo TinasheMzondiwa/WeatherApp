@@ -10,6 +10,7 @@ import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import com.tinashe.weather.R
+import timber.log.Timber
 import java.util.*
 
 
@@ -48,20 +49,25 @@ object WeatherUtil {
     }
 
     fun getLocationName(context: Context, location: Location): String {
-        val gcd = Geocoder(context, Locale.getDefault())
-        val addresses = gcd.getFromLocation(location.latitude, location.longitude, 1)
-        return if (addresses.size > 0) {
-            val subLocality = addresses[0].subLocality
-            val locality = addresses[0].locality
+        try {
+            val gcd = Geocoder(context, Locale.getDefault())
+            val addresses = gcd.getFromLocation(location.latitude, location.longitude, 1)
+            return if (addresses.size > 0) {
+                val subLocality = addresses[0].subLocality
+                val locality = addresses[0].locality
 
-            if (subLocality.isNullOrEmpty() || subLocality == locality) {
-                locality
+                if (subLocality.isNullOrEmpty() || subLocality == locality) {
+                    locality
+                } else {
+                    "$subLocality, $locality"
+                }
+
             } else {
-                "$subLocality, $locality"
+                ""
             }
-
-        } else {
-            ""
+        } catch (ex: Exception) {
+            Timber.e(ex)
+            return ""
         }
     }
 
@@ -87,7 +93,7 @@ object WeatherUtil {
         val isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
 
         return when {
-            summary.containsEither( "sun", "clear") -> {
+            summary.containsEither("sun", "clear") -> {
                 if (isNightMode) R.drawable.bg_6 else R.drawable.bg_1
             }
             summary.containsEither("cloud") -> {

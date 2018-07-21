@@ -1,7 +1,6 @@
 package com.tinashe.weather.ui.home
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -25,10 +24,6 @@ import kotlinx.android.synthetic.main.include_weather_today.*
 import javax.inject.Inject
 
 class HomeActivity : BaseThemedActivity() {
-
-    companion object {
-        private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
-    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -57,6 +52,12 @@ class HomeActivity : BaseThemedActivity() {
                 when (it.state) {
                     ViewState.LOADING -> {
                         refreshLayout.isRefreshing = true
+
+                        if (dataAdapter.itemCount > 0) {
+                            progressBar.hide()
+                        } else {
+                            progressBar.hide()
+                        }
                     }
                     ViewState.ERROR -> {
                         refreshLayout.isRefreshing = false
@@ -131,27 +132,24 @@ class HomeActivity : BaseThemedActivity() {
     override fun onStart() {
         super.onStart()
         if (ActivityCompat.checkSelfPermission(this, LOC_PERM) == PackageManager.PERMISSION_GRANTED) {
-            fetchLocation()
+            val fusedLocationClient: FusedLocationProviderClient =
+                    LocationServices.getFusedLocationProviderClient(this)
+            fusedLocationClient.lastLocation.addOnSuccessListener {
+
+                viewModel.subscribe(it, WeatherUtil.getLocationName(this, it))
+            }
         } else {
             startActivity(Intent(this, SplashActivity::class.java))
             finish()
         }
     }
 
-    @SuppressLint("MissingPermission")
-    private fun fetchLocation() {
-
-        val fusedLocationClient: FusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationClient.lastLocation.addOnSuccessListener {
-
-            viewModel.subscribe(it, WeatherUtil.getLocationName(this, it))
-        }
-
-    }
-
     override fun onStop() {
         viewModel.unSubscribe()
         super.onStop()
+    }
+
+    companion object {
+        private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
     }
 }

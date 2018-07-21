@@ -20,11 +20,6 @@ import java.util.concurrent.TimeUnit
 class DayHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    companion object {
-        fun inflate(parent: ViewGroup):
-                DayHolder = DayHolder(inflateView(R.layout.weather_data_day_item, parent, false))
-    }
-
     fun bind(entry: Entry, onClick: ((Entry) -> Unit)? = null) {
         val context = itemView.context
 
@@ -36,5 +31,10 @@ class DayHolder constructor(override val containerView: View) :
         tempMax.text = context.getString(R.string.degrees, entry.temperatureHigh.toInt())
 
         itemView.setOnClickListener { onClick?.invoke(entry) }
+    }
+
+    companion object {
+        fun inflate(parent: ViewGroup):
+                DayHolder = DayHolder(inflateView(R.layout.weather_data_day_item, parent, false))
     }
 }

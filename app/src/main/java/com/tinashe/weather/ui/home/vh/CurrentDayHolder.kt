@@ -25,11 +25,6 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     private val hoursAdapter: HoursAdapter = HoursAdapter()
 
-    companion object {
-        fun inflate(parent: ViewGroup):
-                CurrentDayHolder = CurrentDayHolder(inflateView(R.layout.weather_curr_day_item, parent, false))
-    }
-
     fun bind(current: Entry, hourly: WeatherData) {
         val context = itemView.context
 
@@ -70,5 +65,10 @@ class CurrentDayHolder constructor(override val containerView: View) :
             holder.bind(entries[position])
         }
 
+    }
+
+    companion object {
+        fun inflate(parent: ViewGroup):
+                CurrentDayHolder = CurrentDayHolder(inflateView(R.layout.weather_curr_day_item, parent, false))
     }
 }

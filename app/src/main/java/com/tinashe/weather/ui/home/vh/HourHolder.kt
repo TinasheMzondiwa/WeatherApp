@@ -20,11 +20,6 @@ import java.util.concurrent.TimeUnit
 class HourHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    companion object {
-        fun inflate(parent: ViewGroup):
-                HourHolder = HourHolder(inflateView(R.layout.weather_hour_item, parent, false))
-    }
-
     fun bind(entry: Entry) {
         val context = itemView.context
 
@@ -38,5 +33,10 @@ class HourHolder constructor(override val containerView: View) :
         }
         hourIcon.setImageDrawable(WeatherUtil.getIcon(context, entry.icon))
         hourTemperature.text = context.getString(R.string.degrees, entry.temperature.toInt())
+    }
+
+    companion object {
+        fun inflate(parent: ViewGroup):
+                HourHolder = HourHolder(inflateView(R.layout.weather_hour_item, parent, false))
     }
 }
