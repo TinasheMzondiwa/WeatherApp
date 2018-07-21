@@ -13,3 +13,4 @@ app/release/
 keys.properties
 local.properties
 app/version.properties
+app/fabric.properties

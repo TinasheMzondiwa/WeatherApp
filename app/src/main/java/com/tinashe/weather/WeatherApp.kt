@@ -3,11 +3,13 @@ package com.tinashe.weather
 import android.app.Activity
 import android.app.Application
 import android.support.v4.app.Fragment
+import com.crashlytics.android.Crashlytics
 import com.tinashe.weather.injection.DaggerWeatherAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
+import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -38,6 +40,8 @@ class WeatherApp : Application(), HasActivityInjector, HasSupportFragmentInjecto
             if (BuildConfig.DEBUG) {
                 Timber.plant(Timber.DebugTree())
             }
+
+            Fabric.with(app, Crashlytics())
 
             DaggerWeatherAppComponent.builder()
                     .application(app)

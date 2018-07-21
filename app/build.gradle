@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 apply from: "$rootDir/gradle/helpers/common-methods.gradle"
 
 Properties semver = new Properties()
@@ -103,6 +104,10 @@ dependencies {
     implementation "com.jakewharton.timber:timber:${versions.timber}"
 
     implementation "com.airbnb.android:lottie:${versions.lottie}"
+
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.4@aar') {
+        transitive = true
+    }
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
