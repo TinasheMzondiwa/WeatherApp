@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
@@ -89,7 +91,18 @@ class SplashActivity : AppCompatActivity() {
                 LocationServices.getFusedLocationProviderClient(this)
         fusedLocationClient.lastLocation.addOnSuccessListener {
 
-            viewModel.locationReceived(it, WeatherUtil.getLocationName(this, it))
+            if (it == null) {
+                fusedLocationClient.removeLocationUpdates(object : LocationCallback() {
+                    override fun onLocationResult(result: LocationResult?) {
+                        super.onLocationResult(result)
+                        result?.lastLocation?.let {
+                            viewModel.locationReceived(it, WeatherUtil.getLocationName(this@SplashActivity, it))
+                        } ?: fetchLocation()
+                    }
+                })
+            } else {
+                viewModel.locationReceived(it, WeatherUtil.getLocationName(this, it))
+            }
         }
 
     }

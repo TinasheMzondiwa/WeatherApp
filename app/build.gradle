@@ -21,7 +21,7 @@ ant.propertyfile(file: "version.properties") {
 }
 
 android {
-    compileSdkVersion 'android-P'
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.tinashe.weather"
         minSdkVersion 21
