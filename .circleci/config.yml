@@ -10,13 +10,13 @@ jobs:
       - checkout
       - run:
           name: export KEYSTORE path
-          command: echo 'export KEYSTORE=${HOME}/repo/keystore.jks' >> $BASH_ENV
+          run: echo 'export KEYSTORE=${HOME}/repo/keystore.jks' >> $BASH_ENV
       - run:
           name: Download keystore signing
           command: bash ./misc/download_keystore.sh
       - run:
           name: export KEYSTORE_PROP path
-          command: echo 'export KEYSTORE_PROP=${HOME}/repo/keystore.properties' >> $BASH_ENV
+          run: echo 'export KEYSTORE_PROP=${HOME}/repo/keystore.properties' >> $BASH_ENV
       - run:
           name: Download keystore properties
           command: bash ./misc/download_keystore_properties.sh
