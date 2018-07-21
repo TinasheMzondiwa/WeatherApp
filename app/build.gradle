@@ -35,15 +35,20 @@ android {
         buildConfigField "String", "API_SECRET", DARK_SKY_API_SECRET
     }
 
-    Properties keyProps = new Properties()
-    keyProps.load(new FileInputStream(file("keystore.properties")))
+    /*Properties keyProps = new Properties()
+    keyProps.load(new FileInputStream(file("keystore.properties")))*/
 
     signingConfigs {
         release {
-            storeFile file(keyProps['release.keystore'])
+            /*storeFile file(keyProps['release.keystore'])
             storePassword keyProps['release.keystore.password']
             keyAlias keyProps['key.alias']
-            keyPassword keyProps['key.password']
+            keyPassword keyProps['key.password']*/
+
+            storeFile file(System.getenv("KEYSTORE") ?: "keystore.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEYSTORE_PASSWORD")
         }
     }
 
