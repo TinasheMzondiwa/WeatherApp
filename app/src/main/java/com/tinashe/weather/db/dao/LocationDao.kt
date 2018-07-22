@@ -3,7 +3,6 @@ package com.tinashe.weather.db.dao
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
 import com.tinashe.weather.model.CurrentLocation
-import com.tinashe.weather.model.CurrentLocation.Companion.TABLE_NAME
 import io.reactivex.Maybe
 
 /**
@@ -12,6 +11,6 @@ import io.reactivex.Maybe
 @Dao
 interface LocationDao : BaseDao<CurrentLocation> {
 
-    @Query("SELECT * FROM $TABLE_NAME LIMIT 1")
+    @Query("SELECT * FROM location LIMIT 1")
     fun getCurrentLocation(): Maybe<CurrentLocation>
 }
