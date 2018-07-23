@@ -3,6 +3,7 @@ package com.tinashe.weather.ui.home.vh
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.tinashe.weather.R
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
@@ -30,6 +31,9 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
         GlideApp.with(context)
                 .load(WeatherUtil.getBackground(context, current.icon))
+                .placeholder(R.color.theme)
+                .error(R.color.theme)
+                .transition(withCrossFade())
                 .into(dayBackgroundImg)
 
 

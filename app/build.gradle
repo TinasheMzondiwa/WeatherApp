@@ -32,8 +32,19 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "URL_BASE", '"https://api.darksky.net"'
-        buildConfigField "String", "API_SECRET", DARK_SKY_API_SECRET
+        buildConfigField "String", "API_SECRET", System.getenv("DARK_SKY_API_SECRET") ?: DARK_SKY_API_SECRET
         manifestPlaceholders = [apiKey: System.getenv("FABRIC_API_KEY") ?: FABRIC_API_KEY]
+
+        buildConfigField "String", "CLEAR_DAY", System.getenv("CLEAR_DAY") ?: CLEAR_DAY
+        buildConfigField "String", "CLEAR_NIGHT", System.getenv("CLEAR_NIGHT") ?: CLEAR_NIGHT
+        buildConfigField "String", "CLOUD_NIGHT", System.getenv("CLOUD_NIGHT") ?: CLOUD_NIGHT
+        buildConfigField "String", "RAIN_DAY", System.getenv("RAIN_DAY") ?: RAIN_DAY
+        buildConfigField "String", "RAIN_NIGHT", System.getenv("RAIN_NIGHT") ?: RAIN_NIGHT
+        buildConfigField "String", "LIGHTNING_DAY", System.getenv("LIGHTNING_DAY") ?: LIGHTNING_DAY
+        buildConfigField "String", "LIGHTNING_NIGHT", System.getenv("LIGHTNING_NIGHT") ?: LIGHTNING_NIGHT
+        buildConfigField "String", "SNOW_DAY", System.getenv("SNOW_DAY") ?: SNOW_DAY
+        buildConfigField "String", "SNOW_NIGHT", System.getenv("SNOW_NIGHT") ?: SNOW_NIGHT
+        buildConfigField "String", "CLOUD_DAY", System.getenv("CLOUD_DAY") ?: CLOUD_DAY
     }
 
     signingConfigs {

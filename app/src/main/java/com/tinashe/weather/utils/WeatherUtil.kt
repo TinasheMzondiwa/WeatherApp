@@ -8,8 +8,8 @@ import android.location.Location
 import android.net.ConnectivityManager
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
+import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
-import com.tinashe.weather.model.Background
 import timber.log.Timber
 import java.util.*
 
@@ -71,7 +71,6 @@ object WeatherUtil {
         }
     }
 
-    @Background
     fun getBackground(context: Context, summary: String): String {
 
         val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -79,22 +78,22 @@ object WeatherUtil {
 
         return when {
             summary.containsEither("sun", "clear") -> {
-                if (isNightMode) Background.CLEAR_NIGHT else Background.CLEAR_DAY
+                if (isNightMode) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
             }
             summary.containsEither("cloud") -> {
-                if (isNightMode) Background.CLOUD_NIGHT else Background.CLOUD_DAY
+                if (isNightMode) BuildConfig.CLOUD_NIGHT else BuildConfig.CLOUD_DAY
             }
             summary.containsEither("drizzle", "rain") -> {
-                if (isNightMode) Background.RAIN_NIGHT else Background.RAIN_DAY
+                if (isNightMode) BuildConfig.RAIN_NIGHT else BuildConfig.RAIN_DAY
             }
             summary.containsEither("lightning") -> {
-                if (isNightMode) Background.LIGHTNING_NIGHT else Background.LIGHTNING_DAY
+                if (isNightMode) BuildConfig.LIGHTNING_NIGHT else BuildConfig.LIGHTNING_DAY
             }
             summary.containsEither("snow") -> {
-                if (isNightMode) Background.SNOW_NIGHT else Background.SNOW_DAY
+                if (isNightMode) BuildConfig.SNOW_NIGHT else BuildConfig.SNOW_DAY
             }
             else -> {
-                if (isNightMode) Background.CLEAR_NIGHT else Background.CLEAR_DAY
+                if (isNightMode) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
             }
         }
     }
