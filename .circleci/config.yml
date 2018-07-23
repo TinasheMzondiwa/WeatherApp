@@ -36,11 +36,11 @@ jobs:
           path: app/build/outputs/apk
           destination: apk
       - deploy:
-                name: "Deploy to Fabric 🎉🎉"
-                command: |
-                  echo "Branch: ${CIRCLE_BRANCH}"
-                  if [ "${CIRCLE_BRANCH}" == "master" ] then
-                    ./gradlew assembleRelease crashlyticsUploadDistributionRelease
+          name: "Deploy to Fabric 🎉🎉"
+          filters:
+              branches:
+                only: master
+          command: ./gradlew assembleRelease crashlyticsUploadDistributionRelease
       - run:
           name: Run Tests
           command: ./gradlew lint test
