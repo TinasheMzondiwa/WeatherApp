@@ -15,11 +15,11 @@ jobs:
           name: Download keystore signing
           command: bash ./misc/download_keystore.sh
       - run:
-          name: export KEYSTORE_PROP path
-          command: echo 'export KEYSTORE_PROP=${HOME}/code/keystore.properties' >> $BASH_ENV
+          name: export BACKGROUND path
+          command: echo 'export BACKGROUND=${HOME}/code/app/src/main/com/tinashe/weather/model/Background.java' >> $BASH_ENV
       - run:
-          name: Download keystore properties
-          command: bash ./misc/download_keystore_properties.sh
+          name: Download background images file
+          command: bash ./misc/download_background.sh
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
