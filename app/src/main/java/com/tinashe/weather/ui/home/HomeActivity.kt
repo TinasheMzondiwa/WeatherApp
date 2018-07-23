@@ -14,7 +14,7 @@ import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.ui.base.BaseThemedActivity
+import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.ui.splash.SplashActivity
 import com.tinashe.weather.utils.*
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.include_weather_today.*
 import javax.inject.Inject
 
-class HomeActivity : BaseThemedActivity() {
+class HomeActivity : BillingAwareActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
