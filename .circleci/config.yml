@@ -39,7 +39,7 @@ jobs:
                 name: "Deploy to Fabric 🎉🎉"
                 command: |
                   echo "Branch: ${CIRCLE_BRANCH}"
-                  if [ "${CIRCLE_BRANCH}" == "master" ]; then
+                  if [ "${CIRCLE_BRANCH}" == "master" ] then
                     ./gradlew assembleRelease crashlyticsUploadDistributionRelease
       - run:
           name: Run Tests
