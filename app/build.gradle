@@ -32,7 +32,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "URL_BASE", '"https://api.darksky.net"'
-        buildConfigField "String", "API_SECRET", DARK_SKY_API_SECRET
+        buildConfigField "String", "API_SECRET", System.getenv("DARK_SKY_API_SECRET") ?: DARK_SKY_API_SECRET
         manifestPlaceholders = [apiKey: System.getenv("FABRIC_API_KEY") ?: FABRIC_API_KEY]
     }
 
