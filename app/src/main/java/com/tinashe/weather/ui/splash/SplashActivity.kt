@@ -6,13 +6,11 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Looper
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
@@ -23,6 +21,7 @@ import com.tinashe.weather.utils.hide
 import com.tinashe.weather.utils.show
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_splash.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -34,6 +33,18 @@ class SplashActivity : AppCompatActivity() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var viewModel: SplashViewModel
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private var locationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            Timber.d("onLocationResult, $locationResult")
+
+            locationResult.lastLocation?.let {
+                viewModel.locationReceived(it, WeatherUtil.getLocationName(this@SplashActivity, it))
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,25 +92,23 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onStop() {
         viewModel.unSubscribe()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
         super.onStop()
     }
 
     @SuppressLint("MissingPermission")
     private fun fetchLocation() {
 
-        val fusedLocationClient: FusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationClient.lastLocation.addOnSuccessListener {
-
             if (it == null) {
-                fusedLocationClient.removeLocationUpdates(object : LocationCallback() {
-                    override fun onLocationResult(result: LocationResult?) {
-                        super.onLocationResult(result)
-                        result?.lastLocation?.let {
-                            viewModel.locationReceived(it, WeatherUtil.getLocationName(this@SplashActivity, it))
-                        } ?: fetchLocation()
-                    }
-                })
+                val locationRequest = LocationRequest()
+                locationRequest.interval = 30000
+                locationRequest.fastestInterval = 30000
+                locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+                fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+
             } else {
                 viewModel.locationReceived(it, WeatherUtil.getLocationName(this, it))
             }

@@ -29,6 +29,10 @@
             android:label="@string/blank"
             android:theme="@style/AppTheme.Home" />
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${apiKey}" />
+
     </application>
 
 </manifest>
