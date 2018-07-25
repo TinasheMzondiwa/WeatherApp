@@ -2,10 +2,11 @@ package com.tinashe.weather.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.location.Location
-import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.CustomEvent
 import com.tinashe.weather.db.dao.LocationDao
-import com.tinashe.weather.model.*
+import com.tinashe.weather.model.CurrentLocation
+import com.tinashe.weather.model.Forecast
+import com.tinashe.weather.model.ViewState
+import com.tinashe.weather.model.ViewStateData
 import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
@@ -70,9 +71,6 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
 
                 return
             }
-
-            Answers.getInstance().logCustom(CustomEvent(EventName.GET_FORECAST)
-                    .putCustomAttribute("area", it.name))
 
             val disposable = forecastRepository.getForecast(it.latLong)
                     .subscribeOn(rxSchedulers.network)
