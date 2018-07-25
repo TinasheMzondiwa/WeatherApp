@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_medium_large"
+    android:paddingEnd="@dimen/spacing_medium"
+    android:paddingStart="@dimen/spacing_medium">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:fontFamily="@font/sans_bold"
+        android:text="@string/premium_upgrade"
+        android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+        android:textColor="?android:textColorPrimary"
+        tools:text="" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_medium"
+        android:fontFamily="@font/sans_regular"
+        android:text="@string/premium_upgrade_dec"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/text_size_medium"
+        tools:text="" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btnPurchase"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/upgrade"
+        android:textColor="@android:color/white" />
+
+
+</LinearLayout>

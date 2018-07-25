@@ -10,8 +10,11 @@ import com.tinashe.weather.repository.ForecastRepositoryImpl
 import com.tinashe.weather.retrofit.RestClient
 import com.tinashe.weather.retrofit.WeatherApi
 import com.tinashe.weather.utils.RxSchedulers
+import com.tinashe.weather.utils.prefs.AppPrefs
+import com.tinashe.weather.utils.prefs.AppPrefsImpl
 import dagger.Module
 import dagger.Provides
+import javax.inject.Singleton
 
 /**
  * Created by tinashe on 2018/03/20.
@@ -20,24 +23,34 @@ import dagger.Provides
 internal class WeatherAppModule {
 
     @Provides
+    @Singleton
     fun provideContext(app: WeatherApp): Context = app
 
     @Provides
+    @Singleton
     fun provideWeatherApi(): WeatherApi = RestClient.createService(WeatherApi::class.java)
 
     @Provides
+    @Singleton
     fun provideRxSchedulers(): RxSchedulers = RxSchedulers()
 
     @Provides
+    @Singleton
     fun provideDatabase(context: Context): WeatherAppDb = Room.databaseBuilder(context,
             WeatherAppDb::class.java, WeatherAppDb.DATABASE_NAME)
             .fallbackToDestructiveMigration()
             .build()
 
     @Provides
+    @Singleton
     fun provideLocationDao(database: WeatherAppDb): LocationDao = database.locationDao()
 
     @Provides
+    @Singleton
+    fun providePrefs(context: Context): AppPrefs = AppPrefsImpl(context)
+
+    @Provides
+    @Singleton
     fun provideForecastRepository(context: Context, weatherApi: WeatherApi): ForecastRepository =
             ForecastRepositoryImpl(context, weatherApi)
 }

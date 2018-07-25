@@ -2,13 +2,18 @@ package com.tinashe.weather.ui.base
 
 import android.os.Bundle
 import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient.SkuType
 import timber.log.Timber
 
 abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedListener, BillingClientStateListener {
 
     private lateinit var billingClient: BillingClient
 
-    private var billingResponseCode: Int = BillingClient.BillingResponse.BILLING_UNAVAILABLE
+    private var skuDetails: SkuDetails? = null
+
+    private var purchasesResult: Purchase.PurchasesResult? = null
+
+    abstract fun premiumUnlocked()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,27 +24,58 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
 
     override fun onPurchasesUpdated(responseCode: Int, purchases: MutableList<Purchase>?) {
         Timber.d("onPurchasesUpdated: RC $responseCode, $purchases")
+
+        if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
+            purchasesResult = billingClient.queryPurchases(SkuType.INAPP)
+            premiumUnlocked()
+        }
     }
 
     override fun onBillingServiceDisconnected() {
-        Timber.d("onBillingServiceDisconnected")
     }
 
     override fun onBillingSetupFinished(responseCode: Int) {
-        Timber.d("onBillingSetupFinished: RC $responseCode")
-        this.billingResponseCode = responseCode
 
-        if (billingResponseCode == BillingClient.BillingResponse.OK) {
+        if (responseCode == BillingClient.BillingResponse.OK) {
             // The billing client is ready. You can query purchases here.
 
             val params = SkuDetailsParams.newBuilder()
             params.setSkusList(arrayListOf(PREMIUM_SKU_ID)).setType(BillingClient.SkuType.INAPP)
             billingClient.querySkuDetailsAsync(params.build()) { code, skuDetailsList ->
                 // Process the result.
-                Timber.d("RESULT: $code, $skuDetailsList")
+                if (code == BillingClient.BillingResponse.OK && skuDetailsList.isNotEmpty()) {
+                    skuDetails = skuDetailsList.find { it.sku == PREMIUM_SKU_ID }
+                }
             }
         }
 
+    }
+
+    protected fun promotePremium() {
+        skuDetails?.let {
+            val fragment = UnlockPremiumFragment.newInstance(it) { purchasePremium() }
+            fragment.show(supportFragmentManager, fragment.tag)
+        }
+    }
+
+    protected fun purchasePremium() {
+        val flowParams = BillingFlowParams.newBuilder()
+                .setSku(skuDetails?.sku)
+                .setType(SkuType.INAPP)
+                .build()
+
+        val responseCode = billingClient.launchBillingFlow(this, flowParams)
+    }
+
+    protected fun hasPremium(): Boolean {
+        if (purchasesResult == null) return false
+
+        return purchasesResult?.purchasesList != null && purchasesResult?.purchasesList?.isNotEmpty() == true
+    }
+
+    override fun onStart() {
+        super.onStart()
+        purchasesResult = billingClient.queryPurchases(SkuType.INAPP)
     }
 
     companion object {

@@ -99,11 +99,23 @@ class HomeActivity : BillingAwareActivity() {
                     currentIcon.setImageDrawable(it)
                 }
 
+                //TODO: Remove when proper navigation is set-up
+                currentIcon.setOnLongClickListener {
+                    promotePremium()
+                    true
+                }
+
                 val animate = dataAdapter.itemCount == 0
                 dataAdapter.forecast = it
                 if (animate) {
                     listView.scheduleLayoutAnimation()
                 }
+            }
+        })
+
+        viewModel.promotePremium.observe(this, Observer {
+            if (it == true) {
+                promotePremium()
             }
         })
 
@@ -115,7 +127,7 @@ class HomeActivity : BillingAwareActivity() {
         setSupportActionBar(toolbar)
 
         refreshLayout.setColorSchemeResources(R.color.theme)
-        refreshLayout.setOnRefreshListener { viewModel.refreshForecast() }
+        refreshLayout.setOnRefreshListener { viewModel.refreshForecast(hasPremium()) }
 
         dataAdapter = WeatherDataAdapter {
             val fragment = DetailFragment.view(it)
@@ -136,7 +148,7 @@ class HomeActivity : BillingAwareActivity() {
                     LocationServices.getFusedLocationProviderClient(this)
             fusedLocationClient.lastLocation.addOnSuccessListener {
 
-                viewModel.subscribe(it, WeatherUtil.getLocationName(this, it))
+                viewModel.subscribe(it, WeatherUtil.getLocationName(this, it), hasPremium())
             }
         } else {
             startActivity(Intent(this, SplashActivity::class.java))
@@ -147,6 +159,10 @@ class HomeActivity : BillingAwareActivity() {
     override fun onStop() {
         viewModel.unSubscribe()
         super.onStop()
+    }
+
+    override fun premiumUnlocked() {
+        viewModel.refreshForecast(hasPremium())
     }
 
     companion object {
