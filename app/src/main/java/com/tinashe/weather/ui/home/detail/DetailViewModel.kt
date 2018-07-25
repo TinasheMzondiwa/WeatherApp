@@ -24,19 +24,19 @@ class DetailViewModel @Inject constructor(private val rxSchedulers: RxSchedulers
     }
 
     fun getForeCast(entry: Entry, location: Location) {
+
         val disposable = forecastRepository.getDayForecast("${location.latitude},${location.longitude},${entry.time}")
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .subscribe({
                     hourlyData.value = it.hourly
                     viewState.value = ViewStateData(ViewState.SUCCESS)
-                },
-                        {
-                            Timber.e(it, it.message)
-                            it.message?.let {
-                                viewState.value = ViewStateData(ViewState.ERROR, it)
-                            }
-                        })
+                }, {
+                    Timber.e(it, it.message)
+                    it.message?.let {
+                        viewState.value = ViewStateData(ViewState.ERROR, it)
+                    }
+                })
 
         disposables.add(disposable)
     }

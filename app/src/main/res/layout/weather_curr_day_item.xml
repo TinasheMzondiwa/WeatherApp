@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/blank"
             android:scaleType="fitXY"
-            tools:src="@drawable/bg_10" />
+            tools:src="@color/theme" />
 
         <TextView
             android:id="@+id/currentTime"
@@ -72,7 +72,6 @@
             android:layout_gravity="bottom"
             android:clipToPadding="false"
             android:layoutAnimation="@anim/layout_animation_slide_right"
-            android:padding="@dimen/spacing_normal"
             android:paddingBottom="@dimen/spacing_normal"
             tools:layout_height="100dp" />
 
