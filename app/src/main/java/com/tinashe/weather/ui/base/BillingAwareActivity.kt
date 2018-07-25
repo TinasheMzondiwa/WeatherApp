@@ -3,6 +3,9 @@ package com.tinashe.weather.ui.base
 import android.os.Bundle
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.SkuType
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.PurchaseEvent
+import com.crashlytics.android.answers.StartCheckoutEvent
 import timber.log.Timber
 
 abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedListener, BillingClientStateListener {
@@ -28,6 +31,10 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
         if (responseCode == BillingClient.BillingResponse.OK && purchases != null) {
             purchasesResult = billingClient.queryPurchases(SkuType.INAPP)
             premiumUnlocked()
+
+            Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(true))
+        } else {
+            Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(false))
         }
     }
 
@@ -59,6 +66,8 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
     }
 
     protected fun purchasePremium() {
+        Answers.getInstance().logStartCheckout(StartCheckoutEvent())
+
         val flowParams = BillingFlowParams.newBuilder()
                 .setSku(skuDetails?.sku)
                 .setType(SkuType.INAPP)

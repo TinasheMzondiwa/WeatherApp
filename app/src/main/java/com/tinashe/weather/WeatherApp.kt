@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.support.v4.app.Fragment
 import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.answers.Answers
 import com.tinashe.weather.injection.DaggerWeatherAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -41,7 +42,7 @@ class WeatherApp : Application(), HasActivityInjector, HasSupportFragmentInjecto
                 Timber.plant(Timber.DebugTree())
             }
 
-            Fabric.with(app, Crashlytics())
+            Fabric.with(app, Crashlytics(), Answers())
 
             DaggerWeatherAppComponent.builder()
                     .application(app)
