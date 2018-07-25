@@ -9,5 +9,8 @@
     <string name="permission_location_rationale">Let\'s get started by accessing your location!</string>
     <string name="permissions_not_granted">Permissions were not granted.</string>
     <string name="permissions_grant_action">Grant Permission</string>
+    <string name="premium_upgrade">Unlock Premium</string>
+    <string name="premium_upgrade_dec">Upgrade to premium to unlock premium features</string>
     <string name="today">Today</string>
+    <string name="upgrade">Upgrade</string>
 </resources>

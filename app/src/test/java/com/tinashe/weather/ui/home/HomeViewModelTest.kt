@@ -10,6 +10,7 @@ import com.tinashe.weather.model.Forecast
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.utils.RxSchedulers
+import com.tinashe.weather.utils.prefs.AppPrefs
 import com.tinashe.weather.whenever
 import io.reactivex.Maybe
 import io.reactivex.Observable
@@ -30,8 +31,9 @@ class HomeViewModelTest {
     private val mockRepository = mock<ForecastRepository>()
     private val mockLocation = mock<Location>()
     private val mockForecast = mock<Forecast>()
+    private val mockPrefs = mock<AppPrefs>()
 
-    private val viewModel by lazy { HomeViewModel(mockSchedulers, mockRepository, mockLocationDao) }
+    private val viewModel by lazy { HomeViewModel(mockSchedulers, mockRepository, mockLocationDao, mockPrefs) }
 
     private val latLong by lazy { "${mockLocation.latitude},${mockLocation.longitude}" }
 
@@ -64,20 +66,22 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun testSubscribe_normal() {
-        viewModel.subscribe()
-
-        verify(mockRepository).getForecast(latLong)
-        assertEquals(ViewState.SUCCESS, viewModel.viewState.value?.state)
-    }
-
-    @Test
     fun testSubscribe_withLocation() {
-        viewModel.subscribe(mockLocation, "Cape Town")
+        viewModel.subscribe(mockLocation, "Cape Town", true)
 
         verify(mockRepository).getForecast(latLong)
         assertEquals(ViewState.SUCCESS, viewModel.viewState.value?.state)
     }
+
+    /* Test ViewModel not caching forecast
+    @Test
+    fun testSubscribe_withLocation_noPremium() {
+        viewModel.subscribe(mockLocation, "Cape Town", true)
+        viewModel.refreshForecast(false)
+
+        verify(mockRepository, never()).getForecast(latLong)
+        assertEquals(ViewState.SUCCESS, viewModel.viewState.value?.state)
+    }*/
 
     @Test
     fun testSubscribe_errorState() {
@@ -85,7 +89,8 @@ class HomeViewModelTest {
 
         whenever(mockRepository.getForecast(latLong))
                 .thenReturn(Observable.error(Exception(errorMsg)))
-        viewModel.subscribe()
+
+        viewModel.subscribe(mockLocation, "Cape Town", true)
 
         verify(mockRepository).getForecast(latLong)
         assertEquals(ViewState.ERROR, viewModel.viewState.value?.state)
