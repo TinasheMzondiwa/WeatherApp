@@ -10,4 +10,5 @@
 
     <color name="nav_background">#000000</color>
     <color name="nav_divider">@color/windowBackground</color>
+    <color name="divider">#424242</color>
 </resources>

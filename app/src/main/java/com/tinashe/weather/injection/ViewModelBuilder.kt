@@ -2,6 +2,7 @@ package com.tinashe.weather.injection
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.tinashe.weather.ui.about.AboutInfoViewModel
 import com.tinashe.weather.ui.home.HomeViewModel
 import com.tinashe.weather.ui.home.detail.DetailViewModel
 import com.tinashe.weather.ui.splash.SplashViewModel
@@ -29,6 +30,11 @@ internal abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(DetailViewModel::class)
     internal abstract fun bindDetailViewModel(detailViewModel: DetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AboutInfoViewModel::class)
+    internal abstract fun bindAboutInfoViewModel(aboutInfoViewModel: AboutInfoViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFractory(factory: ViewModelFactory): ViewModelProvider.Factory
