@@ -12,6 +12,7 @@
     <string name="permissions_grant_action">Grant Permission</string>
     <string name="premium_upgrade">Unlock Premium</string>
     <string name="premium_upgrade_dec">Upgrade to premium to unlock premium features</string>
+    <string name="search">Search</string>
     <string name="today">Today</string>
     <string name="upgrade">Upgrade</string>
 </resources>

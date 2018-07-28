@@ -26,7 +26,11 @@ class HourHolder constructor(override val containerView: View) :
         val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
         val now = Calendar.getInstance()
         now.set(Calendar.MINUTE, now.get(Calendar.MINUTE) + 1)
-        hourTime.text = if (date.before(now.time)) {
+
+        val diff = now.timeInMillis - date.time
+        val minutes = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS)
+
+        hourTime.text = if (minutes > 0) {
             context.getString(R.string.now)
         } else {
             DateUtil.getFormattedDate(date, DateFormat.TIME_SHORT)
