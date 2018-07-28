@@ -1,4 +1,5 @@
 <resources>
+    <string name="about">App Info</string>
     <string name="app_name">Weather</string>
     <string name="blank"/>
     <string name="connection_error">No network connection.\nCheck your connection and try again.</string>
@@ -11,6 +12,7 @@
     <string name="permissions_grant_action">Grant Permission</string>
     <string name="premium_upgrade">Unlock Premium</string>
     <string name="premium_upgrade_dec">Upgrade to premium to unlock premium features</string>
+    <string name="search">Search</string>
     <string name="today">Today</string>
     <string name="upgrade">Upgrade</string>
 </resources>

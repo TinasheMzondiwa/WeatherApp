@@ -39,6 +39,9 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
         val date = Date(TimeUnit.MILLISECONDS.convert(current.time, TimeUnit.SECONDS))
         currentTime.text = DateUtil.getFormattedDate(date, DateFormat.TIME)
+        WeatherUtil.getIcon(itemView.context, current.icon)?.let {
+            currentIcon.setImageDrawable(it)
+        }
         currentTemperature.text = context.getString(R.string.degrees, current.temperature.toInt())
         currentSummary.text = current.summary
 

@@ -16,9 +16,21 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:contentInsetStart="0dp"
+            app:contentInsetStartWithNavigation="0dp"
+            app:navigationIcon="@drawable/ic_search">
 
-            <include layout="@layout/include_weather_today" />
+            <TextView
+                android:id="@+id/currentName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/sans_regular"
+                android:layout_marginEnd="@dimen/spacing_xlarge"
+                android:gravity="center"
+                android:text="@string/today"
+                android:textColor="?android:textColorPrimary"
+                android:textSize="@dimen/text_size_large" />
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

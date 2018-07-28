@@ -35,6 +35,18 @@
             android:textSize="@dimen/text_size_medium"
             tools:text="@tools:sample/date/hhmm" />
 
+        <ImageView
+            android:id="@+id/currentIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/blank"
+            android:gravity="top|end"
+            android:tint="@android:color/white"
+            tools:src="@drawable/cloud_drizzle" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

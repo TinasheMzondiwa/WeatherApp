@@ -28,6 +28,10 @@
             android:name=".ui.home.HomeActivity"
             android:label="@string/blank"
             android:theme="@style/AppTheme.Home" />
+        <activity
+            android:name=".ui.about.AppInfoActivity"
+            android:label="@string/about"
+            android:theme="@style/AppTheme.Home" />
 
         <meta-data
             android:name="io.fabric.ApiKey"

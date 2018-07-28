@@ -1,5 +1,6 @@
 package com.tinashe.weather.injection
 
+import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.home.HomeActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.ui.splash.SplashActivity
@@ -20,4 +21,7 @@ internal abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     abstract fun bindDetailFragment(): DetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindAppInfoActivity(): AppInfoActivity
 }

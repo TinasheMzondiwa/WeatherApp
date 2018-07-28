@@ -17,4 +17,12 @@
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/BottomSheet</item>
     </style>
+
+    <style name="Theme.AudioVerse.PopupMenu.Large" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+        <item name="android:fontFamily">@font/sans_regular</item>
+    </style>
+
+    <style name="Theme.AudioVerse.PopupMenu.Small" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
+        <item name="android:fontFamily">@font/sans_regular</item>
+    </style>
 </resources>

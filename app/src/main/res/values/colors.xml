@@ -8,12 +8,7 @@
     <color name="secondary">#703B4254</color>
 
     <color name="icon_tint">#000</color>
-
-    <color name="sunny">#FFC107</color>
-    <color name="clear">#90CAF9</color>
-    <color name="cloudy">#607D8B</color>
-    <color name="windy">#9FA8DA</color>
-
     <color name="nav_background">#000000</color>
+    <color name="divider">#e0e0e0</color>
 
 </resources>

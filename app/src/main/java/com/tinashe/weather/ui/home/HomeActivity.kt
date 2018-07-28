@@ -8,19 +8,22 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
+import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.ui.splash.SplashActivity
 import com.tinashe.weather.utils.*
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.include_weather_today.*
 import javax.inject.Inject
 
 class HomeActivity : BillingAwareActivity() {
@@ -93,17 +96,6 @@ class HomeActivity : BillingAwareActivity() {
         viewModel.latestForecast.observe(this, Observer {
             it?.let {
                 currentName.text = it.currently.location
-                currentTemperature.text = getString(R.string.degrees, it.currently.temperature.toInt())
-                currentSummary.text = it.currently.summary
-                WeatherUtil.getIcon(this, it.currently.icon)?.let {
-                    currentIcon.setImageDrawable(it)
-                }
-
-                //TODO: Remove when proper navigation is set-up
-                currentIcon.setOnLongClickListener {
-                    promotePremium()
-                    true
-                }
 
                 val animate = dataAdapter.itemCount == 0
                 dataAdapter.forecast = it
@@ -125,6 +117,14 @@ class HomeActivity : BillingAwareActivity() {
 
     private fun initUi() {
         setSupportActionBar(toolbar)
+        toolbar.overflowIcon?.setTint(ContextCompat.getColor(this, R.color.icon_tint))
+        toolbar.setNavigationOnClickListener {
+            if (!hasPremium()) {
+                promotePremium()
+                return@setNavigationOnClickListener
+            }
+            Snackbar.make(toolbar, "Search coming soon!!", Snackbar.LENGTH_SHORT).show()
+        }
 
         refreshLayout.setColorSchemeResources(R.color.theme)
         refreshLayout.setOnRefreshListener { viewModel.refreshForecast(hasPremium()) }
@@ -163,6 +163,21 @@ class HomeActivity : BillingAwareActivity() {
 
     override fun premiumUnlocked() {
         viewModel.refreshForecast(hasPremium())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_home, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_info -> {
+                startActivity(Intent(this, AppInfoActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {

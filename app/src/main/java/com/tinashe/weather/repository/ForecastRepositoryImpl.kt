@@ -17,7 +17,11 @@ class ForecastRepositoryImpl constructor(private val context: Context,
     override fun getForecast(latLong: String): Observable<Forecast> {
         return if (WeatherUtil.hasConnection(context)) {
             weatherApi.getForecast(BuildConfig.API_SECRET, latLong)
-                    .doOnSubscribe { Answers.getInstance().logCustom(CustomEvent(EventName.GET_FORECAST)) }
+                    .doOnSubscribe {
+                        if (!BuildConfig.DEBUG) {
+                            Answers.getInstance().logCustom(CustomEvent(EventName.GET_FORECAST))
+                        }
+                    }
                     .flatMap { response ->
                         if (response.isSuccessful) {
                             Observable.just(response.body())
@@ -33,7 +37,11 @@ class ForecastRepositoryImpl constructor(private val context: Context,
     override fun getDayForecast(latLongTime: String): Observable<Forecast> {
         return if (WeatherUtil.hasConnection(context)) {
             weatherApi.getTimeForecast(BuildConfig.API_SECRET, latLongTime)
-                    .doOnSubscribe { Answers.getInstance().logCustom(CustomEvent(EventName.GET_FORECAST_DETAIL)) }
+                    .doOnSubscribe {
+                        if (!BuildConfig.DEBUG) {
+                            Answers.getInstance().logCustom(CustomEvent(EventName.GET_FORECAST_DETAIL))
+                        }
+                    }
                     .flatMap { response ->
                         if (response.isSuccessful) {
                             Observable.just(response.body())
