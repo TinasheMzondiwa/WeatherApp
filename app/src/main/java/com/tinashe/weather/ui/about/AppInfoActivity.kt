@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
-import android.view.MenuItem
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.ui.base.BillingAwareActivity
@@ -53,17 +52,6 @@ class AppInfoActivity : BillingAwareActivity() {
     }
 
     override fun premiumUnlocked() {
-
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
-            android.R.id.home -> {
-                supportFinishAfterTransition()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
     }
 }

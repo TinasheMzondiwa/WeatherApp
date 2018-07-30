@@ -1,6 +1,7 @@
 package com.tinashe.weather.ui.home
 
 import android.Manifest
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,19 +13,26 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException
+import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.AutocompleteFilter
+import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
+import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.ui.splash.SplashActivity
 import com.tinashe.weather.utils.*
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
+import timber.log.Timber
 import javax.inject.Inject
+
 
 class HomeActivity : BillingAwareActivity() {
 
@@ -123,7 +131,21 @@ class HomeActivity : BillingAwareActivity() {
                 promotePremium()
                 return@setNavigationOnClickListener
             }
-            Snackbar.make(toolbar, "Search coming soon!!", Snackbar.LENGTH_SHORT).show()
+
+            try {
+                val typeFilter = AutocompleteFilter.Builder()
+                        .setTypeFilter(AutocompleteFilter.TYPE_FILTER_REGIONS)
+                        .build()
+
+                val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
+                        .setFilter(typeFilter)
+                        .build(this)
+                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
+            } catch (e: GooglePlayServicesRepairableException) {
+                Timber.e(e)
+            } catch (e: GooglePlayServicesNotAvailableException) {
+                Timber.e(e)
+            }
         }
 
         refreshLayout.setColorSchemeResources(R.color.theme)
@@ -180,7 +202,34 @@ class HomeActivity : BillingAwareActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    val place = PlaceAutocomplete.getPlace(this, data!!)
+                    Timber.i("Place: %s:%s", place.name, place.latLng)
+
+                    PlaceForecastActivity.view(this, place.id)
+                }
+                PlaceAutocomplete.RESULT_ERROR -> {
+                    val status = PlaceAutocomplete.getStatus(this, data!!)
+                    Timber.e(status.statusMessage)
+
+                    status.statusMessage?.let {
+                        Snackbar.make(toolbar, it, Snackbar.LENGTH_LONG)
+                                .show()
+                    }
+
+                }
+                Activity.RESULT_CANCELED -> {
+                    // The user canceled the operation.
+                }
+            }
+        }
+    }
+
     companion object {
         private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
+        private const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1
     }
 }

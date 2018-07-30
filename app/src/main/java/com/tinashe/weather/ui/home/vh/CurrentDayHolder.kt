@@ -15,8 +15,6 @@ import com.tinashe.weather.utils.horizontal
 import com.tinashe.weather.utils.inflateView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_curr_day_item.*
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by tinashe on 2018/03/21.
@@ -30,15 +28,13 @@ class CurrentDayHolder constructor(override val containerView: View) :
         val context = itemView.context
 
         GlideApp.with(context)
-                .load(WeatherUtil.getBackground(context, current.icon))
+                .load(WeatherUtil.getBackground(current))
                 .placeholder(R.color.theme)
                 .error(R.color.theme)
                 .transition(withCrossFade())
                 .into(dayBackgroundImg)
 
-
-        val date = Date(TimeUnit.MILLISECONDS.convert(current.time, TimeUnit.SECONDS))
-        currentTime.text = DateUtil.getFormattedDate(date, DateFormat.TIME)
+        currentTime.text = DateUtil.getFormattedDate(current.time, DateFormat.TIME, current.timeZone)
         WeatherUtil.getIcon(itemView.context, current.icon)?.let {
             currentIcon.setImageDrawable(it)
         }

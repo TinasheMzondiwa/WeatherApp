@@ -14,8 +14,9 @@ import com.tinashe.weather.utils.inflateView
 import com.tinashe.weather.utils.tint
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_hour_item_detail.*
-import java.util.*
-import java.util.concurrent.TimeUnit
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
 
 class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
 
@@ -39,13 +40,13 @@ class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
         fun bind(entry: Entry) {
             val context = itemView.context
 
-            val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
-            val now = Calendar.getInstance()
-            now.set(Calendar.MINUTE, now.get(Calendar.MINUTE) + 1)
-            hourTime.text = if (date.before(now.time)) {
+            val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))
+            val now = LocalDateTime.now(ZoneId.of(entry.timeZone))
+
+            hourTime.text = if (time.isBefore(now.plusMinutes(5))) {
                 context.getString(R.string.now)
             } else {
-                DateUtil.getFormattedDate(date, DateFormat.TIME_SHORT)
+                DateUtil.getFormattedDate(entry.time, DateFormat.TIME_SHORT, entry.timeZone)
             }
             val icon = WeatherUtil.getIcon(context, entry.icon)
             val currentNightMode = itemView.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK

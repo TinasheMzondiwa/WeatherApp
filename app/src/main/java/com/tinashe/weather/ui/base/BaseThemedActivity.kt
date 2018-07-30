@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
+import android.view.MenuItem
 import android.view.View
 
 
@@ -32,5 +33,16 @@ abstract class BaseThemedActivity : AppCompatActivity() {
         var flags = view.systemUiVisibility
         flags = flags and View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         view.systemUiVisibility = flags
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> {
+                supportFinishAfterTransition()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+
     }
 }

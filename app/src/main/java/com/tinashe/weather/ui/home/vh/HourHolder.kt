@@ -11,8 +11,9 @@ import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.inflateView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_hour_item.*
-import java.util.*
-import java.util.concurrent.TimeUnit
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
 
 /**
  * Created by tinashe on 2018/03/21.
@@ -23,18 +24,15 @@ class HourHolder constructor(override val containerView: View) :
     fun bind(entry: Entry) {
         val context = itemView.context
 
-        val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
-        val now = Calendar.getInstance()
-        now.set(Calendar.MINUTE, now.get(Calendar.MINUTE) + 1)
+        val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))
+        val now = LocalDateTime.now(ZoneId.of(entry.timeZone))
 
-        val diff = now.timeInMillis - date.time
-        val minutes = TimeUnit.MINUTES.convert(diff, TimeUnit.MILLISECONDS)
-
-        hourTime.text = if (minutes > 0) {
+        hourTime.text = if (time.isBefore(now.plusMinutes(5))) {
             context.getString(R.string.now)
         } else {
-            DateUtil.getFormattedDate(date, DateFormat.TIME_SHORT)
+            DateUtil.getFormattedDate(entry.time, DateFormat.TIME_SHORT, entry.timeZone)
         }
+
         hourIcon.setImageDrawable(WeatherUtil.getIcon(context, entry.icon))
         hourTemperature.text = context.getString(R.string.degrees, entry.temperature.toInt())
     }

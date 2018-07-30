@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.tinashe.weather.ui.about.AboutInfoViewModel
 import com.tinashe.weather.ui.home.HomeViewModel
 import com.tinashe.weather.ui.home.detail.DetailViewModel
+import com.tinashe.weather.ui.home.place.PlaceForecastViewModel
 import com.tinashe.weather.ui.splash.SplashViewModel
 import dagger.Binds
 import dagger.Module
@@ -35,6 +36,11 @@ internal abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(AboutInfoViewModel::class)
     internal abstract fun bindAboutInfoViewModel(aboutInfoViewModel: AboutInfoViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlaceForecastViewModel::class)
+    internal abstract fun bindPlaceForecastViewModel(placeForecastViewModel: PlaceForecastViewModel): ViewModel
 
     @Binds
     internal abstract fun bindViewModelFractory(factory: ViewModelFactory): ViewModelProvider.Factory

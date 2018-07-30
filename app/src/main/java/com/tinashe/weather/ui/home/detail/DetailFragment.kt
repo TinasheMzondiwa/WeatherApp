@@ -16,8 +16,6 @@ import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
 import com.tinashe.weather.utils.*
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.view.*
-import java.util.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class DetailFragment : RoundedBottomSheetDialogFragment() {
@@ -40,8 +38,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
         super.onViewCreated(contentView, savedInstanceState)
         AndroidSupportInjection.inject(this)
 
-        val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
-        contentView.entryDate.text = DateUtil.getFormattedDate(date, DateFormat.DAY)
+        contentView.entryDate.text = DateUtil.getFormattedDate(entry.time, DateFormat.DAY, entry.timeZone)
         contentView.entrySummary.text = entry.summary
 
         viewModel = getViewModel(this, viewModelFactory)
