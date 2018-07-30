@@ -10,8 +10,6 @@ import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.inflateView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_data_day_item.*
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -23,8 +21,7 @@ class DayHolder constructor(override val containerView: View) :
     fun bind(entry: Entry, onClick: ((Entry) -> Unit)? = null) {
         val context = itemView.context
 
-        val date = Date(TimeUnit.MILLISECONDS.convert(entry.time, TimeUnit.SECONDS))
-        dayDate.text = DateUtil.getFormattedDate(date, DateFormat.DAY)
+        dayDate.text = DateUtil.getFormattedDate(entry.time, DateFormat.DAY, entry.timeZone)
         daySummary.text = entry.summary
 
         tempMin.text = context.getString(R.string.degrees, entry.temperatureMin.toInt())

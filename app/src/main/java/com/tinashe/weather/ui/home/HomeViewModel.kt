@@ -79,6 +79,13 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                     .subscribe({
                         viewState.value = ViewStateData(ViewState.SUCCESS)
                         it.currently.location = currentLocation.value?.name ?: ""
+                        it.currently.timeZone = it.timezone
+                        val today = it.daily.data.first()
+                        it.currently.sunriseTime = today.sunriseTime
+                        it.currently.sunsetTime = today.sunsetTime
+                        val timeZone = it.timezone
+                        it.hourly.data.map { it.timeZone = timeZone }
+                        it.daily.data.map { it.timeZone = timeZone }
 
                         latestForecast.value = it
 

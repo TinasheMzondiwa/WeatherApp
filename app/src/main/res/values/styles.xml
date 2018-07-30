@@ -18,11 +18,16 @@
         <item name="bottomSheetStyle">@style/BottomSheet</item>
     </style>
 
-    <style name="Theme.AudioVerse.PopupMenu.Large" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
+    <style name="Theme.PopupMenu.Large" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Large">
         <item name="android:fontFamily">@font/sans_regular</item>
     </style>
 
-    <style name="Theme.AudioVerse.PopupMenu.Small" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
+    <style name="Theme.PopupMenu.Small" parent="@style/TextAppearance.AppCompat.Widget.PopupMenu.Small">
         <item name="android:fontFamily">@font/sans_regular</item>
     </style>
+
+    <style name="Theme.Toolbar" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:fontFamily">@font/sans_regular</item>
+    </style>
+
 </resources>

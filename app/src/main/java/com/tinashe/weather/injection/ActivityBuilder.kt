@@ -3,6 +3,7 @@ package com.tinashe.weather.injection
 import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.home.HomeActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
+import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.ui.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -24,4 +25,7 @@ internal abstract class ActivityBuilder {
 
     @ContributesAndroidInjector
     abstract fun bindAppInfoActivity(): AppInfoActivity
+
+    @ContributesAndroidInjector
+    abstract fun bindPlaceForecastActivity(): PlaceForecastActivity
 }

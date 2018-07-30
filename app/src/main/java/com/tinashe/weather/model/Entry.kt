@@ -10,4 +10,7 @@ data class Entry(val time: Long,
                  val temperature: Double,
                  var location: String = "",
                  val temperatureHigh: Double,
-                 val temperatureMin: Double)
+                 val temperatureMin: Double,
+                 var timeZone: String = "",
+                 var sunriseTime: Long,
+                 var sunsetTime: Long)

@@ -40,7 +40,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-
             android:adjustViewBounds="true"
             android:contentDescription="@string/blank"
             android:gravity="top|end"

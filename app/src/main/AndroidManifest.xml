@@ -24,18 +24,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.home.HomeActivity"
             android:label="@string/blank"
             android:theme="@style/AppTheme.Home" />
+
         <activity
             android:name=".ui.about.AppInfoActivity"
             android:label="@string/about"
             android:theme="@style/AppTheme.Home" />
 
+        <activity
+            android:name=".ui.home.place.PlaceForecastActivity"
+            android:label="@string/search"
+            android:theme="@style/AppTheme.Home" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="${apiKey}" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${placesKey}" />
 
     </application>
 

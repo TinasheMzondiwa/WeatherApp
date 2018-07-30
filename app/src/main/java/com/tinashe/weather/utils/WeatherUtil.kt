@@ -1,7 +1,6 @@
 package com.tinashe.weather.utils
 
 import android.content.Context
-import android.content.res.Configuration
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
@@ -10,6 +9,10 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
+import com.tinashe.weather.model.Entry
+import org.threeten.bp.Instant
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.ZoneId
 import timber.log.Timber
 import java.util.*
 
@@ -71,25 +74,28 @@ object WeatherUtil {
         }
     }
 
-    fun getBackground(context: Context, summary: String): String {
+    fun getBackground(entry: Entry): String {
 
-        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        val isNightMode = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+        val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))
+        val sunset = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.sunsetTime), ZoneId.of(entry.timeZone))
+        val sunrise = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.sunriseTime), ZoneId.of(entry.timeZone))
+
+        val isNightMode = time.isAfter(sunset) || time.isBefore(sunrise)
 
         return when {
-            summary.containsEither("sun", "clear") -> {
+            entry.icon.containsEither("sun", "clear") -> {
                 if (isNightMode) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
             }
-            summary.containsEither("cloud") -> {
+            entry.icon.containsEither("cloud") -> {
                 if (isNightMode) BuildConfig.CLOUD_NIGHT else BuildConfig.CLOUD_DAY
             }
-            summary.containsEither("drizzle", "rain") -> {
+            entry.icon.containsEither("drizzle", "rain") -> {
                 if (isNightMode) BuildConfig.RAIN_NIGHT else BuildConfig.RAIN_DAY
             }
-            summary.containsEither("lightning") -> {
+            entry.icon.containsEither("lightning") -> {
                 if (isNightMode) BuildConfig.LIGHTNING_NIGHT else BuildConfig.LIGHTNING_DAY
             }
-            summary.containsEither("snow") -> {
+            entry.icon.containsEither("snow") -> {
                 if (isNightMode) BuildConfig.SNOW_NIGHT else BuildConfig.SNOW_DAY
             }
             else -> {

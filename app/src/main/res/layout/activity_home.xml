@@ -26,7 +26,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/sans_regular"
-                android:layout_marginEnd="@dimen/spacing_xlarge"
+                android:layout_marginEnd="@dimen/spacing_large"
                 android:gravity="center"
                 android:text="@string/today"
                 android:textColor="?android:textColorPrimary"

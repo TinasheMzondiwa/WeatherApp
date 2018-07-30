@@ -29,6 +29,8 @@ class DetailViewModel @Inject constructor(private val rxSchedulers: RxSchedulers
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .subscribe({
+                    val timeZone = it.timezone
+                    it.hourly.data.map { it.timeZone = timeZone }
                     hourlyData.value = it.hourly
                     viewState.value = ViewStateData(ViewState.SUCCESS)
                 }, {

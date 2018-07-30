@@ -6,6 +6,7 @@ import com.android.billingclient.api.BillingClient.SkuType
 import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.answers.PurchaseEvent
 import com.crashlytics.android.answers.StartCheckoutEvent
+import com.tinashe.weather.BuildConfig
 import timber.log.Timber
 
 abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedListener, BillingClientStateListener {
@@ -77,6 +78,9 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
     }
 
     protected fun hasPremium(): Boolean {
+        if (BuildConfig.DEBUG) {
+            return true
+        }
         if (purchasesResult == null) return false
 
         return purchasesResult?.purchasesList != null && purchasesResult?.purchasesList?.isNotEmpty() == true
