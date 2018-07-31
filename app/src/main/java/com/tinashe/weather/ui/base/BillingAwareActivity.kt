@@ -34,6 +34,9 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
             premiumUnlocked()
 
             Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(true))
+
+        } else if (responseCode == BillingClient.BillingResponse.ITEM_ALREADY_OWNED) {
+            premiumUnlocked()
         } else {
             Answers.getInstance().logPurchase(PurchaseEvent().putSuccess(false))
         }
@@ -77,22 +80,17 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
         val responseCode = billingClient.launchBillingFlow(this, flowParams)
     }
 
-    protected fun hasPremium(): Boolean {
-        if (BuildConfig.DEBUG) {
-            return true
-        }
-        if (purchasesResult == null) return false
-
-        return purchasesResult?.purchasesList != null && purchasesResult?.purchasesList?.isNotEmpty() == true
-    }
-
     override fun onStart() {
         super.onStart()
         purchasesResult = billingClient.queryPurchases(SkuType.INAPP)
+
+        if (purchasesResult?.purchasesList != null && purchasesResult?.purchasesList?.isNotEmpty() == true) {
+            premiumUnlocked()
+        }
     }
 
     companion object {
-        private const val PREMIUM_SKU_ID = "premium_upgrade"
+        private val PREMIUM_SKU_ID = if (BuildConfig.DEBUG) "android.test.purchased" else "premium_upgrade"
     }
 
 }

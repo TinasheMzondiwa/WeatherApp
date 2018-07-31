@@ -1,6 +1,7 @@
 package com.tinashe.weather.ui.home.place
 
 import android.arch.lifecycle.MutableLiveData
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.location.places.GeoDataClient
 import com.google.android.gms.maps.model.LatLng
 import com.tinashe.weather.model.Forecast
@@ -42,6 +43,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                 places.release()
             } else {
                 Timber.e("Place not found.")
+                viewState.value = ViewStateData(ViewState.ERROR, "Could not find details about this place!")
             }
         }
     }
@@ -67,6 +69,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
 
                 }, {
                     Timber.e(it, it.message)
+                    Crashlytics.logException(it)
 
                     it.message?.let {
                         viewState.value = ViewStateData(ViewState.ERROR, it)

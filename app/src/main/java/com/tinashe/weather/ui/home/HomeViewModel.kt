@@ -2,6 +2,7 @@ package com.tinashe.weather.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.location.Location
+import com.crashlytics.android.Crashlytics
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.model.CurrentLocation
 import com.tinashe.weather.model.Forecast
@@ -34,13 +35,13 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
         viewState.value = ViewStateData(ViewState.LOADING)
     }
 
-    private fun readLocation(hasPremium: Boolean) {
+    private fun readLocation() {
         val disposable = locationDao.getCurrentLocation()
                 .subscribeOn(rxSchedulers.database)
                 .observeOn(rxSchedulers.main)
                 .subscribe({
                     currentLocation.value = it
-                    refreshForecast(hasPremium)
+                    refreshForecast()
                 }, { Timber.e(it, it.message) })
 
         disposables.add(disposable)
@@ -50,16 +51,16 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
 
     }
 
-    fun subscribe(location: Location, area: String, hasPremium: Boolean) {
+    fun subscribe(location: Location, area: String) {
         currentLocation.value = CurrentLocation(area, "${location.latitude},${location.longitude}")
-        refreshForecast(hasPremium)
+        refreshForecast()
     }
 
-    fun refreshForecast(hasPremium: Boolean) {
+    fun refreshForecast() {
 
         currentLocation.value?.let {
 
-            if (!hasPremium && latestForecast.value != null) {
+            if (!prefs.hasPremium() && latestForecast.value != null) {
                 latestForecast.value?.let {
                     viewState.value = ViewStateData(ViewState.SUCCESS)
                     it.currently.location = currentLocation.value?.name ?: ""
@@ -91,13 +92,18 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
 
                     }, {
                         Timber.e(it, it.message)
+                        try {
+                            Crashlytics.logException(it)
+                        } catch (ex: Exception) {
+                            //Unit tests fail when Crashlytics is called
+                        }
 
                         it.message?.let {
                             viewState.value = ViewStateData(ViewState.ERROR, it)
                         }
                     })
             disposables.add(disposable)
-        } ?: readLocation(hasPremium)
+        } ?: readLocation()
 
     }
 
@@ -122,4 +128,14 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
             true
         } else false
     }
+
+    fun premiumUnlocked() {
+        if (!prefs.hasPremium()) {
+            prefs.setHasPremium()
+
+            refreshForecast()
+        }
+    }
+
+    fun hasPremium(): Boolean = prefs.hasPremium()
 }

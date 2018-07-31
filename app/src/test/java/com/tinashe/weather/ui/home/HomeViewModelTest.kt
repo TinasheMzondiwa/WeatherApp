@@ -58,6 +58,8 @@ class HomeViewModelTest {
 
         whenever(mockRepository.getForecast(latLong))
                 .thenReturn(Observable.just(mockForecast))
+
+        whenever(mockPrefs.hasPremium()).thenReturn(true)
     }
 
     @Test
@@ -67,21 +69,11 @@ class HomeViewModelTest {
 
     @Test
     fun testSubscribe_withLocation() {
-        viewModel.subscribe(mockLocation, "Cape Town", true)
+        viewModel.subscribe(mockLocation, "Cape Town")
 
         verify(mockRepository).getForecast(latLong)
         assertEquals(ViewState.SUCCESS, viewModel.viewState.value?.state)
     }
-
-    /* Test ViewModel not caching forecast
-    @Test
-    fun testSubscribe_withLocation_noPremium() {
-        viewModel.subscribe(mockLocation, "Cape Town", true)
-        viewModel.refreshForecast(false)
-
-        verify(mockRepository, never()).getForecast(latLong)
-        assertEquals(ViewState.SUCCESS, viewModel.viewState.value?.state)
-    }*/
 
     @Test
     fun testSubscribe_errorState() {
@@ -90,7 +82,7 @@ class HomeViewModelTest {
         whenever(mockRepository.getForecast(latLong))
                 .thenReturn(Observable.error(Exception(errorMsg)))
 
-        viewModel.subscribe(mockLocation, "Cape Town", true)
+        viewModel.subscribe(mockLocation, "Cape Town")
 
         verify(mockRepository).getForecast(latLong)
         assertEquals(ViewState.ERROR, viewModel.viewState.value?.state)
