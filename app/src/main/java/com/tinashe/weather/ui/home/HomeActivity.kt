@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -127,7 +128,7 @@ class HomeActivity : BillingAwareActivity() {
         setSupportActionBar(toolbar)
         toolbar.overflowIcon?.setTint(ContextCompat.getColor(this, R.color.icon_tint))
         toolbar.setNavigationOnClickListener {
-            if (!hasPremium()) {
+            if (!viewModel.hasPremium()) {
                 promotePremium()
                 return@setNavigationOnClickListener
             }
@@ -143,13 +144,15 @@ class HomeActivity : BillingAwareActivity() {
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
             } catch (e: GooglePlayServicesRepairableException) {
                 Timber.e(e)
+                Crashlytics.logException(e)
             } catch (e: GooglePlayServicesNotAvailableException) {
                 Timber.e(e)
+                Crashlytics.logException(e)
             }
         }
 
         refreshLayout.setColorSchemeResources(R.color.theme)
-        refreshLayout.setOnRefreshListener { viewModel.refreshForecast(hasPremium()) }
+        refreshLayout.setOnRefreshListener { viewModel.refreshForecast() }
 
         dataAdapter = WeatherDataAdapter {
             val fragment = DetailFragment.view(it)
@@ -170,7 +173,7 @@ class HomeActivity : BillingAwareActivity() {
                     LocationServices.getFusedLocationProviderClient(this)
             fusedLocationClient.lastLocation.addOnSuccessListener {
 
-                viewModel.subscribe(it, WeatherUtil.getLocationName(this, it), hasPremium())
+                viewModel.subscribe(it, WeatherUtil.getLocationName(this, it))
             }
         } else {
             startActivity(Intent(this, SplashActivity::class.java))
@@ -184,7 +187,7 @@ class HomeActivity : BillingAwareActivity() {
     }
 
     override fun premiumUnlocked() {
-        viewModel.refreshForecast(hasPremium())
+        viewModel.premiumUnlocked()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

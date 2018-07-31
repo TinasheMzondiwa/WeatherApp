@@ -18,7 +18,16 @@ class AppPrefsImpl constructor(context: Context) : AppPrefs {
                 .apply()
     }
 
+    override fun hasPremium(): Boolean = prefs.getBoolean(KEY_HAS_PREMIUM, false)
+
+    override fun setHasPremium() {
+        prefs.edit()
+                .putBoolean(KEY_HAS_PREMIUM, true)
+                .apply()
+    }
+
     companion object {
         private const val KEY_PROMO_LAST_SHOWN = "KEY_PROMO_LAST_SHOWN"
+        private const val KEY_HAS_PREMIUM = "KEY_HAS_PREMIUM"
     }
 }
