@@ -34,7 +34,7 @@ class SplashActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SplashViewModel
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var fusedLocationClient: FusedLocationProviderClient? = null
 
     private var locationCallback: LocationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -92,7 +92,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onStop() {
         viewModel.unSubscribe()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
+        fusedLocationClient?.removeLocationUpdates(locationCallback)
         super.onStop()
     }
 
@@ -100,14 +100,14 @@ class SplashActivity : AppCompatActivity() {
     private fun fetchLocation() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        fusedLocationClient.lastLocation.addOnSuccessListener {
+        fusedLocationClient?.lastLocation?.addOnSuccessListener {
             if (it == null) {
                 val locationRequest = LocationRequest()
                 locationRequest.interval = 30000
                 locationRequest.fastestInterval = 30000
                 locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-                fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+                fusedLocationClient?.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
 
             } else {
                 viewModel.locationReceived(it, WeatherUtil.getLocationName(this, it))

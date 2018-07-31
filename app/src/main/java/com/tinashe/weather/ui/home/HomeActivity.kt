@@ -19,10 +19,13 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.places.AutocompleteFilter
+import com.google.android.gms.location.places.GeoDataClient
+import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
+import com.tinashe.weather.model.event.PhotoEvent
 import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
@@ -43,6 +46,8 @@ class HomeActivity : BillingAwareActivity() {
     private lateinit var viewModel: HomeViewModel
 
     private lateinit var dataAdapter: WeatherDataAdapter
+
+    private var mGeoDataClient: GeoDataClient? = null
 
     private val appBarElevation = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -99,7 +104,6 @@ class HomeActivity : BillingAwareActivity() {
                     }
                 }
             }
-
         })
 
         viewModel.latestForecast.observe(this, Observer {
@@ -117,6 +121,14 @@ class HomeActivity : BillingAwareActivity() {
         viewModel.promotePremium.observe(this, Observer {
             if (it == true) {
                 promotePremium()
+            }
+        })
+
+        viewModel.savedPlaces.observe(this, Observer {
+            it?.let {
+                dataAdapter.savedPlaces = it
+
+                it.map { getPhoto(it.placeId) }
             }
         })
 
@@ -229,6 +241,33 @@ class HomeActivity : BillingAwareActivity() {
                 }
             }
         }
+    }
+
+
+    private fun getPhoto(placeId: String) {
+        if (mGeoDataClient == null) {
+            mGeoDataClient = Places.getGeoDataClient(this)
+        }
+
+        if (BitmapCache.getInstance().exists(placeId)) {
+            return
+        }
+
+        mGeoDataClient?.getPlacePhotos(placeId)
+                ?.addOnCompleteListener {
+
+                    val photoMetadata = it.result.photoMetadata.first()
+
+                    mGeoDataClient?.getPhoto(photoMetadata)
+                            ?.addOnCompleteListener {
+                                val photo = it.result.bitmap
+                                BitmapCache.getInstance().add(placeId, photo)
+
+                                RxBus.getInstance().send(PhotoEvent(placeId, photo))
+                            }
+
+                    it.result.photoMetadata.release()
+                }
     }
 
     companion object {

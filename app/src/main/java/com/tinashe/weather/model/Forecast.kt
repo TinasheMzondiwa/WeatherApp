@@ -6,4 +6,5 @@ package com.tinashe.weather.model
 data class Forecast(val timezone: String,
                     val currently: Entry,
                     val hourly: WeatherData,
-                    val daily: WeatherData)
+                    val daily: WeatherData,
+                    var tag: String? = null)
