@@ -11,4 +11,6 @@
     <color name="nav_background">#000000</color>
     <color name="divider">#e0e0e0</color>
 
+    <color name="scrim">#80000000</color>
+
 </resources>

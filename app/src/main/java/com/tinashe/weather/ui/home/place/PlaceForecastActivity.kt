@@ -1,7 +1,7 @@
 package com.tinashe.weather.ui.home.place
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView
 import com.google.android.gms.location.places.Places
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
-import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.BaseThemedActivity
 import com.tinashe.weather.ui.home.WeatherDataAdapter
 import com.tinashe.weather.ui.home.detail.DetailFragment
@@ -59,22 +58,21 @@ class PlaceForecastActivity : BaseThemedActivity() {
 
         viewModel.viewState.observe(this, Observer {
             it?.let {
-                when (it.state) {
-                    ViewState.LOADING -> {
-                    }
-                    ViewState.ERROR -> {
-                        it.errorMessage?.let {
-                            Snackbar.make(fab, it, Snackbar.LENGTH_INDEFINITE)
-                                    .setAction(android.R.string.ok) { }
-                                    .setActionTextColor(Color.YELLOW)
-                                    .show()
-                        }
-                    }
-                    ViewState.SUCCESS -> {
-                    }
-                    else -> {
-                    }
+                it.errorMessage?.let {
+                    Snackbar.make(fab, it, Snackbar.LENGTH_SHORT)
+                            .setAction(android.R.string.ok) { }
+                            .setActionTextColor(Color.YELLOW)
+                            .show()
                 }
+            }
+        })
+
+        viewModel.isBookmarked.observe(this, Observer {
+            it?.let {
+                fab.setImageResource(when (it) {
+                    true -> R.drawable.ic_bookmark
+                    else -> R.drawable.bookmark_plus_outline
+                })
             }
         })
 
@@ -99,7 +97,7 @@ class PlaceForecastActivity : BaseThemedActivity() {
         }
 
         fab.setOnClickListener {
-            Snackbar.make(it, "Bookmark", Snackbar.LENGTH_SHORT).show()
+            viewModel.bookmarkClicked()
         }
     }
 
@@ -107,10 +105,10 @@ class PlaceForecastActivity : BaseThemedActivity() {
 
         private const val ARG_PLACE_ID = "arg:place_id"
 
-        fun view(activity: Activity, placeId: String) {
-            val intent = Intent(activity, PlaceForecastActivity::class.java)
+        fun view(context: Context, placeId: String) {
+            val intent = Intent(context, PlaceForecastActivity::class.java)
             intent.putExtra(ARG_PLACE_ID, placeId)
-            activity.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 

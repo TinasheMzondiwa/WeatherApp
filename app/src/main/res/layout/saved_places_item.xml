@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sans_bold"
+        android:text="@string/saved_places"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/text_size_body"
+        android:layout_marginStart="@dimen/spacing_medium"
+        android:layout_marginEnd="@dimen/spacing_medium"
+        android:layout_marginBottom="@dimen/spacing_normal"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/placesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/spacing_medium"
+        android:paddingStart="@dimen/spacing_medium"
+        android:clipToPadding="false"
+        android:minHeight="100dp" />
+
+</LinearLayout>

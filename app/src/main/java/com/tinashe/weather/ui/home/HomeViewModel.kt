@@ -4,19 +4,21 @@ import android.arch.lifecycle.MutableLiveData
 import android.location.Location
 import com.crashlytics.android.Crashlytics
 import com.tinashe.weather.db.dao.LocationDao
-import com.tinashe.weather.model.CurrentLocation
-import com.tinashe.weather.model.Forecast
-import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.model.ViewStateData
+import com.tinashe.weather.db.dao.PlacesDao
+import com.tinashe.weather.model.*
+import com.tinashe.weather.model.event.WeatherEvent
 import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
+import com.tinashe.weather.utils.RxBus
 import com.tinashe.weather.utils.RxSchedulers
 import com.tinashe.weather.utils.prefs.AppPrefs
+import io.reactivex.Observable
 import timber.log.Timber
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 /**
  * Created by tinashe on 2018/03/20.
@@ -24,12 +26,14 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                                         private val forecastRepository: ForecastRepository,
                                         private val locationDao: LocationDao,
+                                        private val placesDao: PlacesDao,
                                         private val prefs: AppPrefs) : RxAwareViewModel() {
 
-    var viewState: SingleLiveEvent<ViewStateData> = SingleLiveEvent()
-    private var currentLocation: SingleLiveEvent<CurrentLocation> = SingleLiveEvent()
-    var latestForecast: MutableLiveData<Forecast> = MutableLiveData()
+    var viewState = SingleLiveEvent<ViewStateData>()
+    private var currentLocation = SingleLiveEvent<CurrentLocation>()
+    var latestForecast = MutableLiveData<Forecast>()
     var promotePremium = SingleLiveEvent<Boolean>()
+    var savedPlaces = MutableLiveData<ArrayList<SavedPlace>>()
 
     init {
         viewState.value = ViewStateData(ViewState.LOADING)
@@ -54,6 +58,8 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
     fun subscribe(location: Location, area: String) {
         currentLocation.value = CurrentLocation(area, "${location.latitude},${location.longitude}")
         refreshForecast()
+
+        subscribeToSavedPlaces()
     }
 
     fun refreshForecast() {
@@ -138,4 +144,33 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
     }
 
     fun hasPremium(): Boolean = prefs.hasPremium()
+
+    private fun subscribeToSavedPlaces() {
+        val disposable = placesDao.listAll()
+                .subscribeOn(rxSchedulers.database)
+                .observeOn(rxSchedulers.main)
+                .subscribe({
+                    val places = ArrayList(it)
+                    savedPlaces.value = places
+                    fetchWeather(places)
+                }, { Timber.e(it) })
+
+        disposables.add(disposable)
+    }
+
+    private fun fetchWeather(places: ArrayList<SavedPlace>) {
+        val disposable = Observable.fromIterable(places)
+                .flatMap {
+                    val latLng = "${it.latLng?.latitude},${it.latLng?.longitude}"
+                    forecastRepository.getForecast(latLng, it.placeId)
+                }
+                .subscribeOn(rxSchedulers.network)
+                .observeOn(rxSchedulers.main)
+                .subscribe({
+                    RxBus.getInstance().send(WeatherEvent(it.tag!!, it.currently))
+
+                }, { Timber.e(it) })
+
+        disposables.add(disposable)
+    }
 }

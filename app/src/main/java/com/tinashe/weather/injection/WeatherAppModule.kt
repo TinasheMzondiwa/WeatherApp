@@ -1,10 +1,10 @@
 package com.tinashe.weather.injection
 
-import android.arch.persistence.room.Room
 import android.content.Context
 import com.tinashe.weather.WeatherApp
 import com.tinashe.weather.db.WeatherAppDb
 import com.tinashe.weather.db.dao.LocationDao
+import com.tinashe.weather.db.dao.PlacesDao
 import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.repository.ForecastRepositoryImpl
 import com.tinashe.weather.retrofit.RestClient
@@ -36,14 +36,15 @@ internal class WeatherAppModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(context: Context): WeatherAppDb = Room.databaseBuilder(context,
-            WeatherAppDb::class.java, WeatherAppDb.DATABASE_NAME)
-            .fallbackToDestructiveMigration()
-            .build()
+    fun provideDatabase(context: Context): WeatherAppDb = WeatherAppDb.create(context)
 
     @Provides
     @Singleton
     fun provideLocationDao(database: WeatherAppDb): LocationDao = database.locationDao()
+
+    @Provides
+    @Singleton
+    fun providePlacesDao(database: WeatherAppDb): PlacesDao = database.placesDao()
 
     @Provides
     @Singleton

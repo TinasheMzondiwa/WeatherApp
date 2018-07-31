@@ -34,6 +34,14 @@ class ForecastRepositoryImpl constructor(private val context: Context,
         }
     }
 
+    override fun getForecast(latLong: String, tag: String): Observable<Forecast> {
+        return getForecast(latLong)
+                .flatMap {
+                    it.tag = tag
+                    Observable.just(it)
+                }
+    }
+
     override fun getDayForecast(latLongTime: String): Observable<Forecast> {
         return if (WeatherUtil.hasConnection(context)) {
             weatherApi.getTimeForecast(BuildConfig.API_SECRET, latLongTime)

@@ -7,5 +7,7 @@ interface ForecastRepository {
 
     fun getForecast(latLong: String): Observable<Forecast>
 
+    fun getForecast(latLong: String, tag: String): Observable<Forecast>
+
     fun getDayForecast(latLongTime: String) : Observable<Forecast>
 }

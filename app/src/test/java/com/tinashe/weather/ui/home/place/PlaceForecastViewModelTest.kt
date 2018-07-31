@@ -2,6 +2,7 @@ package com.tinashe.weather.ui.home.place
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.location.places.GeoDataClient
+import com.tinashe.weather.db.dao.PlacesDao
 import com.tinashe.weather.mock
 import com.tinashe.weather.model.Forecast
 import com.tinashe.weather.repository.ForecastRepository
@@ -22,8 +23,9 @@ class PlaceForecastViewModelTest {
     private val mockRepository = mock<ForecastRepository>()
     private val mockForecast = mock<Forecast>()
     private val mockGeoDataClient = mock<GeoDataClient>()
+    private val mockPlacesDao = mock<PlacesDao>()
 
-    private val viewModel by lazy { PlaceForecastViewModel(mockSchedulers, mockRepository) }
+    private val viewModel by lazy { PlaceForecastViewModel(mockSchedulers, mockRepository, mockPlacesDao) }
 
     private val placeId: String = "place_id"
 

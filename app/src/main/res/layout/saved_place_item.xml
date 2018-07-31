@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="180dp"
+    android:layout_height="150dp"
+    android:layout_marginEnd="@dimen/spacing_list"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/theme"
+    app:cardCornerRadius="@dimen/spacing_normal"
+    app:cardElevation="6dp">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/placeImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/blank"
+            android:foreground="@color/scrim"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <TextView
+                android:id="@+id/placeName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="@font/sans_regular"
+                android:maxLines="2"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="Cape Town" />
+
+            <ImageView
+                android:id="@+id/placeIcon"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/blank"
+                android:tint="@android:color/white"
+                tools:src="@drawable/cloud_drizzle" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/placeTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_medium"
+            android:fontFamily="@font/sans_bold"
+            android:textColor="@android:color/white"
+            android:textSize="34sp"
+            tools:text="30&#176;" />
+
+        <TextView
+            android:id="@+id/placeSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:ellipsize="end"
+            android:fontFamily="@font/sans_regular"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/spacing_normal"
+            android:textColor="#95FFFFFF"
+            android:textSize="@dimen/text_size_small"
+            tools:text="Cloudy" />
+
+
+    </FrameLayout>
+
+</android.support.design.card.MaterialCardView>
