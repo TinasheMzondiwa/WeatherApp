@@ -256,9 +256,14 @@ class HomeActivity : BillingAwareActivity() {
         mGeoDataClient?.getPlacePhotos(placeId)
                 ?.addOnCompleteListener {
 
-                    val photoMetadata = it.result.photoMetadata.first()
+                    val response = it.result.photoMetadata
 
-                    mGeoDataClient?.getPhoto(photoMetadata)
+                    if (response.count == 0) {
+                        response.release()
+                        return@addOnCompleteListener
+                    }
+
+                    mGeoDataClient?.getPhoto(response.first())
                             ?.addOnCompleteListener {
                                 val photo = it.result.bitmap
                                 BitmapCache.getInstance().add(placeId, photo)
@@ -266,7 +271,7 @@ class HomeActivity : BillingAwareActivity() {
                                 RxBus.getInstance().send(PhotoEvent(placeId, photo))
                             }
 
-                    it.result.photoMetadata.release()
+                    response.release()
                 }
     }
 
