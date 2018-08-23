@@ -31,7 +31,7 @@ class DayHolder constructor(override val containerView: View) :
 
         if (unit == TemperatureUnit.FAHRENHEIT) {
             min = entry.temperatureMin.toFahrenheit()
-            max = entry.temperatureMin.toFahrenheit()
+            max = entry.temperatureHigh.toFahrenheit()
         }
 
 
