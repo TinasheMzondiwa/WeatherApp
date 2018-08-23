@@ -32,6 +32,7 @@ import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.ui.splash.SplashActivity
 import com.tinashe.weather.utils.*
+import com.tinashe.weather.utils.prefs.AppPrefs
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
 import timber.log.Timber
@@ -42,6 +43,9 @@ class HomeActivity : BillingAwareActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var prefs: AppPrefs
 
     private lateinit var viewModel: HomeViewModel
 
@@ -63,9 +67,9 @@ class HomeActivity : BillingAwareActivity() {
 
         viewModel = getViewModel(this, viewModelFactory)
 
-        viewModel.viewState.observe(this, Observer {
+        viewModel.viewState.observe(this, Observer { data ->
 
-            it?.let {
+            data?.let { it ->
                 when (it.state) {
                     ViewState.LOADING -> {
                         refreshLayout.isRefreshing = true
@@ -80,13 +84,13 @@ class HomeActivity : BillingAwareActivity() {
                         refreshLayout.isRefreshing = false
                         progressBar.hide()
 
-                        it.errorMessage?.let {
-                            errorMessage.text = it
+                        it.errorMessage?.let { msg ->
+                            errorMessage.text = msg
 
                             if (dataAdapter.itemCount == 0) {
                                 errorMessage.show()
                             } else {
-                                Snackbar.make(errorMessage, it, Snackbar.LENGTH_INDEFINITE)
+                                Snackbar.make(errorMessage, msg, Snackbar.LENGTH_INDEFINITE)
                                         .setAction(android.R.string.ok) { }
                                         .setActionTextColor(Color.YELLOW)
                                         .show()
@@ -106,8 +110,8 @@ class HomeActivity : BillingAwareActivity() {
             }
         })
 
-        viewModel.latestForecast.observe(this, Observer {
-            it?.let {
+        viewModel.latestForecast.observe(this, Observer { forecast ->
+            forecast?.let {
                 currentName.text = it.currently.location
 
                 val animate = dataAdapter.itemCount == 0
@@ -124,8 +128,8 @@ class HomeActivity : BillingAwareActivity() {
             }
         })
 
-        viewModel.savedPlaces.observe(this, Observer {
-            it?.let {
+        viewModel.savedPlaces.observe(this, Observer { places ->
+            places?.let {
                 dataAdapter.savedPlaces = it
 
                 it.map { getPhoto(it.placeId) }
@@ -181,6 +185,9 @@ class HomeActivity : BillingAwareActivity() {
     override fun onStart() {
         super.onStart()
         if (ActivityCompat.checkSelfPermission(this, LOC_PERM) == PackageManager.PERMISSION_GRANTED) {
+
+            dataAdapter.temperatureUnit = prefs.getTemperatureUnit()
+
             val fusedLocationClient: FusedLocationProviderClient =
                     LocationServices.getFusedLocationProviderClient(this)
             fusedLocationClient.lastLocation.addOnSuccessListener {
@@ -254,9 +261,9 @@ class HomeActivity : BillingAwareActivity() {
         }
 
         mGeoDataClient?.getPlacePhotos(placeId)
-                ?.addOnCompleteListener {
+                ?.addOnCompleteListener { task ->
 
-                    val response = it.result.photoMetadata
+                    val response = task.result.photoMetadata
 
                     if (response.count == 0) {
                         response.release()

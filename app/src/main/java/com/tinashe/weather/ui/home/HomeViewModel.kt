@@ -2,7 +2,6 @@ package com.tinashe.weather.ui.home
 
 import android.arch.lifecycle.MutableLiveData
 import android.location.Location
-import com.crashlytics.android.Crashlytics
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.db.dao.PlacesDao
 import com.tinashe.weather.model.*
@@ -67,11 +66,11 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
         currentLocation.value?.let {
 
             if (!prefs.hasPremium() && latestForecast.value != null) {
-                latestForecast.value?.let {
+                latestForecast.value?.let { forecast ->
                     viewState.value = ViewStateData(ViewState.SUCCESS)
-                    it.currently.location = currentLocation.value?.name ?: ""
+                    forecast.currently.location = currentLocation.value?.name ?: ""
 
-                    latestForecast.value = it
+                    latestForecast.value = forecast
                 }
 
                 promotePremium.value = showPromo()
@@ -98,11 +97,6 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
 
                     }, {
                         Timber.e(it, it.message)
-                        try {
-                            Crashlytics.logException(it)
-                        } catch (ex: Exception) {
-                            //Unit tests fail when Crashlytics is called
-                        }
 
                         it.message?.let {
                             viewState.value = ViewStateData(ViewState.ERROR, it)

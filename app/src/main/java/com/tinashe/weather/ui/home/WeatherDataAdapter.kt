@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.Forecast
 import com.tinashe.weather.model.SavedPlace
+import com.tinashe.weather.model.TemperatureUnit
 import com.tinashe.weather.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.vh.AttributionHolder
 import com.tinashe.weather.ui.home.vh.CurrentDayHolder
@@ -25,6 +26,9 @@ class WeatherDataAdapter constructor(private val onDayClick: (Entry) -> Unit) : 
     private var daily: List<Entry> = mutableListOf()
 
     private val disposables = CompositeDisposable()
+
+    @TemperatureUnit
+    var temperatureUnit: String = TemperatureUnit.CELSIUS
 
     init {
         val weather = RxBus.getInstance().toObservable(WeatherEvent::class.java)
@@ -104,21 +108,21 @@ class WeatherDataAdapter constructor(private val onDayClick: (Entry) -> Unit) : 
 
         when (holder) {
             is CurrentDayHolder -> forecast?.let {
-                holder.bind(it.currently, it.hourly)
+                holder.bind(it.currently, it.hourly, temperatureUnit)
             }
             is DayHolder -> {
                 val dayPos = position - 1
 
                 if (dayPos == 0) {
-                    holder.bind(daily[dayPos])
+                    holder.bind(daily[dayPos], temperatureUnit)
                 } else {
-                    holder.bind(daily[dayPos], onClick = {
+                    holder.bind(daily[dayPos], temperatureUnit, onClick = {
                         onDayClick.invoke(it)
                     })
                 }
             }
             is AttributionHolder -> holder.bind()
-            is SavedPlacesHolder -> holder.bind(savedPlaces)
+            is SavedPlacesHolder -> holder.bind(savedPlaces, temperatureUnit)
         }
     }
 

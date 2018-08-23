@@ -9,10 +9,14 @@
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/secondary</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/Theme.PopupMenu.Large</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/Theme.PopupMenu.Small</item>
     </style>
 
     <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/BottomSheet</item>
     </style>
+
+    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Dialog.Alert"/>
 </resources>

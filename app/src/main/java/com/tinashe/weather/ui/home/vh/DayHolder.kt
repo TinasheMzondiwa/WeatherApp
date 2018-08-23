@@ -6,8 +6,10 @@ import android.view.ViewGroup
 import com.tinashe.weather.R
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
+import com.tinashe.weather.model.TemperatureUnit
 import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.inflateView
+import com.tinashe.weather.utils.toFahrenheit
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_data_day_item.*
 
@@ -18,14 +20,23 @@ import kotlinx.android.synthetic.main.weather_data_day_item.*
 class DayHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(entry: Entry, onClick: ((Entry) -> Unit)? = null) {
+    fun bind(entry: Entry, @TemperatureUnit unit: String, onClick: ((Entry) -> Unit)? = null) {
         val context = itemView.context
 
         dayDate.text = DateUtil.getFormattedDate(entry.time, DateFormat.DAY, entry.timeZone)
         daySummary.text = entry.summary
 
-        tempMin.text = context.getString(R.string.degrees, entry.temperatureMin.toInt())
-        tempMax.text = context.getString(R.string.degrees, entry.temperatureHigh.toInt())
+        var min = entry.temperatureMin
+        var max = entry.temperatureHigh
+
+        if (unit == TemperatureUnit.FAHRENHEIT) {
+            min = entry.temperatureMin.toFahrenheit()
+            max = entry.temperatureMin.toFahrenheit()
+        }
+
+
+        tempMin.text = context.getString(R.string.degrees, min.toInt())
+        tempMax.text = context.getString(R.string.degrees, max.toInt())
 
         itemView.setOnClickListener { onClick?.invoke(entry) }
     }

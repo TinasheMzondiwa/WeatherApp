@@ -58,8 +58,12 @@ fun String.containsEither(vararg others: String): Boolean {
     return false
 }
 
-fun Drawable.tint(color: Int){
+fun Drawable.tint(color: Int) {
     DrawableCompat.wrap(this)
     DrawableCompat.setTint(this, color)
     DrawableCompat.unwrap<Drawable>(this)
+}
+
+fun Double.toFahrenheit(): Double {
+    return ((this * 9) / 5) + 32
 }

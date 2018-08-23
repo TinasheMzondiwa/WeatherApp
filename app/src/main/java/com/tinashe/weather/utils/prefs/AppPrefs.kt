@@ -1,5 +1,7 @@
 package com.tinashe.weather.utils.prefs
 
+import com.tinashe.weather.model.TemperatureUnit
+
 interface AppPrefs {
 
     fun getLastPromoShown(): Long
@@ -9,4 +11,9 @@ interface AppPrefs {
     fun hasPremium(): Boolean
 
     fun setHasPremium()
+
+    @TemperatureUnit
+    fun getTemperatureUnit(): String
+
+    fun setTemperatureUnit(@TemperatureUnit unit: String)
 }

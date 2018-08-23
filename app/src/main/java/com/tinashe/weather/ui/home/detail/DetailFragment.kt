@@ -14,6 +14,7 @@ import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
 import com.tinashe.weather.utils.*
+import com.tinashe.weather.utils.prefs.AppPrefs
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import javax.inject.Inject
@@ -26,6 +27,9 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var prefs: AppPrefs
 
     private val hoursAdapter: HoursAdapter = HoursAdapter()
 
@@ -75,6 +79,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
             }
         })
 
+        hoursAdapter.temperatureUnit = prefs.getTemperatureUnit()
         contentView.listView.apply {
             horizontal()
             adapter = hoursAdapter

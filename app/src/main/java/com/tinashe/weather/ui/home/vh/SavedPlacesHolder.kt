@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.tinashe.weather.R
 import com.tinashe.weather.model.SavedPlace
+import com.tinashe.weather.model.TemperatureUnit
 import com.tinashe.weather.model.event.PhotoEvent
 import com.tinashe.weather.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
@@ -20,14 +21,15 @@ import timber.log.Timber
 class SavedPlacesHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(places: ArrayList<SavedPlace>) {
+    fun bind(places: ArrayList<SavedPlace>, @TemperatureUnit unit: String) {
         placesList.apply {
             horizontal()
-            adapter = PlacesAdapter(places)
+            adapter = PlacesAdapter(places, unit)
         }
     }
 
-    class PlacesAdapter constructor(private val places: ArrayList<SavedPlace>) : RecyclerView.Adapter<PlaceHolder>() {
+    class PlacesAdapter constructor(private val places: ArrayList<SavedPlace>,
+                                    @TemperatureUnit private val unit: String) : RecyclerView.Adapter<PlaceHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, p1: Int): PlaceHolder {
             return PlaceHolder.inflate(parent)
         }
@@ -35,7 +37,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
         override fun getItemCount(): Int = places.size
 
         override fun onBindViewHolder(holder: PlaceHolder, p: Int) {
-            holder.bind(places[p])
+            holder.bind(places[p], unit)
         }
     }
 
@@ -79,14 +81,19 @@ class SavedPlacesHolder constructor(override val containerView: View) :
             disposables.addAll(weather, photo)
         }
 
-        fun bind(place: SavedPlace) {
+        fun bind(place: SavedPlace, @TemperatureUnit unit: String) {
             this.place = place
 
             placeName.text = place.name
             place.entry?.let {
                 placeIcon.setImageResource(WeatherUtil.getIconRes(it.icon))
 
-                placeTemp.text = itemView.context.getString(R.string.degrees, it.temperature.toInt())
+                val temp = when (unit) {
+                    TemperatureUnit.FAHRENHEIT -> it.temperature.toFahrenheit()
+                    else -> it.temperature
+                }
+
+                placeTemp.text = itemView.context.getString(R.string.degrees, temp.toInt())
                 placeSummary.text = it.summary
             }
 

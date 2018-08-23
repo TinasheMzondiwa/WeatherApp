@@ -8,7 +8,7 @@ buildscript {
             'arch_comp'      : '1.1.1',
             'arch_lifecycle' : '1.1.1',
             'dagger'         : '2.16',
-            'kotlin'         : '1.2.60',
+            'kotlin'         : '1.2.61',
             'rx_java'        : '2.1.5',
             'rx_android'     : '2.0.2',
             'glide'          : '4.1.1',

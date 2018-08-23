@@ -3,6 +3,7 @@ package com.tinashe.weather.utils.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.tinashe.weather.model.TemperatureUnit
 
 class AppPrefsImpl constructor(context: Context) : AppPrefs {
 
@@ -26,8 +27,20 @@ class AppPrefsImpl constructor(context: Context) : AppPrefs {
                 .apply()
     }
 
+    @TemperatureUnit
+    override fun getTemperatureUnit(): String {
+        return prefs.getString(KEY_TEMP_UNIT, TemperatureUnit.CELSIUS) ?: TemperatureUnit.CELSIUS
+    }
+
+    override fun setTemperatureUnit(@TemperatureUnit unit: String) {
+        prefs.edit()
+                .putString(KEY_TEMP_UNIT, unit)
+                .apply()
+    }
+
     companion object {
         private const val KEY_PROMO_LAST_SHOWN = "KEY_PROMO_LAST_SHOWN"
         private const val KEY_HAS_PREMIUM = "KEY_HAS_PREMIUM"
+        private const val KEY_TEMP_UNIT = "KEY_TEMP_UNIT"
     }
 }

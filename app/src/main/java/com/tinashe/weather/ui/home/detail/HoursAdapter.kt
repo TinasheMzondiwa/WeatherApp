@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import com.tinashe.weather.R
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
-import com.tinashe.weather.utils.DateUtil
-import com.tinashe.weather.utils.WeatherUtil
-import com.tinashe.weather.utils.inflateView
-import com.tinashe.weather.utils.tint
+import com.tinashe.weather.model.TemperatureUnit
+import com.tinashe.weather.utils.*
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_hour_item_detail.*
 import org.threeten.bp.Instant
@@ -19,6 +17,9 @@ import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
 
 class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
+
+    @TemperatureUnit
+    var temperatureUnit: String = TemperatureUnit.CELSIUS
 
     var entries = mutableListOf<Entry>()
         set(value) {
@@ -31,13 +32,13 @@ class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
     override fun getItemCount(): Int = entries.size
 
     override fun onBindViewHolder(holder: HourHolder, position: Int) {
-        holder.bind(entries[position])
+        holder.bind(entries[position], temperatureUnit)
     }
 
     class HourHolder constructor(override val containerView: View) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(entry: Entry) {
+        fun bind(entry: Entry, @TemperatureUnit unit: String) {
             val context = itemView.context
 
             val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))
@@ -54,7 +55,12 @@ class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
                 icon?.tint(Color.WHITE)
             }
             hourIcon.setImageDrawable(icon)
-            hourTemperature.text = context.getString(R.string.degrees, entry.temperature.toInt())
+
+            val temp = when (unit) {
+                TemperatureUnit.FAHRENHEIT -> entry.temperature.toFahrenheit()
+                else -> entry.temperature
+            }
+            hourTemperature.text = context.getString(R.string.degrees, temp.toInt())
         }
 
         companion object {

@@ -6,9 +6,11 @@ import android.view.ViewGroup
 import com.tinashe.weather.R
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
+import com.tinashe.weather.model.TemperatureUnit
 import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.inflateView
+import com.tinashe.weather.utils.toFahrenheit
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_hour_item.*
 import org.threeten.bp.Instant
@@ -21,7 +23,7 @@ import org.threeten.bp.ZoneId
 class HourHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(entry: Entry) {
+    fun bind(entry: Entry, @TemperatureUnit unit: String) {
         val context = itemView.context
 
         val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))
@@ -34,7 +36,13 @@ class HourHolder constructor(override val containerView: View) :
         }
 
         hourIcon.setImageDrawable(WeatherUtil.getIcon(context, entry.icon))
-        hourTemperature.text = context.getString(R.string.degrees, entry.temperature.toInt())
+
+        val temp = when (unit) {
+            TemperatureUnit.FAHRENHEIT -> entry.temperature.toFahrenheit()
+            else -> entry.temperature
+        }
+
+        hourTemperature.text = context.getString(R.string.degrees, temp.toInt())
     }
 
     companion object {

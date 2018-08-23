@@ -7,12 +7,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withC
 import com.tinashe.weather.R
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry
+import com.tinashe.weather.model.TemperatureUnit
 import com.tinashe.weather.model.WeatherData
-import com.tinashe.weather.utils.DateUtil
-import com.tinashe.weather.utils.WeatherUtil
+import com.tinashe.weather.utils.*
 import com.tinashe.weather.utils.glide.GlideApp
-import com.tinashe.weather.utils.horizontal
-import com.tinashe.weather.utils.inflateView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_curr_day_item.*
 
@@ -24,8 +22,9 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     private val hoursAdapter: HoursAdapter = HoursAdapter()
 
-    fun bind(current: Entry, hourly: WeatherData) {
+    fun bind(current: Entry, hourly: WeatherData, @TemperatureUnit unit: String) {
         val context = itemView.context
+        hoursAdapter.unit = unit
 
         GlideApp.with(context)
                 .load(WeatherUtil.getBackground(current))
@@ -38,7 +37,12 @@ class CurrentDayHolder constructor(override val containerView: View) :
         WeatherUtil.getIcon(itemView.context, current.icon)?.let {
             currentIcon.setImageDrawable(it)
         }
-        currentTemperature.text = context.getString(R.string.degrees, current.temperature.toInt())
+
+        val temp = when(unit){
+            TemperatureUnit.FAHRENHEIT -> current.temperature.toFahrenheit()
+            else -> current.temperature
+        }
+        currentTemperature.text = context.getString(R.string.degrees, temp.toInt())
         currentSummary.text = current.summary
 
         val animate = hoursAdapter.itemCount == 0
@@ -54,6 +58,9 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     class HoursAdapter : RecyclerView.Adapter<HourHolder>() {
 
+        @TemperatureUnit
+        var unit: String = TemperatureUnit.CELSIUS
+
         var entries = mutableListOf<Entry>()
             set(value) {
                 field = value
@@ -65,7 +72,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
         override fun getItemCount(): Int = entries.size
 
         override fun onBindViewHolder(holder: HourHolder, position: Int) {
-            holder.bind(entries[position])
+            holder.bind(entries[position], unit)
         }
 
     }
