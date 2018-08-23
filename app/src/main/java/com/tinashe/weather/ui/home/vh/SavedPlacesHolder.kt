@@ -46,6 +46,8 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
         private val disposables = CompositeDisposable()
         private var place: SavedPlace? = null
+        @TemperatureUnit
+        private var unit: String = TemperatureUnit.CELSIUS
 
         init {
             val weather = RxBus.getInstance().toObservable(WeatherEvent::class.java)
@@ -57,7 +59,12 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
                             placeIcon.setImageResource(WeatherUtil.getIconRes(it.entry.icon))
 
-                            placeTemp.text = itemView.context.getString(R.string.degrees, it.entry.temperature.toInt())
+                            val temp = when (unit) {
+                                TemperatureUnit.FAHRENHEIT -> it.entry.temperature.toFahrenheit()
+                                else -> it.entry.temperature
+                            }
+
+                            placeTemp.text = itemView.context.getString(R.string.degrees, temp.toInt())
                             placeSummary.text = it.entry.summary
                         }
                     }, {
@@ -83,6 +90,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
         fun bind(place: SavedPlace, @TemperatureUnit unit: String) {
             this.place = place
+            this.unit = unit
 
             placeName.text = place.name
             place.entry?.let {

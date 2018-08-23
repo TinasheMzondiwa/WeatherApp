@@ -15,6 +15,7 @@ import com.tinashe.weather.ui.base.BaseThemedActivity
 import com.tinashe.weather.ui.home.WeatherDataAdapter
 import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.utils.getViewModel
+import com.tinashe.weather.utils.prefs.AppPrefs
 import com.tinashe.weather.utils.tint
 import com.tinashe.weather.utils.vertical
 import dagger.android.AndroidInjection
@@ -25,6 +26,9 @@ class PlaceForecastActivity : BaseThemedActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
+
+    @Inject
+    lateinit var prefs: AppPrefs
 
     private lateinit var viewModel: PlaceForecastViewModel
 
@@ -45,21 +49,21 @@ class PlaceForecastActivity : BaseThemedActivity() {
         initUi()
 
         viewModel = getViewModel(this, viewModelFactory)
-        viewModel.placeHolder.observe(this, Observer {
-            it?.let {
+        viewModel.placeHolder.observe(this, Observer { place ->
+            place?.let {
                 title = it.name
             } ?: finish()
         })
-        viewModel.forecast.observe(this, Observer {
-            it?.let {
+        viewModel.forecast.observe(this, Observer { forecast ->
+            forecast?.let {
                 dataAdapter.forecast = it
             }
         })
 
-        viewModel.viewState.observe(this, Observer {
-            it?.let {
-                it.errorMessage?.let {
-                    Snackbar.make(fab, it, Snackbar.LENGTH_SHORT)
+        viewModel.viewState.observe(this, Observer { state ->
+            state?.let { data ->
+                data.errorMessage?.let { msg ->
+                    Snackbar.make(fab, msg, Snackbar.LENGTH_SHORT)
                             .setAction(android.R.string.ok) { }
                             .setActionTextColor(Color.YELLOW)
                             .show()
@@ -67,8 +71,8 @@ class PlaceForecastActivity : BaseThemedActivity() {
             }
         })
 
-        viewModel.isBookmarked.observe(this, Observer {
-            it?.let {
+        viewModel.isBookmarked.observe(this, Observer { bookmarked ->
+            bookmarked?.let {
                 fab.setImageResource(when (it) {
                     true -> R.drawable.ic_bookmark
                     else -> R.drawable.bookmark_plus_outline
@@ -89,6 +93,7 @@ class PlaceForecastActivity : BaseThemedActivity() {
             val fragment = DetailFragment.view(it)
             fragment.show(supportFragmentManager, fragment.tag)
         }
+        dataAdapter.temperatureUnit = prefs.getTemperatureUnit()
 
         listView.apply {
             vertical()
