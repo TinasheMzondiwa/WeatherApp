@@ -16,6 +16,7 @@ import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.saved_place_item.*
 import kotlinx.android.synthetic.main.saved_places_item.*
 import timber.log.Timber
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 class SavedPlacesHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {

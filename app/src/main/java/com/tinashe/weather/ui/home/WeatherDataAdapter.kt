@@ -15,6 +15,7 @@ import com.tinashe.weather.utils.RxBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
+import io.reactivex.android.schedulers.AndroidSchedulers
 
 /**
  * Created by tinashe on 2018/03/21.
