@@ -46,7 +46,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
         contentView.entrySummary.text = entry.summary
 
         viewModel = getViewModel(this, viewModelFactory)
-        viewModel.hourlyData.observe(this, android.arch.lifecycle.Observer {
+        viewModel.hourlyData.observe(this, androidx.lifecycle.Observer {
             contentView.progressBar.hide()
 
             it?.let {
@@ -58,7 +58,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
             }
 
         })
-        viewModel.viewState.observe(this, android.arch.lifecycle.Observer {
+        viewModel.viewState.observe(this, androidx.lifecycle.Observer {
             it?.let {
                 when (it.state) {
                     ViewState.SUCCESS -> contentView.errorView.hide()

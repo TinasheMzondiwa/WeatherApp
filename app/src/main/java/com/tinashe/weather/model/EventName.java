@@ -1,9 +1,9 @@
 package com.tinashe.weather.model;
 
-import android.support.annotation.StringDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.StringDef;
 
 @StringDef({EventName.GET_FORECAST, EventName.GET_FORECAST_DETAIL})
 @Retention(RetentionPolicy.RUNTIME)

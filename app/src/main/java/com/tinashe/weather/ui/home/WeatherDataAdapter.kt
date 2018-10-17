@@ -1,7 +1,7 @@
 package com.tinashe.weather.ui.home
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.model.Entry
 import com.tinashe.weather.model.Forecast
 import com.tinashe.weather.model.SavedPlace

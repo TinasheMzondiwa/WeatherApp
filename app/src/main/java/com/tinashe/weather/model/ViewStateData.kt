@@ -1,6 +1,6 @@
 package com.tinashe.weather.model
 
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 
 class ViewStateData {
 

@@ -1,6 +1,6 @@
 package com.tinashe.weather.ui.home.place
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.crashlytics.android.Crashlytics
 import com.google.android.gms.location.places.GeoDataClient
 import com.google.android.gms.maps.model.LatLng
@@ -39,7 +39,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
 
         geoDataClient.getPlaceById(placeId).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                val places = task.result
+                val places = task.result ?: return@addOnCompleteListener
                 val place = SavedPlace(places.get(0))
                 placeHolder.value = place
                 subscribeToBookmark()
@@ -95,7 +95,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                 .subscribeOn(rxSchedulers.network)
                 .observeOn(rxSchedulers.main)
                 .doOnSubscribe { viewState.value = ViewStateData(ViewState.LOADING) }
-                .subscribe({
+                .subscribe({ it ->
                     viewState.value = ViewStateData(ViewState.SUCCESS)
 
                     it.currently.location = placeHolder.value?.name ?: ""
@@ -109,11 +109,11 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
 
                     forecast.value = it
 
-                }, {
-                    Timber.e(it, it.message)
-                    Crashlytics.logException(it)
+                }, { throwable ->
+                    Timber.e(throwable)
+                    Crashlytics.logException(throwable)
 
-                    it.message?.let {
+                    throwable.message?.let {
                         viewState.value = ViewStateData(ViewState.ERROR, it)
                     }
                 })

@@ -1,11 +1,11 @@
 package com.tinashe.weather.utils
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.tinashe.weather.mock
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.whenever
@@ -13,7 +13,7 @@ import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.*
+import org.mockito.ArgumentMatchers.anyInt
 import java.util.*
 
 class WeatherUtilsTest {

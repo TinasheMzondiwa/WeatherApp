@@ -1,7 +1,7 @@
 package com.tinashe.weather.ui.about
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
 import com.tinashe.weather.model.InfoItem

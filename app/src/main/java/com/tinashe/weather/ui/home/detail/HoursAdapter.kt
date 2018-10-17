@@ -2,9 +2,9 @@ package com.tinashe.weather.ui.home.detail
 
 import android.content.res.Configuration
 import android.graphics.Color
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
 import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.model.Entry

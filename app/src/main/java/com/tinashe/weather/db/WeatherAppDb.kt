@@ -1,10 +1,10 @@
 package com.tinashe.weather.db
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.Room
-import android.arch.persistence.room.RoomDatabase
-import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.db.dao.PlacesDao
 import com.tinashe.weather.model.CurrentLocation

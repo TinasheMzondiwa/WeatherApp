@@ -2,7 +2,7 @@ package com.tinashe.weather
 
 import android.app.Activity
 import android.app.Application
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
 import com.jakewharton.threetenabp.AndroidThreeTen
