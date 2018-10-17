@@ -1,7 +1,7 @@
 package com.tinashe.weather.ui.home
 
-import android.arch.lifecycle.MutableLiveData
 import android.location.Location
+import androidx.lifecycle.MutableLiveData
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.db.dao.PlacesDao
 import com.tinashe.weather.model.*

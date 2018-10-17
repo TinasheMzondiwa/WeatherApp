@@ -1,9 +1,9 @@
 package com.tinashe.weather.model;
 
-import android.support.annotation.StringDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.StringDef;
 
 @StringDef({TemperatureUnit.CELSIUS, TemperatureUnit.FAHRENHEIT})
 @Retention(RetentionPolicy.RUNTIME)

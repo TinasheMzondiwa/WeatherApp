@@ -5,8 +5,8 @@ import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.net.ConnectivityManager
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
 import com.tinashe.weather.model.Entry

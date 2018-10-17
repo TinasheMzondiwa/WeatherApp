@@ -15,7 +15,6 @@ import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
 import com.tinashe.weather.utils.*
 import com.tinashe.weather.utils.prefs.AppPrefs
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import javax.inject.Inject
 
@@ -46,7 +45,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
         contentView.entrySummary.text = entry.summary
 
         viewModel = getViewModel(this, viewModelFactory)
-        viewModel.hourlyData.observe(this, android.arch.lifecycle.Observer {
+        viewModel.hourlyData.observe(this, androidx.lifecycle.Observer {
             contentView.progressBar.hide()
 
             it?.let {
@@ -58,7 +57,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
             }
 
         })
-        viewModel.viewState.observe(this, android.arch.lifecycle.Observer {
+        viewModel.viewState.observe(this, androidx.lifecycle.Observer {
             it?.let {
                 when (it.state) {
                     ViewState.SUCCESS -> contentView.errorView.hide()

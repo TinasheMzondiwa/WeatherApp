@@ -2,9 +2,9 @@ package com.tinashe.weather.ui.about
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
 import com.tinashe.weather.model.InfoItem
 import com.tinashe.weather.utils.hide

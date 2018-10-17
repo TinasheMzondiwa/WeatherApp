@@ -1,7 +1,7 @@
 package com.tinashe.weather.injection
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.tinashe.weather.ui.about.AboutInfoViewModel
 import com.tinashe.weather.ui.home.HomeViewModel
 import com.tinashe.weather.ui.home.detail.DetailViewModel

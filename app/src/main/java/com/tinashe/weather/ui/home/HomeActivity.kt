@@ -2,18 +2,16 @@ package com.tinashe.weather.ui.home
 
 import android.Manifest
 import android.app.Activity
-import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import com.crashlytics.android.Crashlytics
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -22,6 +20,7 @@ import com.google.android.gms.location.places.AutocompleteFilter
 import com.google.android.gms.location.places.GeoDataClient
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
 import com.tinashe.weather.injection.ViewModelFactory
 import com.tinashe.weather.model.ViewState
@@ -129,10 +128,10 @@ class HomeActivity : BillingAwareActivity() {
         })
 
         viewModel.savedPlaces.observe(this, Observer { places ->
-            places?.let {
-                dataAdapter.savedPlaces = it
+            places?.let { list ->
+                dataAdapter.savedPlaces = list
 
-                it.map { getPhoto(it.placeId) }
+                list.map { getPhoto(it.placeId) }
             }
         })
 
@@ -263,7 +262,7 @@ class HomeActivity : BillingAwareActivity() {
         mGeoDataClient?.getPlacePhotos(placeId)
                 ?.addOnCompleteListener { task ->
 
-                    val response = task.result.photoMetadata
+                    val response = task.result?.photoMetadata ?: return@addOnCompleteListener
 
                     if (response.count == 0) {
                         response.release()
@@ -271,8 +270,8 @@ class HomeActivity : BillingAwareActivity() {
                     }
 
                     mGeoDataClient?.getPhoto(response.first())
-                            ?.addOnCompleteListener {
-                                val photo = it.result.bitmap
+                            ?.addOnCompleteListener { task ->
+                                val photo = task.result?.bitmap ?: return@addOnCompleteListener
                                 BitmapCache.getInstance().add(placeId, photo)
 
                                 RxBus.getInstance().send(PhotoEvent(placeId, photo))

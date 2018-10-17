@@ -1,6 +1,6 @@
 package com.tinashe.weather.ui.home.place
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.location.places.GeoDataClient
 import com.tinashe.weather.db.dao.PlacesDao
 import com.tinashe.weather.mock

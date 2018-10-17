@@ -1,8 +1,8 @@
 package com.tinashe.weather.ui.home.vh
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
 import com.tinashe.weather.model.SavedPlace
 import com.tinashe.weather.model.TemperatureUnit
@@ -10,7 +10,6 @@ import com.tinashe.weather.model.event.PhotoEvent
 import com.tinashe.weather.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.utils.*
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.extensions.LayoutContainer

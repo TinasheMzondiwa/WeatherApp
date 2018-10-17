@@ -2,8 +2,8 @@ package com.tinashe.weather.ui.base
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.design.widget.BottomSheetDialog
-import android.support.design.widget.BottomSheetDialogFragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tinashe.weather.R
 
 open class RoundedBottomSheetDialogFragment : BottomSheetDialogFragment() {

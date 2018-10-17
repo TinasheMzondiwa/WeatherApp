@@ -1,7 +1,7 @@
 package com.tinashe.weather.ui.splash
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.location.Location
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockito_kotlin.any
 import com.tinashe.weather.db.dao.LocationDao
 import com.tinashe.weather.mock
