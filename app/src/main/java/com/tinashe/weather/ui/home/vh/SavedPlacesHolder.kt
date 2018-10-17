@@ -10,7 +10,6 @@ import com.tinashe.weather.model.event.PhotoEvent
 import com.tinashe.weather.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.utils.*
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.extensions.LayoutContainer

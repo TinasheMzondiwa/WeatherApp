@@ -12,7 +12,6 @@ import com.tinashe.weather.ui.home.vh.CurrentDayHolder
 import com.tinashe.weather.ui.home.vh.DayHolder
 import com.tinashe.weather.ui.home.vh.SavedPlacesHolder
 import com.tinashe.weather.utils.RxBus
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber

@@ -15,7 +15,6 @@ import com.tinashe.weather.model.ViewState
 import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
 import com.tinashe.weather.utils.*
 import com.tinashe.weather.utils.prefs.AppPrefs
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import javax.inject.Inject
 
