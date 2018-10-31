@@ -271,8 +271,8 @@ class HomeActivity : BillingAwareActivity() {
                     }
 
                     mGeoDataClient?.getPhoto(response.first())
-                            ?.addOnCompleteListener { task ->
-                                val photo = task.result?.bitmap ?: return@addOnCompleteListener
+                            ?.addOnCompleteListener {
+                                val photo = it.result?.bitmap ?: return@addOnCompleteListener
                                 BitmapCache.getInstance().add(placeId, photo)
 
                                 RxBus.getInstance().send(PhotoEvent(placeId, photo))
