@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="windowBackground">#212121</color>
-    <color name="windowBackgroundDark">#50000000</color>
+    <color name="windowBackground">#101020</color>
+    <color name="windowBackgroundDark">@color/windowBackground</color>
 
     <color name="text">#FFFFFF</color>
     <color name="secondary">#70FFFFFF</color>
 
     <color name="icon_tint">#fff</color>
 
-    <color name="nav_background">#000000</color>
+    <color name="nav_background">@color/windowBackground</color>
     <color name="nav_divider">@color/windowBackground</color>
     <color name="divider">#424242</color>
 </resources>

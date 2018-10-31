@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/windowBackground</item>
         <item name="colorPrimaryDark">@color/windowBackgroundDark</item>
         <item name="colorAccent">@color/theme</item>
+        <item name="colorControlNormal">@color/theme</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/secondary</item>
@@ -22,6 +23,6 @@
         <item name="colorAccent">@color/windowBackground</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert"/>
+    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert" />
 
 </resources>

@@ -26,6 +26,7 @@
         android:layout_height="60dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/blank"
+        android:tint="@color/icon_tint"
         tools:src="@drawable/cloud_drizzle" />
 
 

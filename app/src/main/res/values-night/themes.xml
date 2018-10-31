@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/windowBackground</item>
         <item name="colorPrimaryDark">@color/windowBackgroundDark</item>
         <item name="colorAccent">@color/theme</item>
+        <item name="colorControlNormal">@android:color/white</item>
         <item name="android:windowBackground">@color/windowBackground</item>
         <item name="android:textColorPrimary">@color/text</item>
         <item name="android:textColorSecondary">@color/secondary</item>
@@ -16,7 +17,9 @@
     <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:textColorPrimary">@color/text</item>
+        <item name="android:textColorSecondary">@color/secondary</item>
     </style>
 
-    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Dialog.Alert"/>
+    <style name="AppTheme.Dialog" parent="Theme.MaterialComponents.Dialog.Alert" />
 </resources>

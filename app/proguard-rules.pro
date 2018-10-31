@@ -24,11 +24,6 @@
 -renamesourcefileattribute SourceFile
 -keepattributes *Annotation*,Signature,SourceFile,LineNumberTable
 
-# v7.** get obfuscated. eg. v7.internal.** and v7.widget.** cause errors if obfuscated.
--keep class android.support.v7.** { *; }
--keep interface android.support.v7.** { *; }
--keep class !android.support.v7.internal.view.menu.**,android.support.** {*;}
-
 ## Retrofit2
 -dontwarn retrofit2.**
 -keep class retrofit2.** { *; }

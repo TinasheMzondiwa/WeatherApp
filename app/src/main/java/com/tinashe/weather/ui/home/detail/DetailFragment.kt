@@ -58,9 +58,9 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
             }
 
         })
-        viewModel.viewState.observe(this, androidx.lifecycle.Observer {
-            it?.let {
-                when (it.state) {
+        viewModel.viewState.observe(this, androidx.lifecycle.Observer { data ->
+            data?.let { stateData ->
+                when (stateData.state) {
                     ViewState.SUCCESS -> contentView.errorView.hide()
                     ViewState.LOADING -> {
                         contentView.errorView.hide()
@@ -68,7 +68,7 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
                     }
                     ViewState.ERROR -> {
                         contentView.progressBar.hide()
-                        it.errorMessage?.let {
+                        stateData.errorMessage?.let {
                             contentView.errorView.text = it
                             contentView.errorView.show()
                         }

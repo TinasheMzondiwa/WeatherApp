@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="theme">#3B4254</color>
+    <color name="theme">#283060</color>
 
-    <color name="windowBackground">#f5f5f5</color>
-    <color name="windowBackgroundDark">#E0E0E0</color>
+    <color name="windowBackground">#F2F5FB</color>
+    <color name="windowBackgroundDark">#F2F5FB</color>
     <color name="text">@color/theme</color>
-    <color name="secondary">#703B4254</color>
+    <color name="secondary">#70212121</color>
 
-    <color name="icon_tint">#000</color>
+    <color name="icon_tint">#283060</color>
     <color name="nav_background">#000000</color>
     <color name="divider">#e0e0e0</color>
 

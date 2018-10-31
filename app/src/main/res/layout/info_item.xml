@@ -41,6 +41,7 @@
             android:fontFamily="@font/sans_regular"
             android:textColor="?android:textColorSecondary"
             android:textSize="@dimen/text_size_xsmall"
+            android:paddingTop="@dimen/spacing_micro"
             tools:text="@tools:sample/lorem" />
 
     </LinearLayout>
