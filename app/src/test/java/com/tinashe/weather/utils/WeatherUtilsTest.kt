@@ -6,8 +6,8 @@ import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.tinashe.weather.data.model.DateFormat
 import com.tinashe.weather.mock
-import com.tinashe.weather.model.DateFormat
 import com.tinashe.weather.whenever
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull

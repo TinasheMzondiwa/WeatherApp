@@ -2,20 +2,20 @@ package com.tinashe.weather.ui.home
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.Forecast
-import com.tinashe.weather.model.SavedPlace
-import com.tinashe.weather.model.TemperatureUnit
-import com.tinashe.weather.model.event.WeatherEvent
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.Forecast
+import com.tinashe.weather.data.model.SavedPlace
+import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.data.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.vh.AttributionHolder
 import com.tinashe.weather.ui.home.vh.CurrentDayHolder
 import com.tinashe.weather.ui.home.vh.DayHolder
 import com.tinashe.weather.ui.home.vh.SavedPlacesHolder
 import com.tinashe.weather.utils.RxBus
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 /**
  * Created by tinashe on 2018/03/21.
@@ -27,8 +27,7 @@ class WeatherDataAdapter constructor(private val onDayClick: (Entry) -> Unit) : 
 
     private val disposables = CompositeDisposable()
 
-    @TemperatureUnit
-    var temperatureUnit: String = TemperatureUnit.CELSIUS
+    var temperatureUnit: TemperatureUnit = TemperatureUnit.CELSIUS
 
     init {
         val weather = RxBus.getInstance().toObservable(WeatherEvent::class.java)

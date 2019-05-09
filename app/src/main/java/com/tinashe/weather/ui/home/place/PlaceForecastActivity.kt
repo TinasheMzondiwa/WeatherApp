@@ -2,7 +2,6 @@ package com.tinashe.weather.ui.home.place
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.places.Places
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
+import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.ui.base.BaseThemedActivity
 import com.tinashe.weather.ui.home.WeatherDataAdapter
 import com.tinashe.weather.ui.home.detail.DetailFragment
@@ -62,10 +61,9 @@ class PlaceForecastActivity : BaseThemedActivity() {
 
         viewModel.viewState.observe(this, Observer { state ->
             state?.let { data ->
-                data.errorMessage?.let { msg ->
+                data.message?.let { msg ->
                     Snackbar.make(fab, msg, Snackbar.LENGTH_SHORT)
                             .setAction(android.R.string.ok) { }
-                            .setActionTextColor(Color.YELLOW)
                             .show()
                 }
             }

@@ -3,12 +3,14 @@
 buildscript {
     // Define Versions in a single place
     ext.versions = [
-            'androidx'       : '1.0.0',
-            'dagger'         : '2.19',
-            'kotlin'         : '1.3.0',
+            'appcompat'      : '1.1.0-alpha05',
+            'material'       : '1.1.0-alpha06',
+            'room'           : '2.1.0-beta01',
+            'dagger'         : '2.22.1',
+            'kotlin'         : '1.3.31',
             'rx_java'        : '2.1.5',
-            'rx_android'     : '2.0.2',
-            'glide'          : '4.1.1',
+            'rx_android'     : '2.1.0',
+            'glide'          : '4.8.0',
             'retrofit'       : '2.3.0',
             'okhttp3'        : '3.8.1',
             'timber'         : '4.7.1',
@@ -22,11 +24,9 @@ buildscript {
         maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.4.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
-        classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'com.android.tools.build.jetifier:jetifier-processor:1.0.0-beta02'
     }
 }
 
@@ -34,7 +34,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://maven.fabric.io/public' }
     }
 }
 

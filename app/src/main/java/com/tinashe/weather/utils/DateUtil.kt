@@ -1,6 +1,6 @@
 package com.tinashe.weather.utils
 
-import com.tinashe.weather.model.DateFormat
+import com.tinashe.weather.data.model.DateFormat
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -13,16 +13,16 @@ import java.util.*
  */
 object DateUtil {
 
-    fun getFormattedDate(date: Date, @DateFormat dateType: String): String {
+    fun getFormattedDate(date: Date, format: DateFormat): String {
 
-        val simpleDateFormat = SimpleDateFormat(dateType, Locale.getDefault())
+        val simpleDateFormat = SimpleDateFormat(format.value, Locale.getDefault())
         return simpleDateFormat.format(date)
     }
 
-    fun getFormattedDate(time: Long, @DateFormat dateType: String, timeZone: String): String {
+    fun getFormattedDate(time: Long, format: DateFormat, timeZone: String): String {
 
         val localDateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(time), ZoneId.of(timeZone))
-        return localDateTime.format(DateTimeFormatter.ofPattern(dateType))
+        return localDateTime.format(DateTimeFormatter.ofPattern(format.value))
     }
 
 }

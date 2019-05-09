@@ -6,8 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
-import com.tinashe.weather.model.TemperatureUnit
+import com.tinashe.weather.data.di.ViewModelFactory
+import com.tinashe.weather.data.model.TemperatureUnit
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.utils.getViewModel
 import com.tinashe.weather.utils.prefs.AppPrefs

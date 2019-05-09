@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -22,9 +21,9 @@ import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
-import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.model.event.PhotoEvent
+import com.tinashe.weather.data.di.ViewModelFactory
+import com.tinashe.weather.data.model.ViewState
+import com.tinashe.weather.data.model.event.PhotoEvent
 import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
@@ -36,7 +35,6 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
 import timber.log.Timber
 import javax.inject.Inject
-import com.crashlytics.android.Crashlytics
 
 
 class HomeActivity : BillingAwareActivity() {
@@ -84,7 +82,7 @@ class HomeActivity : BillingAwareActivity() {
                         refreshLayout.isRefreshing = false
                         progressBar.hide()
 
-                        it.errorMessage?.let { msg ->
+                        it.message?.let { msg ->
                             errorMessage.text = msg
 
                             if (dataAdapter.itemCount == 0) {
@@ -92,7 +90,6 @@ class HomeActivity : BillingAwareActivity() {
                             } else {
                                 Snackbar.make(errorMessage, msg, Snackbar.LENGTH_INDEFINITE)
                                         .setAction(android.R.string.ok) { }
-                                        .setActionTextColor(Color.YELLOW)
                                         .show()
                             }
                         }
@@ -103,8 +100,6 @@ class HomeActivity : BillingAwareActivity() {
                         refreshLayout.isRefreshing = false
                         progressBar.hide()
 
-                    }
-                    else -> {
                     }
                 }
             }
@@ -160,10 +155,8 @@ class HomeActivity : BillingAwareActivity() {
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
             } catch (e: GooglePlayServicesRepairableException) {
                 Timber.e(e)
-                Crashlytics.logException(e)
             } catch (e: GooglePlayServicesNotAvailableException) {
                 Timber.e(e)
-                Crashlytics.logException(e)
             }
         }
 
@@ -225,6 +218,8 @@ class HomeActivity : BillingAwareActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -256,7 +251,7 @@ class HomeActivity : BillingAwareActivity() {
             mGeoDataClient = Places.getGeoDataClient(this)
         }
 
-        if (BitmapCache.getInstance().exists(placeId)) {
+        if (BitmapCache.exists(placeId)) {
             return
         }
 
@@ -271,11 +266,14 @@ class HomeActivity : BillingAwareActivity() {
                     }
 
                     mGeoDataClient?.getPhoto(response.first())
-                            ?.addOnCompleteListener {
-                                val photo = it.result?.bitmap ?: return@addOnCompleteListener
-                                BitmapCache.getInstance().add(placeId, photo)
+                            ?.addOnCompleteListener { photoTask ->
 
-                                RxBus.getInstance().send(PhotoEvent(placeId, photo))
+                                photoTask.result?.bitmap?.let {
+                                    BitmapCache.add(placeId, it)
+
+                                    RxBus.getInstance().send(PhotoEvent(placeId, it))
+                                }
+
                             }
 
                     response.release()

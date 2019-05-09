@@ -2,11 +2,11 @@ package com.tinashe.weather.ui.home
 
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
-import com.tinashe.weather.db.dao.LocationDao
-import com.tinashe.weather.db.dao.PlacesDao
-import com.tinashe.weather.model.*
-import com.tinashe.weather.model.event.WeatherEvent
-import com.tinashe.weather.repository.ForecastRepository
+import com.tinashe.weather.data.db.dao.LocationDao
+import com.tinashe.weather.data.db.dao.PlacesDao
+import com.tinashe.weather.data.model.*
+import com.tinashe.weather.data.model.event.WeatherEvent
+import com.tinashe.weather.data.repository.ForecastRepository
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
 import com.tinashe.weather.utils.RxBus
@@ -155,7 +155,7 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
     private fun fetchWeather(places: ArrayList<SavedPlace>) {
         val disposable = Observable.fromIterable(places)
                 .flatMap {
-                    val latLng = "${it.latLng?.latitude},${it.latLng?.longitude}"
+                    val latLng = "${it.latLng.latitude},${it.latLng.longitude}"
                     forecastRepository.getForecast(latLng, it.placeId)
                 }
                 .subscribeOn(rxSchedulers.network)

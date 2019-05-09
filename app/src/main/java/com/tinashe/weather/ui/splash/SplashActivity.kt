@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
-import com.tinashe.weather.model.ViewState
+import com.tinashe.weather.data.di.ViewModelFactory
+import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.ui.home.HomeActivity
 import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.getViewModel

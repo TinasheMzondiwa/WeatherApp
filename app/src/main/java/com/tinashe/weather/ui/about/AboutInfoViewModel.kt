@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
-import com.tinashe.weather.model.InfoItem
+import com.tinashe.weather.data.model.InfoItem
 import javax.inject.Inject
 
 class AboutInfoViewModel @Inject constructor() : ViewModel() {
@@ -21,10 +21,6 @@ class AboutInfoViewModel @Inject constructor() : ViewModel() {
 
         item = InfoItem(R.drawable.ic_email, "E-mail")
         item.link = "mailto:tmzon08@gmail.com?subject=Lite Weather"
-        items.add(item)
-
-        item = InfoItem(R.drawable.google_plus, "Google+")
-        item.link = "https://plus.google.com/u/0/+TinasheMzondiwa"
         items.add(item)
 
         item = InfoItem(R.drawable.twitter, "Twitter")

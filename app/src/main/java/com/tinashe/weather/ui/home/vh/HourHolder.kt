@@ -4,9 +4,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
-import com.tinashe.weather.model.DateFormat
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.TemperatureUnit
+import com.tinashe.weather.data.model.DateFormat
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.TemperatureUnit
 import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.inflateView
@@ -23,7 +23,7 @@ import org.threeten.bp.ZoneId
 class HourHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(entry: Entry, @TemperatureUnit unit: String) {
+    fun bind(entry: Entry, unit: TemperatureUnit) {
         val context = itemView.context
 
         val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))

@@ -2,11 +2,11 @@ package com.tinashe.weather.ui.home.detail
 
 import android.location.Location
 import androidx.lifecycle.MutableLiveData
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.model.ViewStateData
-import com.tinashe.weather.model.WeatherData
-import com.tinashe.weather.repository.ForecastRepository
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.ViewState
+import com.tinashe.weather.data.model.ViewStateData
+import com.tinashe.weather.data.model.WeatherData
+import com.tinashe.weather.data.repository.ForecastRepository
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
 import com.tinashe.weather.utils.RxSchedulers

@@ -3,13 +3,13 @@ package com.tinashe.weather.ui.home
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockito_kotlin.verify
-import com.tinashe.weather.db.dao.LocationDao
-import com.tinashe.weather.db.dao.PlacesDao
+import com.tinashe.weather.data.db.dao.LocationDao
+import com.tinashe.weather.data.db.dao.PlacesDao
+import com.tinashe.weather.data.model.CurrentLocation
+import com.tinashe.weather.data.model.Forecast
+import com.tinashe.weather.data.model.ViewState
+import com.tinashe.weather.data.repository.ForecastRepository
 import com.tinashe.weather.mock
-import com.tinashe.weather.model.CurrentLocation
-import com.tinashe.weather.model.Forecast
-import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.utils.RxSchedulers
 import com.tinashe.weather.utils.prefs.AppPrefs
 import com.tinashe.weather.whenever
@@ -91,7 +91,7 @@ class HomeViewModelTest {
 
         verify(mockRepository).getForecast(latLong)
         assertEquals(ViewState.ERROR, viewModel.viewState.value?.state)
-        assertEquals(errorMsg, viewModel.viewState.value?.errorMessage)
+        assertEquals(errorMsg, viewModel.viewState.value?.message)
     }
 
 }

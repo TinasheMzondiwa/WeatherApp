@@ -3,16 +3,12 @@ package com.tinashe.weather
 import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.answers.Answers
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.tinashe.weather.injection.DaggerWeatherAppComponent
-import com.tinashe.weather.utils.CrashlyticsTree
+import com.tinashe.weather.data.di.DaggerWeatherAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.support.HasSupportFragmentInjector
-import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -33,27 +29,16 @@ class WeatherApp : Application(), HasActivityInjector, HasSupportFragmentInjecto
 
     override fun onCreate() {
         super.onCreate()
-        AppInjector.init(this)
-    }
 
-    object AppInjector {
-
-        fun init(app: WeatherApp) {
-
-            if (BuildConfig.DEBUG) {
-                Timber.plant(Timber.DebugTree())
-            } else {
-                Timber.plant(CrashlyticsTree())
-            }
-
-            Fabric.with(app, Crashlytics(), Answers())
-
-            DaggerWeatherAppComponent.builder()
-                    .application(app)
-                    .build()
-                    .inject(app)
-
-            AndroidThreeTen.init(app)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
+
+        DaggerWeatherAppComponent.builder()
+                .application(this)
+                .build()
+                .inject(this)
+
+        AndroidThreeTen.init(this)
     }
 }
