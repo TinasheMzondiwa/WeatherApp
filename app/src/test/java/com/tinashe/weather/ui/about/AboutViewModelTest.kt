@@ -18,7 +18,7 @@ class AboutViewModelTest {
     fun testInitState() {
 
         assertNotNull(viewModel)
-        assertNotNull(viewModel.infoItems)
-        assertEquals(5, viewModel.infoItems.value?.size)
+        assertNotNull(viewModel.infoItems.value)
+        assertEquals(4, viewModel.infoItems.value?.size)
     }
 }

@@ -2,10 +2,10 @@ package com.tinashe.weather.ui.home.place
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.android.gms.location.places.GeoDataClient
-import com.tinashe.weather.db.dao.PlacesDao
+import com.tinashe.weather.data.db.dao.PlacesDao
+import com.tinashe.weather.data.model.Forecast
+import com.tinashe.weather.data.repository.ForecastRepository
 import com.tinashe.weather.mock
-import com.tinashe.weather.model.Forecast
-import com.tinashe.weather.repository.ForecastRepository
 import com.tinashe.weather.utils.RxSchedulers
 import junit.framework.Assert.assertNotNull
 import org.junit.Before

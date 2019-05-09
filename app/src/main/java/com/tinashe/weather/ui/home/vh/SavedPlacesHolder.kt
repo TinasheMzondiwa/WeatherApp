@@ -4,24 +4,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
-import com.tinashe.weather.model.SavedPlace
-import com.tinashe.weather.model.TemperatureUnit
-import com.tinashe.weather.model.event.PhotoEvent
-import com.tinashe.weather.model.event.WeatherEvent
+import com.tinashe.weather.data.model.SavedPlace
+import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.data.model.event.PhotoEvent
+import com.tinashe.weather.data.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.utils.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.saved_place_item.*
 import kotlinx.android.synthetic.main.saved_places_item.*
 import timber.log.Timber
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class SavedPlacesHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(places: ArrayList<SavedPlace>, @TemperatureUnit unit: String) {
+    fun bind(places: ArrayList<SavedPlace>, unit: TemperatureUnit) {
         placesList.apply {
             horizontal()
             adapter = PlacesAdapter(places, unit)
@@ -29,7 +29,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
     }
 
     class PlacesAdapter constructor(private val places: ArrayList<SavedPlace>,
-                                    @TemperatureUnit private val unit: String) : RecyclerView.Adapter<PlaceHolder>() {
+                                    private val unit: TemperatureUnit) : RecyclerView.Adapter<PlaceHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, p1: Int): PlaceHolder {
             return PlaceHolder.inflate(parent)
         }
@@ -46,8 +46,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
         private val disposables = CompositeDisposable()
         private var place: SavedPlace? = null
-        @TemperatureUnit
-        private var unit: String = TemperatureUnit.CELSIUS
+        private var unit: TemperatureUnit = TemperatureUnit.CELSIUS
 
         init {
             val weather = RxBus.getInstance().toObservable(WeatherEvent::class.java)
@@ -78,7 +77,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
                         if (place?.placeId == it.placeId) {
                             place?.photo = it.photo
-                            placeImg.setImageBitmap(BitmapCache.getInstance().get(it.placeId))
+                            placeImg.setImageBitmap(BitmapCache.get(it.placeId))
                         }
 
                     }, {
@@ -88,7 +87,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
             disposables.addAll(weather, photo)
         }
 
-        fun bind(place: SavedPlace, @TemperatureUnit unit: String) {
+        fun bind(place: SavedPlace, unit: TemperatureUnit) {
             this.place = place
             this.unit = unit
 
@@ -105,8 +104,8 @@ class SavedPlacesHolder constructor(override val containerView: View) :
                 placeSummary.text = it.summary
             }
 
-            if (BitmapCache.getInstance().exists(place.placeId)) {
-                placeImg.setImageBitmap(BitmapCache.getInstance().get(place.placeId))
+            if (BitmapCache.exists(place.placeId)) {
+                placeImg.setImageBitmap(BitmapCache.get(place.placeId))
             } else {
                 place.photo?.let {
                     placeImg.setImageBitmap(it)

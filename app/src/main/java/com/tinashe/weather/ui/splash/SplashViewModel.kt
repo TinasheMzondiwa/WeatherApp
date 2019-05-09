@@ -1,10 +1,10 @@
 package com.tinashe.weather.ui.splash
 
 import android.location.Location
-import com.tinashe.weather.db.dao.LocationDao
-import com.tinashe.weather.model.CurrentLocation
-import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.model.ViewStateData
+import com.tinashe.weather.data.db.dao.LocationDao
+import com.tinashe.weather.data.model.CurrentLocation
+import com.tinashe.weather.data.model.ViewState
+import com.tinashe.weather.data.model.ViewStateData
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
 import com.tinashe.weather.utils.RxSchedulers
@@ -59,7 +59,7 @@ class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
                 it.latLong = latLong
                 it.name = area
 
-                val disposable = Completable.fromAction { locationDao.update(it) }
+                val disposable = locationDao.update(it)
                         .subscribeOn(rxSchedulers.database)
                         .observeOn(rxSchedulers.main)
                         .subscribe({ viewState.value = ViewStateData(ViewState.SUCCESS) },

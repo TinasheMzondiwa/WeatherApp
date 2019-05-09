@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
-import com.tinashe.weather.model.Entry
+import com.tinashe.weather.data.model.Entry
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId

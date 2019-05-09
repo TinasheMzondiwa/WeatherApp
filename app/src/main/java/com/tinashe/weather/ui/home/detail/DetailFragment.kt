@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
-import com.tinashe.weather.model.DateFormat
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.ViewState
+import com.tinashe.weather.data.di.ViewModelFactory
+import com.tinashe.weather.data.model.DateFormat
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
 import com.tinashe.weather.utils.*
 import com.tinashe.weather.utils.prefs.AppPrefs
@@ -68,12 +68,10 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
                     }
                     ViewState.ERROR -> {
                         contentView.progressBar.hide()
-                        stateData.errorMessage?.let {
+                        stateData.message?.let {
                             contentView.errorView.text = it
                             contentView.errorView.show()
                         }
-                    }
-                    else -> {
                     }
                 }
             }

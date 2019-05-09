@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.tinashe.weather.R
-import com.tinashe.weather.model.DateFormat
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.TemperatureUnit
-import com.tinashe.weather.model.WeatherData
+import com.tinashe.weather.data.model.DateFormat
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.data.model.WeatherData
 import com.tinashe.weather.utils.*
 import com.tinashe.weather.utils.glide.GlideApp
 import kotlinx.android.extensions.LayoutContainer
@@ -22,7 +22,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     private val hoursAdapter: HoursAdapter = HoursAdapter()
 
-    fun bind(current: Entry, hourly: WeatherData, @TemperatureUnit unit: String) {
+    fun bind(current: Entry, hourly: WeatherData, unit: TemperatureUnit) {
         val context = itemView.context
         hoursAdapter.unit = unit
 
@@ -58,8 +58,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     class HoursAdapter : RecyclerView.Adapter<HourHolder>() {
 
-        @TemperatureUnit
-        var unit: String = TemperatureUnit.CELSIUS
+        var unit: TemperatureUnit = TemperatureUnit.CELSIUS
 
         var entries = mutableListOf<Entry>()
             set(value) {

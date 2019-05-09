@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tinashe.weather.injection.ViewModelFactory
+import com.tinashe.weather.data.di.ViewModelFactory
 
 /**
  * Created by tinashe on 2018/03/20.
