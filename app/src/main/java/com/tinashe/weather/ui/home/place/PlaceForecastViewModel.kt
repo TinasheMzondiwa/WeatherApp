@@ -1,7 +1,6 @@
 package com.tinashe.weather.ui.home.place
 
 import androidx.lifecycle.MutableLiveData
-import com.crashlytics.android.Crashlytics
 import com.google.android.gms.location.places.GeoDataClient
 import com.google.android.gms.maps.model.LatLng
 import com.tinashe.weather.db.dao.PlacesDao
@@ -111,7 +110,6 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
 
                 }, { throwable ->
                     Timber.e(throwable)
-                    Crashlytics.logException(throwable)
 
                     throwable.message?.let {
                         viewState.value = ViewStateData(ViewState.ERROR, it)

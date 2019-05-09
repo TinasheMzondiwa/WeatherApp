@@ -36,7 +36,6 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
 import timber.log.Timber
 import javax.inject.Inject
-import com.crashlytics.android.Crashlytics
 
 
 class HomeActivity : BillingAwareActivity() {
@@ -160,10 +159,8 @@ class HomeActivity : BillingAwareActivity() {
                 startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
             } catch (e: GooglePlayServicesRepairableException) {
                 Timber.e(e)
-                Crashlytics.logException(e)
             } catch (e: GooglePlayServicesNotAvailableException) {
                 Timber.e(e)
-                Crashlytics.logException(e)
             }
         }
 
@@ -271,11 +268,14 @@ class HomeActivity : BillingAwareActivity() {
                     }
 
                     mGeoDataClient?.getPhoto(response.first())
-                            ?.addOnCompleteListener {
-                                val photo = it.result?.bitmap ?: return@addOnCompleteListener
-                                BitmapCache.getInstance().add(placeId, photo)
+                            ?.addOnCompleteListener { photoTask ->
 
-                                RxBus.getInstance().send(PhotoEvent(placeId, photo))
+                                photoTask.result?.bitmap?.let {
+                                    BitmapCache.getInstance().add(placeId, it)
+
+                                    RxBus.getInstance().send(PhotoEvent(placeId, it))
+                                }
+
                             }
 
                     response.release()

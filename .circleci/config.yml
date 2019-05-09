@@ -29,12 +29,6 @@ jobs:
       - store_artifacts:
           path: app/build/outputs/apk
           destination: apk
-      - deploy:
-          name: "Deploy to Fabric 🎉🎉"
-          filters:
-              branches:
-                only: master
-          command: ./gradlew assembleRelease crashlyticsUploadDistributionRelease
       - run:
           name: Run Tests
           command: ./gradlew lint test
