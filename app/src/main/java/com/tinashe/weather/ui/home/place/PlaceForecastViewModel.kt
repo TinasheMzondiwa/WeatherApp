@@ -12,7 +12,6 @@ import com.tinashe.weather.data.repository.ForecastRepository
 import com.tinashe.weather.ui.base.RxAwareViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
 import com.tinashe.weather.utils.RxSchedulers
-import io.reactivex.Completable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -69,7 +68,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
         val place = placeHolder.value ?: return
 
         val disposable = if (isBookmarked.value == true) {
-            Completable.fromAction { placesDao.delete(place) }
+            placesDao.delete(place)
                     .subscribeOn(rxSchedulers.database)
                     .observeOn(rxSchedulers.main)
                     .subscribe({
@@ -77,7 +76,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                         viewState.value = ViewStateData(ViewState.SUCCESS, "Removed from saved places")
                     }, { Timber.e(it) })
         } else {
-            Completable.fromAction { placesDao.insert(place) }
+           placesDao.insert(place)
                     .subscribeOn(rxSchedulers.database)
                     .observeOn(rxSchedulers.main)
                     .subscribe({

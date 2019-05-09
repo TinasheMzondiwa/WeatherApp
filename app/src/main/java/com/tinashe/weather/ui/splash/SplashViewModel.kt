@@ -59,7 +59,7 @@ class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
                 it.latLong = latLong
                 it.name = area
 
-                val disposable = Completable.fromAction { locationDao.update(it) }
+                val disposable = locationDao.update(it)
                         .subscribeOn(rxSchedulers.database)
                         .observeOn(rxSchedulers.main)
                         .subscribe({ viewState.value = ViewStateData(ViewState.SUCCESS) },
