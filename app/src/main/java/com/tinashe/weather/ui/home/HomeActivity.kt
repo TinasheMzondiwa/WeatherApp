@@ -22,9 +22,9 @@ import com.google.android.gms.location.places.Places
 import com.google.android.gms.location.places.ui.PlaceAutocomplete
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
-import com.tinashe.weather.model.ViewState
-import com.tinashe.weather.model.event.PhotoEvent
+import com.tinashe.weather.data.di.ViewModelFactory
+import com.tinashe.weather.data.model.ViewState
+import com.tinashe.weather.data.model.event.PhotoEvent
 import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
-import com.tinashe.weather.model.InfoItem
+import com.tinashe.weather.data.model.InfoItem
 import javax.inject.Inject
 
 class AboutInfoViewModel @Inject constructor() : ViewModel() {

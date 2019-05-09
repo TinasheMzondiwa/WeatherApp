@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.places.Places
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
-import com.tinashe.weather.injection.ViewModelFactory
+import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.ui.base.BaseThemedActivity
 import com.tinashe.weather.ui.home.WeatherDataAdapter
 import com.tinashe.weather.ui.home.detail.DetailFragment

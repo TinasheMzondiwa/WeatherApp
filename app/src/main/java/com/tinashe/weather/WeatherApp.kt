@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import androidx.fragment.app.Fragment
 import com.jakewharton.threetenabp.AndroidThreeTen
-import com.tinashe.weather.injection.DaggerWeatherAppComponent
+import com.tinashe.weather.data.di.DaggerWeatherAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -29,23 +29,16 @@ class WeatherApp : Application(), HasActivityInjector, HasSupportFragmentInjecto
 
     override fun onCreate() {
         super.onCreate()
-        AppInjector.init(this)
-    }
 
-    object AppInjector {
-
-        fun init(app: WeatherApp) {
-
-            if (BuildConfig.DEBUG) {
-                Timber.plant(Timber.DebugTree())
-            }
-
-            DaggerWeatherAppComponent.builder()
-                    .application(app)
-                    .build()
-                    .inject(app)
-
-            AndroidThreeTen.init(app)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
         }
+
+        DaggerWeatherAppComponent.builder()
+                .application(this)
+                .build()
+                .inject(this)
+
+        AndroidThreeTen.init(this)
     }
 }

@@ -4,19 +4,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
-import com.tinashe.weather.model.SavedPlace
-import com.tinashe.weather.model.TemperatureUnit
-import com.tinashe.weather.model.event.PhotoEvent
-import com.tinashe.weather.model.event.WeatherEvent
+import com.tinashe.weather.data.model.SavedPlace
+import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.data.model.event.PhotoEvent
+import com.tinashe.weather.data.model.event.WeatherEvent
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.utils.*
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.saved_place_item.*
 import kotlinx.android.synthetic.main.saved_places_item.*
 import timber.log.Timber
-import io.reactivex.android.schedulers.AndroidSchedulers
 
 class SavedPlacesHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {

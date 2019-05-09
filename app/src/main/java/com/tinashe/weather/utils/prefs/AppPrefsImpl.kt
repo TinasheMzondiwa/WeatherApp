@@ -3,7 +3,7 @@ package com.tinashe.weather.utils.prefs
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.tinashe.weather.model.TemperatureUnit
+import com.tinashe.weather.data.model.TemperatureUnit
 
 class AppPrefsImpl constructor(context: Context) : AppPrefs {
 

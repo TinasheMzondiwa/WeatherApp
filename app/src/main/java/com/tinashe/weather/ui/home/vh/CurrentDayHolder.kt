@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.tinashe.weather.R
-import com.tinashe.weather.model.DateFormat
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.TemperatureUnit
-import com.tinashe.weather.model.WeatherData
+import com.tinashe.weather.data.model.DateFormat
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.data.model.WeatherData
 import com.tinashe.weather.utils.*
 import com.tinashe.weather.utils.glide.GlideApp
 import kotlinx.android.extensions.LayoutContainer

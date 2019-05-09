@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
-import com.tinashe.weather.model.DateFormat
-import com.tinashe.weather.model.Entry
-import com.tinashe.weather.model.TemperatureUnit
+import com.tinashe.weather.data.model.DateFormat
+import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.TemperatureUnit
 import com.tinashe.weather.utils.*
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_hour_item_detail.*

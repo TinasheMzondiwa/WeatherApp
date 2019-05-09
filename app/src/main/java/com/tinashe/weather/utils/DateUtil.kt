@@ -1,6 +1,6 @@
 package com.tinashe.weather.utils
 
-import com.tinashe.weather.model.DateFormat
+import com.tinashe.weather.data.model.DateFormat
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId

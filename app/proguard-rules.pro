@@ -52,7 +52,7 @@
 ## Dagger
 -dontwarn com.google.errorprone.annotations.*
 
--keep class com.tinashe.weather.model.** { *; }
+-keep class com.tinashe.weather.data.model.** { *; }
 
 ## Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -62,5 +62,5 @@
   public *;
  }
 
- ## Billing
- -keep class com.android.vending.billing.**
+## Billing
+-keep class com.android.vending.billing.**
