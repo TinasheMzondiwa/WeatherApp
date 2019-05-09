@@ -220,6 +220,8 @@ class HomeActivity : BillingAwareActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             when (resultCode) {
                 Activity.RESULT_OK -> {
@@ -251,7 +253,7 @@ class HomeActivity : BillingAwareActivity() {
             mGeoDataClient = Places.getGeoDataClient(this)
         }
 
-        if (BitmapCache.getInstance().exists(placeId)) {
+        if (BitmapCache.exists(placeId)) {
             return
         }
 
@@ -269,7 +271,7 @@ class HomeActivity : BillingAwareActivity() {
                             ?.addOnCompleteListener { photoTask ->
 
                                 photoTask.result?.bitmap?.let {
-                                    BitmapCache.getInstance().add(placeId, it)
+                                    BitmapCache.add(placeId, it)
 
                                     RxBus.getInstance().send(PhotoEvent(placeId, it))
                                 }

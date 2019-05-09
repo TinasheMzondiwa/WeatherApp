@@ -77,7 +77,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
                         if (place?.placeId == it.placeId) {
                             place?.photo = it.photo
-                            placeImg.setImageBitmap(BitmapCache.getInstance().get(it.placeId))
+                            placeImg.setImageBitmap(BitmapCache.get(it.placeId))
                         }
 
                     }, {
@@ -104,8 +104,8 @@ class SavedPlacesHolder constructor(override val containerView: View) :
                 placeSummary.text = it.summary
             }
 
-            if (BitmapCache.getInstance().exists(place.placeId)) {
-                placeImg.setImageBitmap(BitmapCache.getInstance().get(place.placeId))
+            if (BitmapCache.exists(place.placeId)) {
+                placeImg.setImageBitmap(BitmapCache.get(place.placeId))
             } else {
                 place.photo?.let {
                     placeImg.setImageBitmap(it)
