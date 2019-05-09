@@ -22,6 +22,26 @@ Weather data [Powered by Dark Sky](https://darksky.net)
 * Dagger
 * Lottie
 
+## Keys needed to build project
+1. [Dark Sky](https://darksky.net) API KEY
+2. [Play Services](https://developers.google.com/places/android-sdk/) API KEY
+3. Your own background images
+* Edit the `gradle.properties` file and include your own:
+```
+DARK_SKY_API_SECRET="KEY"
+PLACES_API_KEY=KEY
+CLEAR_DAY="IMG_URL"
+CLEAR_NIGHT="IMG_URL"
+CLOUD_DAY="IMG_URL"
+CLOUD_NIGHT="IMG_URL"
+RAIN_DAY="IMG_URL"
+RAIN_NIGHT="IMG_URL"
+LIGHTNING_DAY="IMG_URL"
+LIGHTNING_NIGHT="IMG_URL"
+SNOW_DAY="IMG_URL"
+SNOW_NIGHT="IMG_URL"
+```
+
 
 ## License
 
