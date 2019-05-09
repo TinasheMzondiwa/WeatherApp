@@ -2,7 +2,6 @@ package com.tinashe.weather.ui.home.place
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -65,7 +64,6 @@ class PlaceForecastActivity : BaseThemedActivity() {
                 data.message?.let { msg ->
                     Snackbar.make(fab, msg, Snackbar.LENGTH_SHORT)
                             .setAction(android.R.string.ok) { }
-                            .setActionTextColor(Color.YELLOW)
                             .show()
                 }
             }

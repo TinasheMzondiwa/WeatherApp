@@ -4,7 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -91,7 +90,6 @@ class HomeActivity : BillingAwareActivity() {
                             } else {
                                 Snackbar.make(errorMessage, msg, Snackbar.LENGTH_INDEFINITE)
                                         .setAction(android.R.string.ok) { }
-                                        .setActionTextColor(Color.YELLOW)
                                         .show()
                             }
                         }
