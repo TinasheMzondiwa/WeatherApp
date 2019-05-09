@@ -12,8 +12,7 @@ interface AppPrefs {
 
     fun setHasPremium()
 
-    @TemperatureUnit
-    fun getTemperatureUnit(): String
+    fun getTemperatureUnit(): TemperatureUnit
 
-    fun setTemperatureUnit(@TemperatureUnit unit: String)
+    fun setTemperatureUnit(unit: TemperatureUnit)
 }

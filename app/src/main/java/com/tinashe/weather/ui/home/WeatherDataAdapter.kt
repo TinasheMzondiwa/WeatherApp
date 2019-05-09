@@ -27,8 +27,7 @@ class WeatherDataAdapter constructor(private val onDayClick: (Entry) -> Unit) : 
 
     private val disposables = CompositeDisposable()
 
-    @TemperatureUnit
-    var temperatureUnit: String = TemperatureUnit.CELSIUS
+    var temperatureUnit: TemperatureUnit = TemperatureUnit.CELSIUS
 
     init {
         val weather = RxBus.getInstance().toObservable(WeatherEvent::class.java)

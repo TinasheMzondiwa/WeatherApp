@@ -62,7 +62,7 @@ class PlaceForecastActivity : BaseThemedActivity() {
 
         viewModel.viewState.observe(this, Observer { state ->
             state?.let { data ->
-                data.errorMessage?.let { msg ->
+                data.message?.let { msg ->
                     Snackbar.make(fab, msg, Snackbar.LENGTH_SHORT)
                             .setAction(android.R.string.ok) { }
                             .setActionTextColor(Color.YELLOW)

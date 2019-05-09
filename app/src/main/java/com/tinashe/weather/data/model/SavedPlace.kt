@@ -8,13 +8,17 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
 
 @Entity(tableName = "places")
-data class SavedPlace(@PrimaryKey val placeId: String) {
+data class SavedPlace(
 
-    var name: String? = null
+        @PrimaryKey
+        val placeId: String,
 
-    var address: String? = ""
+        val name: String,
 
-    var latLng: LatLng? = null
+        val address: String,
+
+        val latLng: LatLng
+) {
 
     @Ignore
     var entry: Entry? = null
@@ -22,15 +26,6 @@ data class SavedPlace(@PrimaryKey val placeId: String) {
     @Ignore
     var photo: Bitmap? = null
 
-    constructor(place: Place) : this(place.id) {
-        this.name = place.name.toString()
-        this.address = place.address?.toString()
-        this.latLng = place.latLng
-    }
-
-    override fun toString(): String {
-        return "SavedPlace(placeId='$placeId', entry=$entry)"
-    }
-
-
+    constructor(place: Place) : this(
+            place.id, place.name.toString(), place.address?.toString() ?: "", place.latLng)
 }

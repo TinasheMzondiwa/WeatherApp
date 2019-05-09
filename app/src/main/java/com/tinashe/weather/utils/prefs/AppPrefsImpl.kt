@@ -27,14 +27,16 @@ class AppPrefsImpl constructor(context: Context) : AppPrefs {
                 .apply()
     }
 
-    @TemperatureUnit
-    override fun getTemperatureUnit(): String {
-        return prefs.getString(KEY_TEMP_UNIT, TemperatureUnit.CELSIUS) ?: TemperatureUnit.CELSIUS
+    override fun getTemperatureUnit(): TemperatureUnit {
+        val defUnit = TemperatureUnit.CELSIUS
+        val value = prefs.getString(KEY_TEMP_UNIT, defUnit.value) ?: defUnit.value
+
+        return TemperatureUnit.fromValue(value) ?: defUnit
     }
 
-    override fun setTemperatureUnit(@TemperatureUnit unit: String) {
+    override fun setTemperatureUnit(unit: TemperatureUnit) {
         prefs.edit()
-                .putString(KEY_TEMP_UNIT, unit)
+                .putString(KEY_TEMP_UNIT, unit.value)
                 .apply()
     }
 

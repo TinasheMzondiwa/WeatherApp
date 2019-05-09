@@ -21,7 +21,7 @@ import timber.log.Timber
 class SavedPlacesHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(places: ArrayList<SavedPlace>, @TemperatureUnit unit: String) {
+    fun bind(places: ArrayList<SavedPlace>, unit: TemperatureUnit) {
         placesList.apply {
             horizontal()
             adapter = PlacesAdapter(places, unit)
@@ -29,7 +29,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
     }
 
     class PlacesAdapter constructor(private val places: ArrayList<SavedPlace>,
-                                    @TemperatureUnit private val unit: String) : RecyclerView.Adapter<PlaceHolder>() {
+                                    private val unit: TemperatureUnit) : RecyclerView.Adapter<PlaceHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, p1: Int): PlaceHolder {
             return PlaceHolder.inflate(parent)
         }
@@ -46,8 +46,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
 
         private val disposables = CompositeDisposable()
         private var place: SavedPlace? = null
-        @TemperatureUnit
-        private var unit: String = TemperatureUnit.CELSIUS
+        private var unit: TemperatureUnit = TemperatureUnit.CELSIUS
 
         init {
             val weather = RxBus.getInstance().toObservable(WeatherEvent::class.java)
@@ -88,7 +87,7 @@ class SavedPlacesHolder constructor(override val containerView: View) :
             disposables.addAll(weather, photo)
         }
 
-        fun bind(place: SavedPlace, @TemperatureUnit unit: String) {
+        fun bind(place: SavedPlace, unit: TemperatureUnit) {
             this.place = place
             this.unit = unit
 

@@ -41,7 +41,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                 val place = SavedPlace(places.get(0))
                 placeHolder.value = place
                 subscribeToBookmark()
-                fetchForecast(place.latLng!!)
+                fetchForecast(place.latLng)
                 Timber.i("Place found: %s", place.name)
                 places.release()
             } else {

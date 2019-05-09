@@ -83,7 +83,7 @@ class HomeActivity : BillingAwareActivity() {
                         refreshLayout.isRefreshing = false
                         progressBar.hide()
 
-                        it.errorMessage?.let { msg ->
+                        it.message?.let { msg ->
                             errorMessage.text = msg
 
                             if (dataAdapter.itemCount == 0) {
@@ -102,8 +102,6 @@ class HomeActivity : BillingAwareActivity() {
                         refreshLayout.isRefreshing = false
                         progressBar.hide()
 
-                    }
-                    else -> {
                     }
                 }
             }

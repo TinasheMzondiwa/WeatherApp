@@ -23,10 +23,6 @@ class AboutInfoViewModel @Inject constructor() : ViewModel() {
         item.link = "mailto:tmzon08@gmail.com?subject=Lite Weather"
         items.add(item)
 
-        item = InfoItem(R.drawable.google_plus, "Google+")
-        item.link = "https://plus.google.com/u/0/+TinasheMzondiwa"
-        items.add(item)
-
         item = InfoItem(R.drawable.twitter, "Twitter")
         item.link = "https://twitter.com/TinasheMzondiwa"
         items.add(item)

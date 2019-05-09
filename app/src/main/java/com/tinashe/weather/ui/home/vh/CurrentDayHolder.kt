@@ -22,7 +22,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     private val hoursAdapter: HoursAdapter = HoursAdapter()
 
-    fun bind(current: Entry, hourly: WeatherData, @TemperatureUnit unit: String) {
+    fun bind(current: Entry, hourly: WeatherData, unit: TemperatureUnit) {
         val context = itemView.context
         hoursAdapter.unit = unit
 
@@ -58,8 +58,7 @@ class CurrentDayHolder constructor(override val containerView: View) :
 
     class HoursAdapter : RecyclerView.Adapter<HourHolder>() {
 
-        @TemperatureUnit
-        var unit: String = TemperatureUnit.CELSIUS
+        var unit: TemperatureUnit = TemperatureUnit.CELSIUS
 
         var entries = mutableListOf<Entry>()
             set(value) {

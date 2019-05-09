@@ -68,12 +68,10 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
                     }
                     ViewState.ERROR -> {
                         contentView.progressBar.hide()
-                        stateData.errorMessage?.let {
+                        stateData.message?.let {
                             contentView.errorView.text = it
                             contentView.errorView.show()
                         }
-                    }
-                    else -> {
                     }
                 }
             }

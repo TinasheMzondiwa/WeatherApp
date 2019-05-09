@@ -13,7 +13,7 @@ import com.tinashe.weather.data.model.SavedPlace
 /**
  * Created by tinashe on 2018/03/21.
  */
-@Database(entities = [(CurrentLocation::class), (SavedPlace::class)], version = 2, exportSchema = false)
+@Database(entities = [(CurrentLocation::class), (SavedPlace::class)], version = 3, exportSchema = false)
 @TypeConverters(DataTypeConverters::class)
 abstract class WeatherAppDb : RoomDatabase() {
 

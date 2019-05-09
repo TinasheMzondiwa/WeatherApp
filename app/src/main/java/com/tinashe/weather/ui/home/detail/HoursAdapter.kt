@@ -18,8 +18,7 @@ import org.threeten.bp.ZoneId
 
 class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
 
-    @TemperatureUnit
-    var temperatureUnit: String = TemperatureUnit.CELSIUS
+    var temperatureUnit: TemperatureUnit = TemperatureUnit.CELSIUS
 
     var entries = mutableListOf<Entry>()
         set(value) {
@@ -38,7 +37,7 @@ class HoursAdapter : RecyclerView.Adapter<HoursAdapter.HourHolder>() {
     class HourHolder constructor(override val containerView: View) :
             RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(entry: Entry, @TemperatureUnit unit: String) {
+        fun bind(entry: Entry, unit: TemperatureUnit) {
             val context = itemView.context
 
             val time = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.time), ZoneId.of(entry.timeZone))

@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.weather_data_day_item.*
 class DayHolder constructor(override val containerView: View) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bind(entry: Entry, @TemperatureUnit unit: String, onClick: ((Entry) -> Unit)? = null) {
+    fun bind(entry: Entry, unit: TemperatureUnit, onClick: ((Entry) -> Unit)? = null) {
         val context = itemView.context
 
         dayDate.text = DateUtil.getFormattedDate(entry.time, DateFormat.DAY, entry.timeZone)
