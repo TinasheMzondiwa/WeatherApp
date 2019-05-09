@@ -91,7 +91,7 @@ class HomeViewModelTest {
 
         verify(mockRepository).getForecast(latLong)
         assertEquals(ViewState.ERROR, viewModel.viewState.value?.state)
-        assertEquals(errorMsg, viewModel.viewState.value?.errorMessage)
+        assertEquals(errorMsg, viewModel.viewState.value?.message)
     }
 
 }

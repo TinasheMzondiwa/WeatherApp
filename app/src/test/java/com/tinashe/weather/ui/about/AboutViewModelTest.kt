@@ -19,6 +19,6 @@ class AboutViewModelTest {
 
         assertNotNull(viewModel)
         assertNotNull(viewModel.infoItems)
-        assertEquals(5, viewModel.infoItems.value?.size)
+        assertEquals(4, viewModel.infoItems.value?.size)
     }
 }
