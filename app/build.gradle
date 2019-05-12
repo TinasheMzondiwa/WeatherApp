@@ -20,6 +20,8 @@ ant.propertyfile(file: "version.properties") {
     entry(key: "buildTime", value: buildTime)
 }
 
+def placesKey = System.getenv("PLACES_API_KEY") ?: PLACES_API_KEY
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -32,7 +34,9 @@ android {
 
         buildConfigField "String", "URL_BASE", '"https://api.darksky.net"'
         buildConfigField "String", "API_SECRET", System.getenv("DARK_SKY_API_SECRET") ?: DARK_SKY_API_SECRET
-        manifestPlaceholders = [placesKey: System.getenv("PLACES_API_KEY") ?: PLACES_API_KEY]
+        buildConfigField "String", "PLACES_API_KEY", '"' + placesKey + '"'
+
+        manifestPlaceholders = [placesKey: placesKey]
 
         buildConfigField "String", "CLEAR_DAY", System.getenv("CLEAR_DAY") ?: CLEAR_DAY
         buildConfigField "String", "CLEAR_NIGHT", System.getenv("CLEAR_NIGHT") ?: CLEAR_NIGHT
@@ -119,7 +123,7 @@ dependencies {
 
     // Play Services
     implementation "com.google.android.gms:play-services-location:${versions.play_services}"
-    implementation "com.google.android.gms:play-services-places:${versions.play_services}"
+    implementation "com.google.android.libraries.places:places:${versions.places}"
 
     // Misc
     implementation "com.jakewharton.timber:timber:${versions.timber}"

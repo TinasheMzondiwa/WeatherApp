@@ -13,10 +13,13 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.AutocompleteFilter
-import com.google.android.gms.location.places.GeoDataClient
-import com.google.android.gms.location.places.Places
-import com.google.android.gms.location.places.ui.PlaceAutocomplete
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPhotoRequest
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.Autocomplete
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
@@ -35,6 +38,7 @@ import com.tinashe.weather.utils.prefs.AppPrefs
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 
@@ -50,7 +54,7 @@ class HomeActivity : BillingAwareActivity() {
 
     private lateinit var dataAdapter: WeatherDataAdapter
 
-    private var mGeoDataClient: GeoDataClient? = null
+    private var placesClient: PlacesClient? = null
 
     private val appBarElevation = object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -138,14 +142,14 @@ class HomeActivity : BillingAwareActivity() {
             }
 
             try {
-                val typeFilter = AutocompleteFilter.Builder()
+                /*val typeFilter = AutocompleteFilter.Builder()
                         .setTypeFilter(AutocompleteFilter.TYPE_FILTER_REGIONS)
                         .build()
 
                 val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                         .setFilter(typeFilter)
-                        .build(this)
-                startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE)
+                        .build(this)*/
+                startActivityForResult(placePickerIntent(), PLACE_AUTOCOMPLETE_REQUEST_CODE)
             } catch (e: GooglePlayServicesRepairableException) {
                 Timber.e(e)
             } catch (e: GooglePlayServicesNotAvailableException) {
@@ -166,6 +170,21 @@ class HomeActivity : BillingAwareActivity() {
             adapter = dataAdapter
             addOnScrollListener(appBarElevation)
         }
+    }
+
+    /**
+     * Returns a Place Picker intent that will return a [Place] object with these fields:
+     * [Place.Field.ID], [Place.Field.NAME], [Place.Field.LAT_LNG], [Place.Field.ADDRESS]
+     *
+     * @param context
+     *
+     * @return Intent
+     */
+    private fun placePickerIntent(): Intent {
+
+        return Autocomplete.IntentBuilder(
+                AutocompleteActivityMode.OVERLAY,
+                Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)).build(this)
     }
 
     override fun onStart() {
@@ -213,64 +232,55 @@ class HomeActivity : BillingAwareActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    val place = PlaceAutocomplete.getPlace(this, data!!)
-                    Timber.i("Place: %s:%s", place.name, place.latLng)
-
-                    PlaceForecastActivity.view(this, place.id)
-                }
-                PlaceAutocomplete.RESULT_ERROR -> {
-                    val status = PlaceAutocomplete.getStatus(this, data!!)
-                    Timber.e(status.statusMessage)
-
-                    status.statusMessage?.let {
-                        Snackbar.make(toolbar, it, Snackbar.LENGTH_LONG)
-                                .show()
-                    }
-
-                }
-                Activity.RESULT_CANCELED -> {
-                    // The user canceled the operation.
-                }
-            }
+        if (resultCode != Activity.RESULT_OK || data == null) {
+            return
         }
+
+        val place = Autocomplete.getPlaceFromIntent(data)
+        Timber.i("Place: %s:%s", place.name, place.latLng)
+
+        PlaceForecastActivity.view(this, place.id!!)
     }
 
 
     private fun getPhoto(placeId: String) {
-        if (mGeoDataClient == null) {
-            mGeoDataClient = Places.getGeoDataClient(this)
+        if (placesClient == null) {
+            placesClient = Places.createClient(this)
         }
 
         if (BitmapCache.exists(placeId)) {
             return
         }
 
-        mGeoDataClient?.getPlacePhotos(placeId)
-                ?.addOnCompleteListener { task ->
+        val placeFields = Arrays.asList(Place.Field.PHOTO_METADATAS)
 
-                    val response = task.result?.photoMetadata ?: return@addOnCompleteListener
+        val request = FetchPlaceRequest.builder(placeId, placeFields)
+                .build()
 
-                    if (response.count == 0) {
-                        response.release()
-                        return@addOnCompleteListener
-                    }
+        placesClient?.fetchPlace(request)?.addOnSuccessListener { response ->
+            val place = response.place
 
-                    mGeoDataClient?.getPhoto(response.first())
-                            ?.addOnCompleteListener { photoTask ->
+            if (place.photoMetadatas?.isEmpty() == null) {
+                return@addOnSuccessListener
+            }
+            val photoMetadata = place.photoMetadatas?.first() ?: return@addOnSuccessListener
 
-                                photoTask.result?.bitmap?.let {
-                                    BitmapCache.add(placeId, it)
 
-                                    RxBus.getInstance().send(PhotoEvent(placeId, it))
-                                }
+            val photoRequest = FetchPhotoRequest.builder(photoMetadata)
+                    .build()
+            placesClient?.fetchPhoto(photoRequest)?.addOnSuccessListener {
+                val photo = it.bitmap
 
-                            }
+                BitmapCache.add(placeId, photo)
 
-                    response.release()
-                }
+                RxBus.getInstance().send(PhotoEvent(placeId, photo))
+
+            }?.addOnFailureListener {
+                Timber.e(it)
+            }
+        }?.addOnFailureListener {
+            Timber.e(it)
+        }
     }
 
     companion object {

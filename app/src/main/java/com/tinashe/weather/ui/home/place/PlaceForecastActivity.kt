@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.places.Places
+import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
@@ -70,7 +70,7 @@ class PlaceForecastActivity : BaseActivity() {
             })
         }
 
-        viewModel.initPlace(intent.getStringExtra(ARG_PLACE_ID), Places.getGeoDataClient(this))
+        viewModel.initPlace(intent.getStringExtra(ARG_PLACE_ID), Places.createClient(this))
     }
 
     private fun initUi() {

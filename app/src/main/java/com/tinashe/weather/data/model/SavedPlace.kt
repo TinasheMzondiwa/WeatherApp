@@ -4,8 +4,8 @@ import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import com.google.android.gms.location.places.Place
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.Place
 
 @Entity(tableName = "places")
 data class SavedPlace(
@@ -27,5 +27,5 @@ data class SavedPlace(
     var photo: Bitmap? = null
 
     constructor(place: Place) : this(
-            place.id, place.name.toString(), place.address?.toString() ?: "", place.latLng)
+            place.id!!, place.name.toString(), place.address ?: "", place.latLng!!)
 }
