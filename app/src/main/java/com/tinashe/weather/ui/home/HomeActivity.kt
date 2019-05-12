@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
@@ -24,12 +22,15 @@ import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.data.model.event.PhotoEvent
+import com.tinashe.weather.extensions.*
 import com.tinashe.weather.ui.about.AppInfoActivity
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.ui.home.detail.DetailFragment
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
 import com.tinashe.weather.ui.splash.SplashActivity
-import com.tinashe.weather.utils.*
+import com.tinashe.weather.utils.BitmapCache
+import com.tinashe.weather.utils.RxBus
+import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.prefs.AppPrefs
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_home.*
@@ -65,71 +66,64 @@ class HomeActivity : BillingAwareActivity() {
 
         viewModel = getViewModel(this, viewModelFactory)
 
-        viewModel.viewState.observe(this, Observer { data ->
+        viewModel.viewState.observeNonNull(this) {
+            when (it.state) {
+                ViewState.LOADING -> {
+                    refreshLayout.isRefreshing = true
 
-            data?.let { it ->
-                when (it.state) {
-                    ViewState.LOADING -> {
-                        refreshLayout.isRefreshing = true
+                    if (dataAdapter.itemCount > 0) {
+                        progressBar.hide()
+                    } else {
+                        progressBar.hide()
+                    }
+                }
+                ViewState.ERROR -> {
+                    refreshLayout.isRefreshing = false
+                    progressBar.hide()
 
-                        if (dataAdapter.itemCount > 0) {
-                            progressBar.hide()
+                    it.message?.let { msg ->
+                        errorMessage.text = msg
+
+                        if (dataAdapter.itemCount == 0) {
+                            errorMessage.show()
                         } else {
-                            progressBar.hide()
+                            Snackbar.make(errorMessage, msg, Snackbar.LENGTH_INDEFINITE)
+                                    .setAction(android.R.string.ok) { }
+                                    .show()
                         }
                     }
-                    ViewState.ERROR -> {
-                        refreshLayout.isRefreshing = false
-                        progressBar.hide()
+                }
+                ViewState.SUCCESS -> {
+                    errorMessage.text = ""
+                    errorMessage.hide()
+                    refreshLayout.isRefreshing = false
+                    progressBar.hide()
 
-                        it.message?.let { msg ->
-                            errorMessage.text = msg
-
-                            if (dataAdapter.itemCount == 0) {
-                                errorMessage.show()
-                            } else {
-                                Snackbar.make(errorMessage, msg, Snackbar.LENGTH_INDEFINITE)
-                                        .setAction(android.R.string.ok) { }
-                                        .show()
-                            }
-                        }
-                    }
-                    ViewState.SUCCESS -> {
-                        errorMessage.text = ""
-                        errorMessage.hide()
-                        refreshLayout.isRefreshing = false
-                        progressBar.hide()
-
-                    }
                 }
             }
-        })
+        }
 
-        viewModel.latestForecast.observe(this, Observer { forecast ->
-            forecast?.let {
-                currentName.text = it.currently.location
+        viewModel.latestForecast.observeNonNull(this) { forecast ->
+            currentName.text = forecast.currently.location
 
-                val animate = dataAdapter.itemCount == 0
-                dataAdapter.forecast = it
-                if (animate) {
-                    listView.scheduleLayoutAnimation()
-                }
+            val animate = dataAdapter.itemCount == 0
+            dataAdapter.forecast = forecast
+            if (animate) {
+                listView.scheduleLayoutAnimation()
             }
-        })
+        }
 
-        viewModel.promotePremium.observe(this, Observer {
-            if (it == true) {
+        viewModel.promotePremium.observeNonNull(this) {
+            if (it) {
                 promotePremium()
             }
-        })
+        }
 
-        viewModel.savedPlaces.observe(this, Observer { places ->
-            places?.let { list ->
-                dataAdapter.savedPlaces = list
+        viewModel.savedPlaces.observeNonNull(this) { places ->
+            dataAdapter.savedPlaces = places
 
-                list.map { getPhoto(it.placeId) }
-            }
-        })
+            places.forEach { getPhoto(it.placeId) }
+        }
 
         initUi()
 
@@ -137,7 +131,6 @@ class HomeActivity : BillingAwareActivity() {
 
     private fun initUi() {
         setSupportActionBar(toolbar)
-        toolbar.overflowIcon?.setTint(ContextCompat.getColor(this, R.color.icon_tint))
         toolbar.setNavigationOnClickListener {
             if (!viewModel.hasPremium()) {
                 promotePremium()

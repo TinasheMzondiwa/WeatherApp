@@ -9,15 +9,15 @@ import com.tinashe.weather.data.model.SavedPlace
 import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.data.model.ViewStateData
 import com.tinashe.weather.data.repository.ForecastRepository
-import com.tinashe.weather.ui.base.RxAwareViewModel
+import com.tinashe.weather.extensions.RxSchedulers
+import com.tinashe.weather.ui.base.BaseViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
-import com.tinashe.weather.utils.RxSchedulers
 import timber.log.Timber
 import javax.inject.Inject
 
 class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                                                  private val forecastRepository: ForecastRepository,
-                                                 private val placesDao: PlacesDao) : RxAwareViewModel() {
+                                                 private val placesDao: PlacesDao) : BaseViewModel() {
 
     private lateinit var geoDataClient: GeoDataClient
     private lateinit var placeId: String
@@ -102,8 +102,8 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                     it.currently.sunriseTime = today.sunriseTime
                     it.currently.sunsetTime = today.sunsetTime
                     val timeZone = it.timezone
-                    it.hourly.data.map { it.timeZone = timeZone }
-                    it.daily.data.map { it.timeZone = timeZone }
+                    it.hourly.data.forEach { it.timeZone = timeZone }
+                    it.daily.data.forEach { it.timeZone = timeZone }
 
                     forecast.value = it
 

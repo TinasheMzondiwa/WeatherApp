@@ -8,8 +8,13 @@ import com.tinashe.weather.data.model.SavedPlace
 import com.tinashe.weather.data.model.TemperatureUnit
 import com.tinashe.weather.data.model.event.PhotoEvent
 import com.tinashe.weather.data.model.event.WeatherEvent
+import com.tinashe.weather.extensions.horizontal
+import com.tinashe.weather.extensions.inflateView
+import com.tinashe.weather.extensions.toFahrenheit
 import com.tinashe.weather.ui.home.place.PlaceForecastActivity
-import com.tinashe.weather.utils.*
+import com.tinashe.weather.utils.BitmapCache
+import com.tinashe.weather.utils.RxBus
+import com.tinashe.weather.utils.WeatherUtil
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -28,8 +33,9 @@ class SavedPlacesHolder constructor(override val containerView: View) :
         }
     }
 
-    class PlacesAdapter constructor(private val places: ArrayList<SavedPlace>,
+    inner class PlacesAdapter constructor(private val places: ArrayList<SavedPlace>,
                                     private val unit: TemperatureUnit) : RecyclerView.Adapter<PlaceHolder>() {
+
         override fun onCreateViewHolder(parent: ViewGroup, p1: Int): PlaceHolder {
             return PlaceHolder.inflate(parent)
         }

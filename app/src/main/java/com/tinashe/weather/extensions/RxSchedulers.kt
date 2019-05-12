@@ -1,4 +1,4 @@
-package com.tinashe.weather.utils
+package com.tinashe.weather.extensions
 
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

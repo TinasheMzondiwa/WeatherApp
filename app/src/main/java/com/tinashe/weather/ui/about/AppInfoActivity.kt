@@ -4,18 +4,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.data.model.TemperatureUnit
 import com.tinashe.weather.data.model.ThemeStyle
+import com.tinashe.weather.extensions.getViewModel
+import com.tinashe.weather.extensions.observeNonNull
+import com.tinashe.weather.extensions.vertical
 import com.tinashe.weather.ui.base.BillingAwareActivity
 import com.tinashe.weather.utils.WeatherUtil
-import com.tinashe.weather.utils.getViewModel
 import com.tinashe.weather.utils.prefs.AppPrefs
-import com.tinashe.weather.utils.vertical
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_about.*
 import javax.inject.Inject
@@ -45,21 +43,15 @@ class AppInfoActivity : BillingAwareActivity() {
 
         listAdapter = ItemsListAdapter()
 
-        val dividerItemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        dividerItemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider_line)!!)
-
         itemsList.apply {
-            vertical()
+            vertical(true)
             isNestedScrollingEnabled = false
-            addItemDecoration(dividerItemDecoration)
             adapter = listAdapter
         }
 
-        viewModel.infoItems.observe(this, Observer { items ->
-            items?.let {
-                listAdapter.items = it
-            }
-        })
+        viewModel.infoItems.observeNonNull(this) {
+            listAdapter.items = it
+        }
 
         applySettings()
     }

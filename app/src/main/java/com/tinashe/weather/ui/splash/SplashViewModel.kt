@@ -5,9 +5,9 @@ import com.tinashe.weather.data.db.dao.LocationDao
 import com.tinashe.weather.data.model.CurrentLocation
 import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.data.model.ViewStateData
-import com.tinashe.weather.ui.base.RxAwareViewModel
+import com.tinashe.weather.extensions.RxSchedulers
+import com.tinashe.weather.ui.base.BaseViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
-import com.tinashe.weather.utils.RxSchedulers
 import io.reactivex.Completable
 import timber.log.Timber
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
  * Created by tinashe on 2018/03/20.
  */
 class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
-                                          private val rxSchedulers: RxSchedulers) : RxAwareViewModel() {
+                                          private val rxSchedulers: RxSchedulers) : BaseViewModel() {
 
     var viewState: SingleLiveEvent<ViewStateData> = SingleLiveEvent()
 

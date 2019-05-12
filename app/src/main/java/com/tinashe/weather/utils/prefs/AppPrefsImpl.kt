@@ -15,7 +15,7 @@ class AppPrefsImpl constructor(context: Context) : AppPrefs {
         val def = ThemeStyle.DEFAULT_MODE
         val pref = prefs.getString(KEY_THEME, def.value) ?: def.value
 
-        return ThemeStyle.fromValue(pref)!!
+        return ThemeStyle.fromValue(pref) ?: def
     }
 
     override fun setThemeStyle(style: ThemeStyle) {

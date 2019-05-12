@@ -6,7 +6,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.tinashe.weather.R
 
-open class RoundedBottomSheetDialogFragment : BottomSheetDialogFragment() {
+open class BaseBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     override fun getTheme(): Int = R.style.BottomSheetDialogTheme
 

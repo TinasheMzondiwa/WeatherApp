@@ -9,8 +9,8 @@ import com.tinashe.weather.data.model.CurrentLocation
 import com.tinashe.weather.data.model.Forecast
 import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.data.repository.ForecastRepository
+import com.tinashe.weather.extensions.RxSchedulers
 import com.tinashe.weather.mock
-import com.tinashe.weather.utils.RxSchedulers
 import com.tinashe.weather.utils.prefs.AppPrefs
 import com.tinashe.weather.whenever
 import io.reactivex.Flowable

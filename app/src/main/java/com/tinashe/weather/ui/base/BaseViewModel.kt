@@ -6,7 +6,7 @@ import io.reactivex.disposables.CompositeDisposable
 /**
  * Created by tinashe on 2018/02/04.
  */
-abstract class RxAwareViewModel : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     val disposables = CompositeDisposable()
 

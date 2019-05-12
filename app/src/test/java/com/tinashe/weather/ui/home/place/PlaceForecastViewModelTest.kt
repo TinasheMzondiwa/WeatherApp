@@ -5,8 +5,8 @@ import com.google.android.gms.location.places.GeoDataClient
 import com.tinashe.weather.data.db.dao.PlacesDao
 import com.tinashe.weather.data.model.Forecast
 import com.tinashe.weather.data.repository.ForecastRepository
+import com.tinashe.weather.extensions.RxSchedulers
 import com.tinashe.weather.mock
-import com.tinashe.weather.utils.RxSchedulers
 import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Ignore

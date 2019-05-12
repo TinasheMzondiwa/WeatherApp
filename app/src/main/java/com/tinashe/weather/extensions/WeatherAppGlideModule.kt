@@ -1,4 +1,4 @@
-package com.tinashe.weather.utils.glide
+package com.tinashe.weather.extensions
 
 import android.app.ActivityManager
 import android.content.Context
