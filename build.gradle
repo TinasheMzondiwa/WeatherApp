@@ -16,7 +16,8 @@ buildscript {
             'timber'         : '4.7.1',
             'play_services'  : '16.0.0',
             'lottie'         : '2.5.4',
-            'mockito'        : '2.13.0'
+            'mockito'        : '2.13.0',
+            'places'         : '1.1.0'
     ]
     repositories {
         google()

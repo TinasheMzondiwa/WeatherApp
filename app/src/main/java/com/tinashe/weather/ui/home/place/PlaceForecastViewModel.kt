@@ -1,25 +1,28 @@
 package com.tinashe.weather.ui.home.place
 
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.location.places.GeoDataClient
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
 import com.tinashe.weather.data.db.dao.PlacesDao
 import com.tinashe.weather.data.model.Forecast
 import com.tinashe.weather.data.model.SavedPlace
 import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.data.model.ViewStateData
 import com.tinashe.weather.data.repository.ForecastRepository
-import com.tinashe.weather.ui.base.RxAwareViewModel
+import com.tinashe.weather.extensions.RxSchedulers
+import com.tinashe.weather.ui.base.BaseViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
-import com.tinashe.weather.utils.RxSchedulers
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                                                  private val forecastRepository: ForecastRepository,
-                                                 private val placesDao: PlacesDao) : RxAwareViewModel() {
+                                                 private val placesDao: PlacesDao) : BaseViewModel() {
 
-    private lateinit var geoDataClient: GeoDataClient
+    private lateinit var placesClient: PlacesClient
     private lateinit var placeId: String
 
     var placeHolder = MutableLiveData<SavedPlace>()
@@ -31,24 +34,31 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
 
     }
 
-    fun initPlace(placeId: String, geoDataClient: GeoDataClient) {
+    fun initPlace(placeId: String, placesClient: PlacesClient) {
         this.placeId = placeId
-        this.geoDataClient = geoDataClient
+        this.placesClient = placesClient
 
-        geoDataClient.getPlaceById(placeId).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val places = task.result ?: return@addOnCompleteListener
-                val place = SavedPlace(places.get(0))
-                placeHolder.value = place
-                subscribeToBookmark()
-                fetchForecast(place.latLng)
-                Timber.i("Place found: %s", place.name)
-                places.release()
-            } else {
-                Timber.e("Place not found.")
-                viewState.value = ViewStateData(ViewState.ERROR, "Could not find details about this place!")
-            }
-        }
+        val placeFields = Arrays.asList(
+                Place.Field.ID,
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.LAT_LNG)
+
+        val request = FetchPlaceRequest.builder(placeId, placeFields)
+                .build()
+        placesClient.fetchPlace(request)
+                .addOnSuccessListener {
+                    val place = SavedPlace(it.place)
+
+                    placeHolder.value = place
+                    subscribeToBookmark()
+                    fetchForecast(place.latLng)
+                    Timber.i("Place found: %s", place.name)
+                }
+                .addOnFailureListener {
+                    Timber.e("Place not found.")
+                    viewState.value = ViewStateData(ViewState.ERROR, "Could not find details about this place!")
+                }
     }
 
     private fun subscribeToBookmark() {
@@ -76,7 +86,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                         viewState.value = ViewStateData(ViewState.SUCCESS, "Removed from saved places")
                     }, { Timber.e(it) })
         } else {
-           placesDao.insert(place)
+            placesDao.insert(place)
                     .subscribeOn(rxSchedulers.database)
                     .observeOn(rxSchedulers.main)
                     .subscribe({
@@ -102,8 +112,8 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                     it.currently.sunriseTime = today.sunriseTime
                     it.currently.sunsetTime = today.sunsetTime
                     val timeZone = it.timezone
-                    it.hourly.data.map { it.timeZone = timeZone }
-                    it.daily.data.map { it.timeZone = timeZone }
+                    it.hourly.data.forEach { it.timeZone = timeZone }
+                    it.daily.data.forEach { it.timeZone = timeZone }
 
                     forecast.value = it
 

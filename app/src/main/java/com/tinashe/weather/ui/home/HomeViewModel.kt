@@ -7,10 +7,10 @@ import com.tinashe.weather.data.db.dao.PlacesDao
 import com.tinashe.weather.data.model.*
 import com.tinashe.weather.data.model.event.WeatherEvent
 import com.tinashe.weather.data.repository.ForecastRepository
-import com.tinashe.weather.ui.base.RxAwareViewModel
+import com.tinashe.weather.extensions.RxSchedulers
+import com.tinashe.weather.ui.base.BaseViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
 import com.tinashe.weather.utils.RxBus
-import com.tinashe.weather.utils.RxSchedulers
 import com.tinashe.weather.utils.prefs.AppPrefs
 import io.reactivex.Observable
 import timber.log.Timber
@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                                         private val forecastRepository: ForecastRepository,
                                         private val locationDao: LocationDao,
                                         private val placesDao: PlacesDao,
-                                        private val prefs: AppPrefs) : RxAwareViewModel() {
+                                        private val prefs: AppPrefs) : BaseViewModel() {
 
     var viewState = SingleLiveEvent<ViewStateData>()
     private var currentLocation = SingleLiveEvent<CurrentLocation>()
@@ -45,7 +45,7 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                 .subscribe({
                     currentLocation.value = it
                     refreshForecast()
-                }, { Timber.e(it, it.message) })
+                }, { Timber.e(it) })
 
         disposables.add(disposable)
     }
@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
 
     fun refreshForecast() {
 
-        currentLocation.value?.let {
+        currentLocation.value?.let { location ->
 
             if (!prefs.hasPremium() && latestForecast.value != null) {
                 latestForecast.value?.let { forecast ->
@@ -78,27 +78,31 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
                 return
             }
 
-            val disposable = forecastRepository.getForecast(it.latLong)
+            val disposable = forecastRepository.getForecast(location.latLong)
                     .subscribeOn(rxSchedulers.network)
                     .observeOn(rxSchedulers.main)
                     .doOnSubscribe { viewState.value = ViewStateData(ViewState.LOADING) }
-                    .subscribe({
+                    .subscribe({ forecast ->
+
                         viewState.value = ViewStateData(ViewState.SUCCESS)
-                        it.currently.location = currentLocation.value?.name ?: ""
-                        it.currently.timeZone = it.timezone
-                        val today = it.daily.data.first()
-                        it.currently.sunriseTime = today.sunriseTime
-                        it.currently.sunsetTime = today.sunsetTime
-                        val timeZone = it.timezone
-                        it.hourly.data.map { it.timeZone = timeZone }
-                        it.daily.data.map { it.timeZone = timeZone }
 
-                        latestForecast.value = it
+                        forecast.currently.location = currentLocation.value?.name ?: ""
+                        forecast.currently.timeZone = forecast.timezone
 
-                    }, {
-                        Timber.e(it, it.message)
+                        val today = forecast.daily.data.first()
+                        forecast.currently.sunriseTime = today.sunriseTime
+                        forecast.currently.sunsetTime = today.sunsetTime
 
-                        it.message?.let {
+                        val timeZone = forecast.timezone
+                        forecast.hourly.data.forEach { it.timeZone = timeZone }
+                        forecast.daily.data.forEach { it.timeZone = timeZone }
+
+                        latestForecast.value = forecast
+
+                    }, { throwable ->
+                        Timber.e(throwable)
+
+                        throwable.message?.let {
                             viewState.value = ViewStateData(ViewState.ERROR, it)
                         }
                     })
@@ -117,8 +121,9 @@ class HomeViewModel @Inject constructor(private val rxSchedulers: RxSchedulers,
             return true
         }
 
-        val last = Calendar.getInstance()
-        last.timeInMillis = time
+        val last = Calendar.getInstance().apply {
+            timeInMillis = time
+        }
 
         val diff = today.timeInMillis - last.timeInMillis
         val days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)

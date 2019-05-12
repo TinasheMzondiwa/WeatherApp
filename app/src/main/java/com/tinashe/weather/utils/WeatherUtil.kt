@@ -13,6 +13,7 @@ import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
 import com.tinashe.weather.data.model.Entry
 import com.tinashe.weather.data.model.ThemeStyle
+import com.tinashe.weather.extensions.containsEither
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId

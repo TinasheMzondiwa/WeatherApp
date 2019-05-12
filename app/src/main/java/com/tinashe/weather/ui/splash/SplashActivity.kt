@@ -8,17 +8,17 @@ import android.os.Bundle
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.lifecycle.Observer
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.data.model.ViewState
+import com.tinashe.weather.extensions.getViewModel
+import com.tinashe.weather.extensions.hide
+import com.tinashe.weather.extensions.observeNonNull
+import com.tinashe.weather.extensions.show
 import com.tinashe.weather.ui.home.HomeActivity
 import com.tinashe.weather.utils.WeatherUtil
-import com.tinashe.weather.utils.getViewModel
-import com.tinashe.weather.utils.hide
-import com.tinashe.weather.utils.show
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_splash.*
 import timber.log.Timber
@@ -52,27 +52,25 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         viewModel = getViewModel(this, viewModelFactory)
-        viewModel.viewState.observe(this, Observer {
+        viewModel.viewState.observeNonNull(this) {
 
-            it?.let {
-                when (it.state) {
-                    ViewState.LOADING -> {
-                        rationalView.hide()
-                        progressBar.show()
-                    }
-                    ViewState.ERROR -> {
-                        progressBar.hide()
-                        rationalView.show()
-                    }
-                    ViewState.SUCCESS -> {
+            when (it.state) {
+                ViewState.LOADING -> {
+                    rationalView.hide()
+                    progressBar.show()
+                }
+                ViewState.ERROR -> {
+                    progressBar.hide()
+                    rationalView.show()
+                }
+                ViewState.SUCCESS -> {
 
-                        startActivity(Intent(this, HomeActivity::class.java))
-                        finish()
-                    }
+                    startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
                 }
             }
 
-        })
+        }
 
         btnRequestPerms.setOnClickListener {
             ActivityCompat.requestPermissions(this, arrayOf(LOC_PERM), RQ_LOCATION)
@@ -132,7 +130,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val RQ_LOCATION: Int = 23
+        private const val RQ_LOCATION = 23
         private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
     }
 }

@@ -9,7 +9,7 @@ import com.tinashe.weather.data.repository.ForecastRepository
 import com.tinashe.weather.data.repository.ForecastRepositoryImpl
 import com.tinashe.weather.data.retrofit.RestClient
 import com.tinashe.weather.data.retrofit.WeatherApi
-import com.tinashe.weather.utils.RxSchedulers
+import com.tinashe.weather.extensions.RxSchedulers
 import com.tinashe.weather.utils.prefs.AppPrefs
 import com.tinashe.weather.utils.prefs.AppPrefsImpl
 import dagger.Module

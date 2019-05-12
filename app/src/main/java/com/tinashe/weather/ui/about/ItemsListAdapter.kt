@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tinashe.weather.R
 import com.tinashe.weather.data.model.InfoItem
-import com.tinashe.weather.utils.hide
-import com.tinashe.weather.utils.inflateView
-import com.tinashe.weather.utils.show
+import com.tinashe.weather.extensions.hide
+import com.tinashe.weather.extensions.inflateView
+import com.tinashe.weather.extensions.show
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.info_item.*
 

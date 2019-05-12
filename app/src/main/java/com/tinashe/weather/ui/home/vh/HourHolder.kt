@@ -7,10 +7,10 @@ import com.tinashe.weather.R
 import com.tinashe.weather.data.model.DateFormat
 import com.tinashe.weather.data.model.Entry
 import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.extensions.inflateView
+import com.tinashe.weather.extensions.toFahrenheit
 import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.WeatherUtil
-import com.tinashe.weather.utils.inflateView
-import com.tinashe.weather.utils.toFahrenheit
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.weather_hour_item.*
 import org.threeten.bp.Instant

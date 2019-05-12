@@ -4,24 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.location.places.Places
+import com.google.android.libraries.places.api.Places
 import com.google.android.material.snackbar.Snackbar
 import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
-import com.tinashe.weather.ui.base.BaseThemedActivity
+import com.tinashe.weather.extensions.getViewModel
+import com.tinashe.weather.extensions.observeNonNull
+import com.tinashe.weather.extensions.tint
+import com.tinashe.weather.extensions.vertical
+import com.tinashe.weather.ui.base.BaseActivity
 import com.tinashe.weather.ui.home.WeatherDataAdapter
 import com.tinashe.weather.ui.home.detail.DetailFragment
-import com.tinashe.weather.utils.getViewModel
 import com.tinashe.weather.utils.prefs.AppPrefs
-import com.tinashe.weather.utils.tint
-import com.tinashe.weather.utils.vertical
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_place_forecast.*
 import javax.inject.Inject
 
-class PlaceForecastActivity : BaseThemedActivity() {
+class PlaceForecastActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -48,37 +48,29 @@ class PlaceForecastActivity : BaseThemedActivity() {
         initUi()
 
         viewModel = getViewModel(this, viewModelFactory)
-        viewModel.placeHolder.observe(this, Observer { place ->
-            place?.let {
-                title = it.name
-            } ?: finish()
-        })
-        viewModel.forecast.observe(this, Observer { forecast ->
-            forecast?.let {
-                dataAdapter.forecast = it
-            }
-        })
+        viewModel.placeHolder.observeNonNull(this) {
+            title = it.name
+        }
+        viewModel.forecast.observeNonNull(this) {
+            dataAdapter.forecast = it
+        }
 
-        viewModel.viewState.observe(this, Observer { state ->
-            state?.let { data ->
-                data.message?.let { msg ->
-                    Snackbar.make(fab, msg, Snackbar.LENGTH_SHORT)
-                            .setAction(android.R.string.ok) { }
-                            .show()
-                }
+        viewModel.viewState.observeNonNull(this) {
+            it.message?.let { msg ->
+                Snackbar.make(fab, msg, Snackbar.LENGTH_SHORT)
+                        .setAction(android.R.string.ok) { }
+                        .show()
             }
-        })
+        }
 
-        viewModel.isBookmarked.observe(this, Observer { bookmarked ->
-            bookmarked?.let {
-                fab.setImageResource(when (it) {
-                    true -> R.drawable.ic_bookmark
-                    else -> R.drawable.bookmark_plus_outline
-                })
-            }
-        })
+        viewModel.isBookmarked.observeNonNull(this) {
+            fab.setImageResource(when (it) {
+                true -> R.drawable.ic_bookmark
+                else -> R.drawable.bookmark_plus_outline
+            })
+        }
 
-        viewModel.initPlace(intent.getStringExtra(ARG_PLACE_ID), Places.getGeoDataClient(this))
+        viewModel.initPlace(intent.getStringExtra(ARG_PLACE_ID), Places.createClient(this))
     }
 
     private fun initUi() {

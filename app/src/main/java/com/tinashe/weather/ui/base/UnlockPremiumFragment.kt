@@ -8,7 +8,7 @@ import com.android.billingclient.api.SkuDetails
 import com.tinashe.weather.R
 import kotlinx.android.synthetic.main.fragment_premium_features.view.*
 
-class UnlockPremiumFragment : RoundedBottomSheetDialogFragment() {
+class UnlockPremiumFragment : BaseBottomSheetDialogFragment() {
 
     private lateinit var skuDetails: SkuDetails
 

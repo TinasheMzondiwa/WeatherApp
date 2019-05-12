@@ -12,14 +12,15 @@ import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.data.model.DateFormat
 import com.tinashe.weather.data.model.Entry
 import com.tinashe.weather.data.model.ViewState
-import com.tinashe.weather.ui.base.RoundedBottomSheetDialogFragment
-import com.tinashe.weather.utils.*
+import com.tinashe.weather.extensions.*
+import com.tinashe.weather.ui.base.BaseBottomSheetDialogFragment
+import com.tinashe.weather.utils.DateUtil
 import com.tinashe.weather.utils.prefs.AppPrefs
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import javax.inject.Inject
 
-class DetailFragment : RoundedBottomSheetDialogFragment() {
+class DetailFragment : BaseBottomSheetDialogFragment() {
 
     private lateinit var entry: Entry
 
@@ -46,36 +47,32 @@ class DetailFragment : RoundedBottomSheetDialogFragment() {
         contentView.entrySummary.text = entry.summary
 
         viewModel = getViewModel(this, viewModelFactory)
-        viewModel.hourlyData.observe(this, androidx.lifecycle.Observer {
+        viewModel.hourlyData.observeNonNull(this) {
             contentView.progressBar.hide()
 
-            it?.let {
-                val animate = hoursAdapter.itemCount == 0
-                hoursAdapter.entries = it.data.toMutableList()
-                if (animate) {
-                    contentView.listView.scheduleLayoutAnimation()
-                }
+            val animate = hoursAdapter.itemCount == 0
+            hoursAdapter.entries = it.data.toMutableList()
+            if (animate) {
+                contentView.listView.scheduleLayoutAnimation()
             }
 
-        })
-        viewModel.viewState.observe(this, androidx.lifecycle.Observer { data ->
-            data?.let { stateData ->
-                when (stateData.state) {
-                    ViewState.SUCCESS -> contentView.errorView.hide()
-                    ViewState.LOADING -> {
-                        contentView.errorView.hide()
-                        contentView.progressBar.show()
-                    }
-                    ViewState.ERROR -> {
-                        contentView.progressBar.hide()
-                        stateData.message?.let {
-                            contentView.errorView.text = it
-                            contentView.errorView.show()
-                        }
+        }
+        viewModel.viewState.observeNonNull(this) { data ->
+            when (data.state) {
+                ViewState.SUCCESS -> contentView.errorView.hide()
+                ViewState.LOADING -> {
+                    contentView.errorView.hide()
+                    contentView.progressBar.show()
+                }
+                ViewState.ERROR -> {
+                    contentView.progressBar.hide()
+                    data.message?.let {
+                        contentView.errorView.text = it
+                        contentView.errorView.show()
                     }
                 }
             }
-        })
+        }
 
         hoursAdapter.temperatureUnit = prefs.getTemperatureUnit()
         contentView.listView.apply {

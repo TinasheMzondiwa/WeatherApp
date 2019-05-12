@@ -6,7 +6,7 @@ import com.android.billingclient.api.BillingClient.SkuType
 import com.tinashe.weather.BuildConfig
 import timber.log.Timber
 
-abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedListener, BillingClientStateListener {
+abstract class BillingAwareActivity : BaseActivity(), PurchasesUpdatedListener, BillingClientStateListener {
 
     private lateinit var billingClient: BillingClient
 
@@ -44,7 +44,7 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
             // The billing client is ready. You can query purchases here.
 
             val params = SkuDetailsParams.newBuilder()
-            params.setSkusList(arrayListOf(PREMIUM_SKU_ID)).setType(BillingClient.SkuType.INAPP)
+            params.setSkusList(arrayListOf(PREMIUM_SKU_ID)).setType(SkuType.INAPP)
             billingClient.querySkuDetailsAsync(params.build()) { code, skuDetailsList ->
                 // Process the result.
                 if (code == BillingClient.BillingResponse.OK && skuDetailsList.isNotEmpty()) {
@@ -62,7 +62,7 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
         }
     }
 
-    protected fun purchasePremium() {
+    private fun purchasePremium() {
 
         val flowParams = BillingFlowParams.newBuilder()
                 .setSku(skuDetails?.sku)
@@ -70,6 +70,7 @@ abstract class BillingAwareActivity : BaseThemedActivity(), PurchasesUpdatedList
                 .build()
 
         val responseCode = billingClient.launchBillingFlow(this, flowParams)
+        Timber.d("Response: $responseCode")
     }
 
     override fun onStart() {
