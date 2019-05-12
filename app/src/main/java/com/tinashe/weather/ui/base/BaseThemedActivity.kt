@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 
 
 /**
@@ -17,7 +16,6 @@ abstract class BaseThemedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        delegate.setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK

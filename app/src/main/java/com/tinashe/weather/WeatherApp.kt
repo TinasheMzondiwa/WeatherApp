@@ -5,6 +5,8 @@ import android.app.Application
 import androidx.fragment.app.Fragment
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.tinashe.weather.data.di.DaggerWeatherAppComponent
+import com.tinashe.weather.utils.WeatherUtil
+import com.tinashe.weather.utils.prefs.AppPrefs
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -23,6 +25,9 @@ class WeatherApp : Application(), HasActivityInjector, HasSupportFragmentInjecto
     @Inject
     lateinit var fragmentInjector: DispatchingAndroidInjector<Fragment>
 
+    @Inject
+    lateinit var prefs: AppPrefs
+
     override fun activityInjector(): AndroidInjector<Activity> = activityInjector
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentInjector
@@ -40,5 +45,7 @@ class WeatherApp : Application(), HasActivityInjector, HasSupportFragmentInjecto
                 .inject(this)
 
         AndroidThreeTen.init(this)
+
+        WeatherUtil.applyTheme(prefs.getThemeStyle())
     }
 }

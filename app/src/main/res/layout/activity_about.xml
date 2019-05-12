@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -34,37 +34,39 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings"
                 android:layout_marginTop="@dimen/spacing_large"
-                android:textColor="@color/icon_tint"
+                android:layout_marginBottom="@dimen/spacing_normal"
                 android:fontFamily="@font/sans_regular"
                 android:paddingStart="@dimen/spacing_medium"
                 android:paddingEnd="@dimen/spacing_medium"
-                android:layout_marginBottom="@dimen/spacing_normal"
-                android:textSize="@dimen/text_size_medium"/>
+                android:text="@string/settings"
+                android:textColor="@color/icon_tint"
+                android:textSize="@dimen/text_size_medium" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@drawable/divider_line"/>
+                android:background="@drawable/divider_line" />
 
             <LinearLayout
                 android:id="@+id/tempUnitsContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
                 android:orientation="vertical"
-                android:paddingBottom="@dimen/spacing_list"
-                android:paddingTop="@dimen/spacing_list"
                 android:paddingStart="@dimen/spacing_medium"
+                android:paddingTop="@dimen/spacing_list"
                 android:paddingEnd="@dimen/spacing_medium"
-                android:background="?attr/selectableItemBackground">
+                android:paddingBottom="@dimen/spacing_list">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/sans_regular"
+                    android:text="@string/temp_units"
                     android:textColor="?android:textColorPrimary"
-                    android:textSize="@dimen/text_size_body"
-                    android:text="@string/temp_units"/>
+                    android:textSize="@dimen/text_size_body" />
+
                 <TextView
                     android:id="@+id/tempUnitsValue"
                     android:layout_width="match_parent"
@@ -72,13 +74,14 @@
                     android:fontFamily="@font/sans_regular"
                     android:textColor="?android:textColorSecondary"
                     android:textSize="@dimen/text_size_small"
-                    tools:text="@string/celsius"/>
+                    tools:text="@string/celsius" />
 
             </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
-                android:background="@drawable/divider_line"/>
+                android:background="@drawable/divider_line" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

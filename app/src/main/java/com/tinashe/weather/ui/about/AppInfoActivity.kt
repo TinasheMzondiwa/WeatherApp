@@ -1,6 +1,8 @@
 package com.tinashe.weather.ui.about
 
 import android.os.Bundle
+import android.view.Menu
+import android.widget.CheckBox
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -8,7 +10,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.tinashe.weather.R
 import com.tinashe.weather.data.di.ViewModelFactory
 import com.tinashe.weather.data.model.TemperatureUnit
+import com.tinashe.weather.data.model.ThemeStyle
 import com.tinashe.weather.ui.base.BillingAwareActivity
+import com.tinashe.weather.utils.WeatherUtil
 import com.tinashe.weather.utils.getViewModel
 import com.tinashe.weather.utils.prefs.AppPrefs
 import com.tinashe.weather.utils.vertical
@@ -27,8 +31,6 @@ class AppInfoActivity : BillingAwareActivity() {
     private lateinit var viewModel: AboutInfoViewModel
 
     private lateinit var listAdapter: ItemsListAdapter
-
-    private var optionsArray = emptyArray<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,14 +61,18 @@ class AppInfoActivity : BillingAwareActivity() {
             }
         })
 
-        optionsArray = arrayOf(getString(R.string.celsius), getString(R.string.fahrenheit))
+        applySettings()
+    }
+
+    private fun applySettings() {
+
         tempUnitsContainer.setOnClickListener {
             val checked = when (prefs.getTemperatureUnit()) {
                 TemperatureUnit.CELSIUS -> 0
                 TemperatureUnit.FAHRENHEIT -> 1
-                else -> -1
             }
 
+            val optionsArray = arrayOf(getString(R.string.celsius), getString(R.string.fahrenheit))
             AlertDialog.Builder(this, R.style.Theme_Dialog)
                     .setTitle(R.string.temp_units)
                     .setSingleChoiceItems(optionsArray, checked) { dialog, position ->
@@ -96,5 +102,29 @@ class AppInfoActivity : BillingAwareActivity() {
 
     override fun premiumUnlocked() {
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_about, menu)
+
+        val toggleTheme = toolbar.menu?.findItem(R.id.menu_theme)
+        val toggle = toggleTheme?.actionView
+        if (toggle is CheckBox) {
+            toggle.setButtonDrawable(R.drawable.avd_theme)
+            toggle.isChecked = prefs.getThemeStyle() == ThemeStyle.DARK_MODE
+            toggle.jumpDrawablesToCurrentState()
+            toggle.setOnCheckedChangeListener { _, isChecked ->
+
+                toggle.postDelayed({
+                    val style = if (isChecked) ThemeStyle.DARK_MODE else ThemeStyle.LIGHT_MODE
+
+                    prefs.setThemeStyle(style)
+                    WeatherUtil.applyTheme(style)
+
+                }, 800L)
+            }
+        }
+
+        return super.onCreateOptionsMenu(menu)
     }
 }
