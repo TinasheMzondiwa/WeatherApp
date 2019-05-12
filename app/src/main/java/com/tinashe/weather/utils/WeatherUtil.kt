@@ -5,11 +5,14 @@ import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.Location
 import android.net.ConnectivityManager
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.BuildCompat
 import com.tinashe.weather.BuildConfig
 import com.tinashe.weather.R
 import com.tinashe.weather.data.model.Entry
+import com.tinashe.weather.data.model.ThemeStyle
 import org.threeten.bp.Instant
 import org.threeten.bp.LocalDateTime
 import org.threeten.bp.ZoneId
@@ -110,5 +113,19 @@ object WeatherUtil {
         val activeNetwork = cm.activeNetworkInfo
 
         return activeNetwork != null && activeNetwork.isConnected
+    }
+
+    fun applyTheme(style: ThemeStyle) {
+        when (style) {
+            ThemeStyle.LIGHT_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            ThemeStyle.DARK_MODE -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            ThemeStyle.DEFAULT_MODE -> {
+                if (BuildCompat.isAtLeastQ()) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+                }
+            }
+        }
     }
 }

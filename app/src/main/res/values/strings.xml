@@ -22,4 +22,5 @@
     <string name="temp_units">Temperature units</string>
     <string name="today">Today</string>
     <string name="upgrade">Upgrade</string>
+    <string name="theme">Theme</string>
 </resources>

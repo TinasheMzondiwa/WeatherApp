@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="windowBackground">#101020</color>
-    <color name="windowBackgroundDark">@color/windowBackground</color>
+    <color name="windowBackground">#121212</color>
+    <color name="windowBackgroundDark">@android:color/black</color>
 
     <color name="text">#FFFFFF</color>
     <color name="secondary">#70FFFFFF</color>
