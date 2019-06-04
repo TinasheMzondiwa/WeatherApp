@@ -8,6 +8,7 @@ import com.tinashe.weather.data.model.ViewState
 import com.tinashe.weather.extensions.RxSchedulers
 import com.tinashe.weather.mock
 import com.tinashe.weather.whenever
+import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.schedulers.Schedulers
 import junit.framework.Assert.assertEquals
@@ -31,6 +32,8 @@ class SplashViewModelTest {
     fun initTest() {
         whenever(mockLocationDao.getCurrentLocation())
                 .thenReturn(Maybe.empty())
+        whenever(mockLocationDao.insert(any()))
+                .thenReturn(Completable.complete())
 
         whenever(mockSchedulers.database)
                 .thenReturn(Schedulers.trampoline())
