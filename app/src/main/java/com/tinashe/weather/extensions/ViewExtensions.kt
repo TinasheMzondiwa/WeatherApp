@@ -24,8 +24,6 @@ fun View.show() {
     visibility = View.VISIBLE
 }
 
-fun View.isVisible(): Boolean = visibility == View.VISIBLE
-
 fun RecyclerView.vertical(divider: Boolean = false) {
     this.layoutManager = LinearLayoutManager(context)
 

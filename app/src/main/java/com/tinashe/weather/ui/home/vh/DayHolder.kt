@@ -34,7 +34,6 @@ class DayHolder constructor(override val containerView: View) :
             max = entry.temperatureHigh.toFahrenheit()
         }
 
-
         tempMin.text = context.getString(R.string.degrees, min.toInt())
         tempMax.text = context.getString(R.string.degrees, max.toInt())
 

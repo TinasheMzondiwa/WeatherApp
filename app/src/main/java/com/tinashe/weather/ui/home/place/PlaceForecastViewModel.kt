@@ -124,6 +124,7 @@ class PlaceForecastViewModel @Inject constructor(private val rxSchedulers: RxSch
                         viewState.value = ViewStateData(ViewState.ERROR, it)
                     }
                 })
+
         disposables.add(disposable)
     }
 }

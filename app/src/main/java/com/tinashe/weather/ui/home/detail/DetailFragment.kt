@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.tinashe.weather.R
@@ -42,6 +43,8 @@ class DetailFragment : BaseBottomSheetDialogFragment() {
     override fun onViewCreated(contentView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(contentView, savedInstanceState)
         AndroidSupportInjection.inject(this)
+
+        entry = arguments?.getParcelable(ARG_ENTRY) ?: return
 
         contentView.entryDate.text = DateUtil.getFormattedDate(entry.time, DateFormat.DAY, entry.timeZone)
         contentView.entrySummary.text = entry.summary
@@ -88,11 +91,14 @@ class DetailFragment : BaseBottomSheetDialogFragment() {
     }
 
     companion object {
-        fun view(entry: Entry): DetailFragment {
-            val fragment = DetailFragment()
-            fragment.entry = entry
 
-            return fragment
+        private const val ARG_ENTRY = "arg:entry"
+
+        fun view(entry: Entry): DetailFragment {
+
+            return DetailFragment().apply {
+                arguments = bundleOf(Pair(ARG_ENTRY, entry))
+            }
         }
     }
 }

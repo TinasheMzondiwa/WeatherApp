@@ -101,8 +101,9 @@ class PlaceForecastActivity : BaseActivity() {
         private const val ARG_PLACE_ID = "arg:place_id"
 
         fun view(context: Context, placeId: String) {
-            val intent = Intent(context, PlaceForecastActivity::class.java)
-            intent.putExtra(ARG_PLACE_ID, placeId)
+            val intent = Intent(context, PlaceForecastActivity::class.java).apply {
+                putExtra(ARG_PLACE_ID, placeId)
+            }
             context.startActivity(intent)
         }
     }
