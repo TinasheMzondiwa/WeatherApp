@@ -9,8 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException
-import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.libraries.places.api.Places
@@ -141,20 +139,7 @@ class HomeActivity : BillingAwareActivity() {
                 return@setNavigationOnClickListener
             }
 
-            try {
-                /*val typeFilter = AutocompleteFilter.Builder()
-                        .setTypeFilter(AutocompleteFilter.TYPE_FILTER_REGIONS)
-                        .build()
-
-                val intent = PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
-                        .setFilter(typeFilter)
-                        .build(this)*/
-                startActivityForResult(placePickerIntent(), PLACE_AUTOCOMPLETE_REQUEST_CODE)
-            } catch (e: GooglePlayServicesRepairableException) {
-                Timber.e(e)
-            } catch (e: GooglePlayServicesNotAvailableException) {
-                Timber.e(e)
-            }
+            startActivityForResult(placePickerIntent(), RC_PLACE_AUTOCOMPLETE)
         }
 
         refreshLayout.setColorSchemeResources(R.color.theme)
@@ -176,15 +161,14 @@ class HomeActivity : BillingAwareActivity() {
      * Returns a Place Picker intent that will return a [Place] object with these fields:
      * [Place.Field.ID], [Place.Field.NAME], [Place.Field.LAT_LNG], [Place.Field.ADDRESS]
      *
-     * @param context
-     *
      * @return Intent
      */
     private fun placePickerIntent(): Intent {
 
         return Autocomplete.IntentBuilder(
-                AutocompleteActivityMode.OVERLAY,
-                Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)).build(this)
+                AutocompleteActivityMode.OVERLAY, Arrays.asList(
+                Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS))
+                .build(this)
     }
 
     override fun onStart() {
@@ -200,6 +184,7 @@ class HomeActivity : BillingAwareActivity() {
                 viewModel.subscribe(it, WeatherUtil.getLocationName(this, it))
             }
         } else {
+            // Request permissions
             startActivity(Intent(this, SplashActivity::class.java))
             finish()
         }
@@ -232,14 +217,12 @@ class HomeActivity : BillingAwareActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (resultCode != Activity.RESULT_OK || data == null) {
-            return
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            val place = Autocomplete.getPlaceFromIntent(data)
+            Timber.i("Place: %s:%s", place.name, place.latLng)
+
+            PlaceForecastActivity.view(this, place.id!!)
         }
-
-        val place = Autocomplete.getPlaceFromIntent(data)
-        Timber.i("Place: %s:%s", place.name, place.latLng)
-
-        PlaceForecastActivity.view(this, place.id!!)
     }
 
 
@@ -285,6 +268,6 @@ class HomeActivity : BillingAwareActivity() {
 
     companion object {
         private const val LOC_PERM = Manifest.permission.ACCESS_FINE_LOCATION
-        private const val PLACE_AUTOCOMPLETE_REQUEST_CODE = 1
+        private const val RC_PLACE_AUTOCOMPLETE = 1
     }
 }

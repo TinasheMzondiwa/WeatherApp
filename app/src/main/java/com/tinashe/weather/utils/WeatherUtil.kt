@@ -20,7 +20,6 @@ import org.threeten.bp.ZoneId
 import timber.log.Timber
 import java.util.*
 
-
 /**
  * Created by tinashe on 2018/03/20.
  */
@@ -84,26 +83,26 @@ object WeatherUtil {
         val sunset = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.sunsetTime), ZoneId.of(entry.timeZone))
         val sunrise = LocalDateTime.ofInstant(Instant.ofEpochSecond(entry.sunriseTime), ZoneId.of(entry.timeZone))
 
-        val isNightMode = time.isAfter(sunset) || time.isBefore(sunrise)
+        val afterSunset = time.isAfter(sunset) || time.isBefore(sunrise)
 
         return when {
             entry.icon.containsEither("sun", "clear") -> {
-                if (isNightMode) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
+                if (afterSunset) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
             }
             entry.icon.containsEither("cloud") -> {
-                if (isNightMode) BuildConfig.CLOUD_NIGHT else BuildConfig.CLOUD_DAY
+                if (afterSunset) BuildConfig.CLOUD_NIGHT else BuildConfig.CLOUD_DAY
             }
             entry.icon.containsEither("drizzle", "rain") -> {
-                if (isNightMode) BuildConfig.RAIN_NIGHT else BuildConfig.RAIN_DAY
+                if (afterSunset) BuildConfig.RAIN_NIGHT else BuildConfig.RAIN_DAY
             }
             entry.icon.containsEither("lightning") -> {
-                if (isNightMode) BuildConfig.LIGHTNING_NIGHT else BuildConfig.LIGHTNING_DAY
+                if (afterSunset) BuildConfig.LIGHTNING_NIGHT else BuildConfig.LIGHTNING_DAY
             }
             entry.icon.containsEither("snow") -> {
-                if (isNightMode) BuildConfig.SNOW_NIGHT else BuildConfig.SNOW_DAY
+                if (afterSunset) BuildConfig.SNOW_NIGHT else BuildConfig.SNOW_DAY
             }
             else -> {
-                if (isNightMode) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
+                if (afterSunset) BuildConfig.CLEAR_NIGHT else BuildConfig.CLEAR_DAY
             }
         }
     }

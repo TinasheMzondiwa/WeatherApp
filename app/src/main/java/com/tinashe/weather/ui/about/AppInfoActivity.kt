@@ -38,7 +38,6 @@ class AppInfoActivity : BillingAwareActivity() {
         viewModel = getViewModel(this, viewModelFactory)
 
         setSupportActionBar(toolbar)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         listAdapter = ItemsListAdapter()

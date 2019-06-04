@@ -10,65 +10,75 @@
     app:cardCornerRadius="@dimen/spacing_normal"
     app:cardElevation="6dp">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/placeImg"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:contentDescription="@string/blank"
             android:foreground="@color/scrim"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/placeName"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="26dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/sans_regular"
+            android:maxLines="2"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_medium"
+            app:layout_constraintBottom_toTopOf="@+id/placeTemp"
+            app:layout_constraintEnd_toStartOf="@+id/placeIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="Cape Town" />
 
-            <TextView
-                android:id="@+id/placeName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_normal"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:fontFamily="@font/sans_regular"
-                android:maxLines="2"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/text_size_medium"
-                tools:text="Cape Town" />
-
-            <ImageView
-                android:id="@+id/placeIcon"
-                android:layout_width="54dp"
-                android:layout_height="54dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/blank"
-                android:tint="@android:color/white"
-                tools:src="@drawable/cloud_drizzle" />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/placeIcon"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/blank"
+            android:tint="@android:color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/placeName"
+            app:layout_constraintTop_toTopOf="@+id/placeImg"
+            tools:src="@drawable/cloud_drizzle" />
 
 
         <TextView
             android:id="@+id/placeTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/spacing_medium"
             android:fontFamily="@font/sans_bold"
             android:textColor="@android:color/white"
             android:textSize="34sp"
+            app:layout_constraintBottom_toTopOf="@+id/placeSummary"
+            app:layout_constraintEnd_toEndOf="@+id/placeSummary"
+            app:layout_constraintTop_toBottomOf="@+id/placeName"
             tools:text="30&#176;" />
 
         <TextView
             android:id="@+id/placeSummary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
             android:ellipsize="end"
             android:fontFamily="@font/sans_regular"
             android:gravity="center"
@@ -76,9 +86,13 @@
             android:padding="@dimen/spacing_normal"
             android:textColor="#95FFFFFF"
             android:textSize="@dimen/text_size_small"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/placeTemp"
             tools:text="Cloudy" />
 
 
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

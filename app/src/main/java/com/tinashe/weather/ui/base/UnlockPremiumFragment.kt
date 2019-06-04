@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.billingclient.api.SkuDetails
 import com.tinashe.weather.R
-import kotlinx.android.synthetic.main.fragment_premium_features.view.*
+import kotlinx.android.synthetic.main.fragment_premium_features.*
 
 class UnlockPremiumFragment : BaseBottomSheetDialogFragment() {
 
@@ -21,8 +21,8 @@ class UnlockPremiumFragment : BaseBottomSheetDialogFragment() {
     override fun onViewCreated(contentView: View, savedInstanceState: Bundle?) {
         super.onViewCreated(contentView, savedInstanceState)
 
-        contentView.btnPurchase.text = skuDetails.price
-        contentView.btnPurchase.setOnClickListener {
+        btnPurchase.text = skuDetails.price
+        btnPurchase.setOnClickListener {
             callback.invoke()
             dismiss()
         }

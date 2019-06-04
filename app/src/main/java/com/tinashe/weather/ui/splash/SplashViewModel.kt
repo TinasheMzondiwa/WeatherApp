@@ -8,7 +8,6 @@ import com.tinashe.weather.data.model.ViewStateData
 import com.tinashe.weather.extensions.RxSchedulers
 import com.tinashe.weather.ui.base.BaseViewModel
 import com.tinashe.weather.ui.base.SingleLiveEvent
-import io.reactivex.Completable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -18,9 +17,9 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
                                           private val rxSchedulers: RxSchedulers) : BaseViewModel() {
 
-    var viewState: SingleLiveEvent<ViewStateData> = SingleLiveEvent()
+    var viewState = SingleLiveEvent<ViewStateData>()
 
-    private var currentLocation: SingleLiveEvent<CurrentLocation> = SingleLiveEvent()
+    private var currentLocation = SingleLiveEvent<CurrentLocation>()
 
     init {
         viewState.value = ViewStateData(ViewState.LOADING)
@@ -34,7 +33,7 @@ class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
                 .observeOn(rxSchedulers.main)
                 .subscribe({
                     currentLocation.value = it
-                }, { Timber.e(it, it.message) })
+                }, { Timber.e(it) })
 
         disposables.add(disposable)
     }
@@ -62,19 +61,23 @@ class SplashViewModel @Inject constructor(private val locationDao: LocationDao,
                 val disposable = locationDao.update(it)
                         .subscribeOn(rxSchedulers.database)
                         .observeOn(rxSchedulers.main)
-                        .subscribe({ viewState.value = ViewStateData(ViewState.SUCCESS) },
-                                { Timber.e(it, it.message) })
+                        .subscribe({
+                            viewState.value = ViewStateData(ViewState.SUCCESS)
+                        }, { Timber.e(it) })
+
                 disposables.add(disposable)
             }
         } ?: addLocation(CurrentLocation(area, latLong))
     }
 
     private fun addLocation(location: CurrentLocation) {
-        val disposable = Completable.fromAction { locationDao.insert(location) }
+        val disposable = locationDao.insert(location)
                 .subscribeOn(rxSchedulers.database)
                 .observeOn(rxSchedulers.main)
-                .subscribe({ viewState.value = ViewStateData(ViewState.SUCCESS) },
-                        { Timber.e(it, it.message) })
+                .subscribe({
+                    viewState.value = ViewStateData(ViewState.SUCCESS)
+                }, { Timber.e(it) })
+
         disposables.add(disposable)
     }
 }

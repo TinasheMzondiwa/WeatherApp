@@ -1,49 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:foreground="?attr/selectableItemBackground"
+    android:background="?attr/selectableItemBackground"
     android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_list"
-    android:paddingEnd="@dimen/spacing_medium"
-    android:paddingStart="@dimen/spacing_medium"
-    android:paddingTop="@dimen/spacing_list">
+    android:paddingTop="@dimen/spacing_list"
+    android:paddingBottom="@dimen/spacing_list">
 
     <ImageView
         android:id="@+id/itemIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:contentDescription="@string/blank"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/itemTitle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_email" />
 
-    <LinearLayout
+
+    <TextView
+        android:id="@+id/itemTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_large"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/sans_bold"
+        android:textColor="?android:textColorPrimary"
+        android:textSize="@dimen/text_size_body"
+        app:layout_constraintBottom_toTopOf="@+id/itemDesc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@tools:sample/full_names" />
 
-        <TextView
-            android:id="@+id/itemTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sans_bold"
-            android:textColor="?android:textColorPrimary"
-            android:textSize="@dimen/text_size_body"
-            tools:text="@tools:sample/full_names" />
+    <TextView
+        android:id="@+id/itemDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:fontFamily="@font/sans_regular"
+        android:paddingTop="@dimen/spacing_micro"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="@dimen/text_size_xsmall"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/itemIcon"
+        app:layout_constraintTop_toBottomOf="@+id/itemTitle"
+        tools:text="@tools:sample/lorem"
+        tools:visibility="visible" />
 
-        <TextView
-            android:id="@+id/itemDesc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sans_regular"
-            android:textColor="?android:textColorSecondary"
-            android:textSize="@dimen/text_size_xsmall"
-            android:paddingTop="@dimen/spacing_micro"
-            tools:text="@tools:sample/lorem" />
 
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
